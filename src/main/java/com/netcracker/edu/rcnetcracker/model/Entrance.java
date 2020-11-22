@@ -5,6 +5,8 @@ public class Entrance {
 	protected Long type_id;
 	protected Long location_id;
 	protected Long role_id;
+	protected Long building_id;
+	protected String name;
 	protected boolean isActive;
 
 	public Long getEntrance_id() {
@@ -45,5 +47,21 @@ public class Entrance {
 
 	public void setActive(boolean active) {
 		isActive = active;
+	}
+
+	public Long getBuilding_id() {
+		return building_id;
+	}
+
+	public void setBuilding_id(Long building_id) {
+		this.building_id = building_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
