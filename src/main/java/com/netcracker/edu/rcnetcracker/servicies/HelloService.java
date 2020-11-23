@@ -1,7 +1,16 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class HelloService {
@@ -11,11 +20,19 @@ public class HelloService {
     }
 
     public Gate buildGate() {
-        Gate gate = new Gate();
-        gate.setId(1l);
-        gate.setName("IamGate");
-        gate.setDescription("Our test gate");
-        return gate;
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "context.xml");
+        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+        List<Gate> gates = jdbcTemplate.query("SELECT * FROM GATES", new RowMapper<Gate>() {
+            public Gate mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Gate g = new Gate();
+                g.setId(rs.getLong("id"));
+                g.setName(rs.getString("name"));
+                g.setDescription(rs.getString("description"));
+                return g;
+            }
+        });
+        return gates.get(0);
     }
 
 }
