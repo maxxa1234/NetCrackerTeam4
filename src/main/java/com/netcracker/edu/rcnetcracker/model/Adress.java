@@ -1,22 +1,21 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import java.util.UUID;
 
 public class Adress {
-    private String adressID;
+    private Long adressID;
     private String flat;
-    private String buildingID;
-    private String utilityID;
+    private Long buildingID;
+    private Long utilityID;
 
     public Adress() {
     }
 
-    public String getAdressID() {
+    public Long getAdressID() {
         return adressID;
     }
 
-    public void setAdressID() {
-        adressID = UUID.randomUUID().toString();
+    public void setAdressID(Long adressID) {
+        this.adressID = adressID;
     }
 
     public String getFlat() {
@@ -27,19 +26,19 @@ public class Adress {
         this.flat = flat;
     }
 
-    public String getBuildingID() {
+    public Long getBuildingID() {
         return buildingID;
     }
 
-    public void setBuildingID(String buildingID) {
+    public void setBuildingID(Long buildingID) {
         this.buildingID = buildingID;
     }
 
-    public String getUtilityID() {
+    public Long getUtilityID() {
         return utilityID;
     }
 
-    public void setUtilityID(String utilityID) {
+    public void setUtilityID(Long utilityID) {
         this.utilityID = utilityID;
     }
 }

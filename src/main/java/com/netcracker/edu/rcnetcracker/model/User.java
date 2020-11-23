@@ -1,9 +1,8 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import java.util.UUID;
 
 public class User {
-    private String userID;
+    private Long userID;
     private String email;
     private String password;
     private String firstName;
@@ -11,19 +10,19 @@ public class User {
     private String patronymic;
     private boolean isActive;
     private boolean receiveUtilityNotification;
-    private String roleID;
-    private String contactID;
-    private String adressID;
+    private Long roleID;
+    private Long contactID;
+    private Long adressID;
 
     public User() {
     }
 
-    public String getUser_id() {
+    public Long getUserID() {
         return userID;
     }
 
-    public void setUser_id() {
-        userID = UUID.randomUUID().toString();
+    public void setUserID( Long userID) {
+        this.userID = userID;
     }
 
     public String getEmail() {
@@ -82,27 +81,27 @@ public class User {
         this.receiveUtilityNotification = receiveUtilityNotification;
     }
 
-    public String getRoleID() {
+    public Long getRoleID() {
         return roleID;
     }
 
-    public void setRoleID(String roleID) {
+    public void setRoleID(Long roleID) {
         this.roleID = roleID;
     }
 
-    public String getContactID() {
+    public Long getContactID() {
         return contactID;
     }
 
-    public void setContactID(String contactID) {
+    public void setContactID(Long contactID) {
         this.contactID = contactID;
     }
 
-    public String getAdressID() {
+    public Long getAdressID() {
         return adressID;
     }
 
-    public void setAdressID(String adressID) {
+    public void setAdressID(Long adressID) {
         this.adressID = adressID;
     }
 }

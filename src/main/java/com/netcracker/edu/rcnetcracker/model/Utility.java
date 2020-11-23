@@ -1,27 +1,26 @@
 package com.netcracker.edu.rcnetcracker.model;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class Utility {
-    private String utilityID;
+    private Long utilityID;
     private String bankBook;
     private Date date;
     private Integer currentMonthReading;
     private Float ammountToPay;
     private boolean status;
     private String photoURL;
-    private String serviceID;
+    private Long serviceID;
 
     public Utility() {
     }
 
-    public String getUtilityID() {
+    public Long getUtilityID() {
         return utilityID;
     }
 
-    public void setUtilityID() {
-        utilityID = UUID.randomUUID().toString();
+    public void setUtilityID(Long utilityID) {
+        this.utilityID = utilityID;
     }
 
     public String getBankBook() {
@@ -72,11 +71,11 @@ public class Utility {
         this.photoURL = photoURL;
     }
 
-    public String getServiceID() {
+    public Long getServiceID() {
         return serviceID;
     }
 
-    public void setServiceID(String serviceID) {
+    public void setServiceID(Long serviceID) {
         this.serviceID = serviceID;
     }
 }

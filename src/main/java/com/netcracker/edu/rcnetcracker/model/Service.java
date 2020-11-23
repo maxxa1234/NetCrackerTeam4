@@ -1,21 +1,20 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import java.util.UUID;
 
 public class Service {
-    private String serviceID;
+    private Long serviceID;
     private String title;
     private Float tariff;
 
     public Service() {
     }
 
-    public String getService_id() {
+    public Long getService_id() {
         return serviceID;
     }
 
-    public void setService_id() {
-        serviceID = UUID.randomUUID().toString();
+    public void setService_id(Long serviceID) {
+        this.serviceID = serviceID;
     }
 
     public String getTitle() {
