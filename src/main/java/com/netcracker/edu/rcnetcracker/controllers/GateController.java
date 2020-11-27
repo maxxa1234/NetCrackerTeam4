@@ -1,44 +1,30 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
-import com.netcracker.edu.rcnetcracker.servicies.HelloService;
+import com.netcracker.edu.rcnetcracker.servicies.GateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/gates")
 @RestController
 public class GateController {
 
-    private HelloService helloService;
+    private GateService gateService;
 
     @Autowired
-    public GateController(HelloService helloService) {
-        this.helloService = helloService;
+    public GateController(GateService gateService) {
+        this.gateService = gateService;
     }
 
     @RequestMapping(value = "/hello2", method = RequestMethod.GET)
-    public Gate test() {
-        return helloService.buildGate();
+    public List<Gate>  test() {
+        return gateService.receiveGates();
     }
-
-    @GetMapping("/{s}")
-    public String getTest(@PathVariable String s){
-        return s + " testGet";
-    }
-
-    @PostMapping("/{s}")
-    public String postTest(@PathVariable String s){
-        return s + " testPost";
-    }
-
-    @PutMapping("/{s}")
-    public String putTest(@PathVariable String s){
-        return s + " testPut";
-    }
-
-    @DeleteMapping("/{s}")
-    public String deleteTest(@PathVariable String s){
-        return s + " testDelete";
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String  test1() {
+        return "hi";
     }
 
 
