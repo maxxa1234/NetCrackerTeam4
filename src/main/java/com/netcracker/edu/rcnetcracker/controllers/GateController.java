@@ -24,6 +24,9 @@ public class GateController {
     public List<Gate>  test() {
         return gateService.receiveGates();
     }
-
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String  test1() {
+        return "hi";
+    }
 
 }
