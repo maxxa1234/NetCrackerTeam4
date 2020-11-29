@@ -1,32 +1,25 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-public class Category {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    private Long id;
+import javax.persistence.Entity;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Category extends BaseEntity {
+//    private Long id;   //changed with BaseEntity id
+
     private String name;
     private Boolean important;
 
-    public Long getId() {
-        return id;
+    public Category(Long id) {
+        super(id);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean isImportant() {
-        return important;
-    }
-
-    public void setImportant(Boolean important) {
-        this.important = important;
-    }
 }

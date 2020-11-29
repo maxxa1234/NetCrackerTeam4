@@ -12,15 +12,14 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Contact extends BaseEntity {
+public class Address extends BaseEntity {
+//    private Long adressID;  // changed with BaseEntity id
+    private String flat;
+    private Long buildingID;
+    private Long utilityID;
 
-    //    private Long id;    //changed with BaseEntity id
-    private String value; //changed with BaseEntity value
-
-    //TODO mapping with contact_type table
-    private Long contactTypeId;
-
-    public Contact(Long id) {
+    public Address(Long id) {
         super(id);
     }
+
 }

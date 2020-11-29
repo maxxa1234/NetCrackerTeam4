@@ -1,31 +1,21 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-public class Ekey {
-	protected Long eKey_id;
-	protected String keyCode;
-	protected Boolean isActive;
+import lombok.*;
 
-	public long geteKey_id() {
-		return eKey_id;
-	}
+import javax.persistence.*;
 
-	public void seteKey_id(long eKey_id) {
-		this.eKey_id = eKey_id;
-	}
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table
+public class Ekey extends BaseEntity {
+    //    protected Long eKey_id;    //changed with BaseEntity id
+    protected String keyCode;
+    protected Boolean isActive;
 
-	public String getKeyCode() {
-		return keyCode;
-	}
-
-	public void setKeyCode(String keyCode) {
-		this.keyCode = keyCode;
-	}
-
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean active) {
-		isActive = active;
-	}
+    public Ekey(Long id) {
+        super(id);
+    }
 }
