@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Service
 public class GateService {
+
 
     public String getHello() {
         return "hello2";
@@ -36,17 +38,31 @@ public class GateService {
                 "\n" +
                 "AND     attr_desc.ATTR_ID = attr_t_desc.ATTR_ID\n" +
                 "AND     attr_desc.object_id = o.object_id\n" +
-                "AND     attr_t_desc.code = 'description'";
-        List<Gate> gates = jdbcTemplate.query(sql, new RowMapper<Gate>() {
-            public Gate mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Gate g = new Gate();
-                g.setId(rs.getLong("id"));
-                g.setName(rs.getString("name"));
-                g.setDescription(rs.getString("description"));
-                return g;
-            }
+                "AND     attr_t_desc.code = 'description'\n" +
+                "ORDER BY id ASC";
+        List<Gate> gates = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Gate g = new Gate();
+            g.setId(rs.getLong("id"));
+            g.setName(rs.getString("name"));
+            g.setDescription(rs.getString("description"));
+            return g;
         });
         return gates;
+    }
+
+    public void createGate(Gate gate){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "context.xml");
+        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
+
+        String sql1 = "INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)\n" +
+                "VALUES (OBJECTS_SEQ.nextval, (SELECT OBJECT_TYPE_ID FROM objtype WHERE code = 'Gate'))";
+        String sql2 = "INSERT INTO attributes(ATTR_ID, OBJECT_ID, VALUE)\n" +
+                "VALUES(1, OBJECTS_SEQ.currval, '"+ gate.getName() + "')";
+        String sql3 = "INSERT INTO attributes(ATTR_ID, OBJECT_ID, VALUE)\n" +
+                "VALUES(2, OBJECTS_SEQ.currval, '"  +gate.getDescription() + "')";
+        jdbcTemplate.batchUpdate(sql1, sql2, sql3);
+
     }
 
 }
