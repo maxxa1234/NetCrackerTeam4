@@ -1,44 +1,58 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntranceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/entrance")
 @RestController
 public class EntranceController {
 
-    @GetMapping("/open/{key_id}/{entrance_id}")
-    public void openGate(@PathVariable("key_id") Long key_id, @PathVariable("entrance_id") Long entrance_id){
+    @Autowired
+    private EntranceService service;
 
+    @GetMapping(value = "/open",
+            params = {"key_id", "entrance_id"})
+    public boolean openGate(@RequestParam("key_id") Long key_id, @RequestParam("entrance_id") Long entrance_id) {
+        //will return isOpened
+        return false;
     }
 
-    @GetMapping("/lock/{key_id}/{entrance_id}")
-    public void blockGate(@PathVariable("key_id") Long key_id, @PathVariable("entrance_id") Long entrance_id){
-
+    @GetMapping(value = "/block",
+            params = {"key_id", "entrance_id"})
+    public boolean blockGate(@RequestParam("key_id") Long key_id, @RequestParam("entrance_id") Long entrance_id) {
+        //will return isBlock
+        return false;
     }
 
     @PostMapping("/add")
-    public void createEntrance(@RequestBody Entrance entrance){
+    public void createEntrance(@RequestBody Entrance entrance) {
 
     }
 
     @DeleteMapping("{id}")
-    public void deleteEntrance(@PathVariable("id")Entrance entrance){
+    public void deleteEntrance(@PathVariable("id") Entrance entrance) {
 
     }
 
     @PutMapping("{id}")
-    public void updateEntrance(@PathVariable("id")Entrance entrance, @RequestBody Entrance updatingEntrance){
+    public void updateEntrance(@PathVariable("id") Entrance entrance, @RequestBody Entrance updatingEntrance) {
 
     }
 
-    @GetMapping
-    public void getAllEntrances(){
-
+    @GetMapping(params = {"page", "size"})
+    public Page<Entrance> getAllEntrances(@RequestParam("page") int page, @RequestParam("size") int size) {
+        Page<Entrance> resultPage = service.findPagination(page, size);
+        if (page > resultPage.getTotalPages()) {
+//            throw new ResourceNotFoundException();
+        }
+        return resultPage;
     }
 
     @GetMapping("/log")
-    public void getLog(){
+    public void getLog() {
 
     }
 }
