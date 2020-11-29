@@ -20,11 +20,17 @@ public class GateController {
 
     @RequestMapping(value = "/hello2", method = RequestMethod.GET)
     public List<Gate>  test() {
+
         return gateService.receiveGates();
     }
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String  test1() {
         return "hi";
+    }
+
+    @RequestMapping(value ="/hello3" , method = RequestMethod.POST)
+    public void addGate(@RequestBody Gate gate){
+        gateService.createGate(gate);
     }
 
 
