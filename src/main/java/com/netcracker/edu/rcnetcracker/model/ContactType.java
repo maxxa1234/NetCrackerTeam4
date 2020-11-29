@@ -1,22 +1,22 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-public class ContactType {
-    private Long id;
-    private String name;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Long getId() {
-        return id;
-    }
+import javax.persistence.Entity;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class ContactType extends BaseEntity {
+    //    private Long id;  //changed with BaseEntity id
+    private String name;  
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    ContactType(Long id) {
+        super(id);
     }
 }

@@ -1,35 +1,36 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Ekey;
-import com.netcracker.edu.rcnetcracker.model.User;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("users")
+import java.util.List;
+
+@RequestMapping("keys")
 @RestController
 public class ElectronicKeyController {
 
-    @PostMapping("/keys")
-    public void createKey(@RequestBody Ekey ekey){
+    @Autowired
+    private EntityServiceImpl<Ekey> service;
 
+    @GetMapping(params = {"size"})
+    public List<Ekey> getAllKeys(@RequestParam("size") int size) {
+        return service.findPagination(size);
     }
 
-    @DeleteMapping("/keys/{id}")
-    public void deleteKey(@PathVariable("id")Long keyID){
-
-    }
-
-    @PostMapping("/resident")
-    public void createUser(@RequestBody User user){
-
-    }
-
-    @PutMapping("/resident/{id}")
-    public void updateUser(@PathVariable("id")User user, @RequestBody User updatingUser){
+    @PostMapping("/add")
+    public void createKey(@RequestBody Ekey ekey) {
 
     }
 
     @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable("id")User user){
+    public void deleteKey(@PathVariable("id") Long keyID) {
+
+    }
+
+    @PutMapping("{id}")
+    public void updateKey(@PathVariable("id") Long keyID) {
 
     }
 
