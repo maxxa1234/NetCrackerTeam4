@@ -1,7 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
-import com.netcracker.edu.rcnetcracker.servicies.GateService;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.GateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
