@@ -1,17 +1,18 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Entrance;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntranceService;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/entrance")
 @RestController
 public class EntranceController {
 
     @Autowired
-    private EntranceService service;
+    private EntityServiceImpl<Entrance> service;
 
     @GetMapping(value = "/open",
             params = {"key_id", "entrance_id"})
@@ -42,13 +43,9 @@ public class EntranceController {
 
     }
 
-    @GetMapping(params = {"page", "size"})
-    public Page<Entrance> getAllEntrances(@RequestParam("page") int page, @RequestParam("size") int size) {
-        Page<Entrance> resultPage = service.findPagination(page, size);
-        if (page > resultPage.getTotalPages()) {
-//            throw new ResourceNotFoundException();
-        }
-        return resultPage;
+    @GetMapping(params = {"size"})
+    public List<Entrance> getAllEntrances(@RequestParam("size") int size) {
+        return service.findPagination(size);
     }
 
     @GetMapping("/log")

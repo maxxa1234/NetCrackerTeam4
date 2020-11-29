@@ -1,26 +1,24 @@
 package com.netcracker.edu.rcnetcracker.servicies.servicesImpl;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
-import com.netcracker.edu.rcnetcracker.servicies.EntityServiceForPaging;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.netcracker.edu.rcnetcracker.servicies.EntityService;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.domain.Page;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class GateService implements EntityServiceForPaging<Gate> {
+public class GateService implements EntityService<Gate> {
 
     @Override
-    public Page<Gate> findPagination(int page, int size) {
-        //        return dao.findAll(new PageRequest(page, size));
+    public List<Gate> findPagination(int size) {
+        return null;
+    }
+
+    @Override
+    public List<Gate> getFiltrated(EntitySpecification<Gate> specification) {
         return null;
     }
 

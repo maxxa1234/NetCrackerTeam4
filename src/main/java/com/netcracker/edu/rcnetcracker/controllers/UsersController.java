@@ -3,10 +3,8 @@ package com.netcracker.edu.rcnetcracker.controllers;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.UserService;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +13,19 @@ import java.util.List;
 @RequestMapping("users")
 public class UsersController {
 
-//    @Autowired
-//    private UserRepository repository;
-
     @Autowired
-    private UserService service;
+    private EntityServiceImpl<User> service;
 
-    @GetMapping(params = {"page", "size"})
-    public Page<User> getAllUsers(@RequestParam("page") int page, @RequestParam("size") int size) {
-        Page<User> resultPage = service.findPagination(page, size);
-        if (page > resultPage.getTotalPages()) {
-//            throw new ResourceNotFoundException();
-        }
-        return resultPage;
+    @GetMapping(params = {"size"})
+    public List<User> getAllUsers(@RequestParam("size") int size) {
+        return service.findPagination(size);
     }
 
-    @GetMapping(params = {"key", "operation", "value"})
-    public List<User> getAllUsers(@RequestParam("key")String key, @RequestParam("operation")String operation, @RequestParam("value")User value){
-        EntitySpecification<User> userSpecification = new EntitySpecification<>(new SearchCriteria(key, operation, value));
-//        List<User> results = repository.findAll(Specification.where(userSpecification));
-//        return results;
-        return null;
+    @GetMapping(value = "/filter",
+            params = {"key", "operation", "value"})
+    public List<User> getAllUsers(@RequestParam("key") String key, @RequestParam("operation") String operation, @RequestParam("value") User value) {
+        List<User> results = service.getFiltrated(new EntitySpecification<>(new SearchCriteria(key, operation, value)));
+        return results;
     }
 
     @PostMapping("/add")

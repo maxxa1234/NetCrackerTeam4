@@ -2,12 +2,12 @@ package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.model.Utility;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.NotificationService;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @RequestMapping("/notification")
@@ -15,15 +15,11 @@ import java.util.Set;
 public class NotificationController {
 
     @Autowired
-    NotificationService notificationService;
+    private EntityServiceImpl<Notification> service;
 
-    @GetMapping(params = {"page", "size"})
-    public Page<Notification> getAllNotifications(@RequestParam("page") int page, @RequestParam("size") int size){
-        Page<Notification> resultPage = notificationService.findPagination(page, size);
-        if (page > resultPage.getTotalPages()) {
-//            throw new ResourceNotFoundException();
-        }
-        return resultPage;
+    @GetMapping(params = {"size"})
+    public List<Notification> getAllNotifications(@RequestParam("size") int size) {
+        return service.findPagination(size);
     }
 
     @GetMapping("{date}")
