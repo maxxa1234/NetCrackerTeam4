@@ -1,20 +1,31 @@
 package com.netcracker.edu.rcnetcracker.model;
 
+import com.netcracker.edu.rcnetcracker.annotations.db.Attribute;
+import com.netcracker.edu.rcnetcracker.annotations.db.ObjectType;
+import com.netcracker.edu.rcnetcracker.annotations.db.ValueType;
+
 import java.util.Date;
 
+@ObjectType(id = 3)
 public class Logger {
-	protected Long logger_id;
+/*	protected Long logger_id;*/
+
+	@Attribute(id = 13)
 	protected Long entrance_id;
+
+	@Attribute(id = 14)
 	protected Long eKey_id;
+
+	@Attribute(id = 15, valueType = ValueType.DATE_VALUE)
 	protected Date dateAndTime;
 
-	public Long getLogger_id() {
+	/*public Long getLogger_id() {
 		return logger_id;
 	}
 
 	public void setLogger_id(Long logger_id) {
 		this.logger_id = logger_id;
-	}
+	}*/
 
 	public Long getEntrance_id() {
 		return entrance_id;
