@@ -1,6 +1,5 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-
 public class Adress {
     private Long adressID;
     private String flat;
