@@ -1,8 +1,8 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import com.netcracker.edu.rcnetcracker.annotations.db.Attribute;
-import com.netcracker.edu.rcnetcracker.annotations.db.ObjectType;
-import com.netcracker.edu.rcnetcracker.annotations.db.ValueType;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
 import java.util.Date;
 

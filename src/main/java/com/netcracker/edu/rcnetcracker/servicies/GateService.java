@@ -40,7 +40,7 @@ public class GateService {
         List<Gate> gates = jdbcTemplate.query(sql, new RowMapper<Gate>() {
             public Gate mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Gate g = new Gate();
-                g.setId(rs.getLong("id"));
+                g.setId(rs.getObject("id", Long.class));
                 g.setName(rs.getString("name"));
                 g.setDescription(rs.getString("description"));
                 return g;
