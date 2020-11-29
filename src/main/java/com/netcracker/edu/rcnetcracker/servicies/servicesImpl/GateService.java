@@ -2,17 +2,11 @@ package com.netcracker.edu.rcnetcracker.servicies.servicesImpl;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
 import com.netcracker.edu.rcnetcracker.servicies.EntityServiceForPaging;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.domain.Page;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -33,7 +27,7 @@ public class GateService implements EntityServiceForPaging<Gate> {
                 "context.xml");
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         String sql =    "SELECT o.object_id id, attr_name.value name, attr_desc.value description\n" +
-                "FROM    objects o, objtype o_t,\n" +
+                 "FROM    objects o, objtype o_t,\n" +
                 "        attributes attr_name, attrtype attr_t_name,\n" +
                 "        attributes attr_desc, attrtype attr_t_desc\n" +
                 "WHERE   o.OBJECT_TYPE_ID = o_t.OBJECT_TYPE_ID\n" +
