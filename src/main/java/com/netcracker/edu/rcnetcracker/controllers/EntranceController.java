@@ -1,6 +1,10 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.Notification;
+import com.netcracker.edu.rcnetcracker.model.User;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +30,12 @@ public class EntranceController {
     public boolean blockGate(@RequestParam("key_id") Long key_id, @RequestParam("entrance_id") Long entrance_id) {
         //will return isBlock
         return false;
+    }
+
+    @GetMapping(value = "/filter",
+            params = {"key", "operation", "value"})
+    public List<Entrance> getAllEntrancesFiltered(@RequestParam("key") String key, @RequestParam("operation") String operation, @RequestParam("value") User value) {
+        return service.getFiltrated(new EntitySpecification<>(new SearchCriteria(key, operation, value)));
     }
 
     @PostMapping("/add")

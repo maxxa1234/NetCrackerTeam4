@@ -22,6 +22,8 @@ public class BaseEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
     public boolean isNew() {
         return this.id == null;
     }
