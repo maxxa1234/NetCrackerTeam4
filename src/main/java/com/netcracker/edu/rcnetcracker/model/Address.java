@@ -14,10 +14,10 @@ import javax.persistence.Entity;
 @Entity
 public class Address extends BaseEntity {
 //    private Long adressID;  // changed with BaseEntity id
+
     private String flat;
     private Long buildingID;
     private Long utilityID;
-
     public Address(Long id) {
         super(id);
     }
