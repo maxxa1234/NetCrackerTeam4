@@ -37,7 +37,7 @@ public class NotificationController {
     }
 
     @PostMapping("/utility/{utilityNotificationId}/{apartmentId}/{date}")
-    public void postUtilityNotification(Utility utility, Long utilityNotificationId, Long apartmentId, Date date) {
+    public void postUtilityNotification(Long utilityId, Long utilityNotificationId, Long apartmentId, Date date) {
 
     }
 

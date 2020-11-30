@@ -1,5 +1,12 @@
 package com.netcracker.edu.rcnetcracker.servicies.filtering;
 
+/*
+* Class to create criteria for filtering
+* key - field name
+* operation - equality, less than etc.
+* value - parameter value
+* */
+
 public class SearchCriteria {
 
     private String key;
