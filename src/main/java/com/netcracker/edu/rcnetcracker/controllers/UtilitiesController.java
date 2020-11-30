@@ -1,47 +1,47 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.model.Utility;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.UtilitiesService;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.List;
 
 @RequestMapping("utilities")
 @RestController
 public class UtilitiesController {
 
     @Autowired
-    private UtilitiesService service;
+    private EntityServiceImpl<Utility> service;
 
-    @GetMapping(params = {"page", "size"})
-    public Page<Utility> getAllUtilities(@RequestParam("page") int page, @RequestParam("size") int size){
-        Page<Utility> resultPage = service.findPagination(page, size);
-        if (page > resultPage.getTotalPages()) {
-//            throw new ResourceNotFoundException();
-        }
-        return resultPage;
+    @GetMapping(params = {"size"})
+    public List<Utility> getAllUtilities(@RequestParam("size") int size) {
+        return service.findPagination(size);
+    }
+
+    @GetMapping(value = "/filter",
+            params = {"key", "operation", "value"})
+    public List<Utility> getAllUtilitiesFiltered(@RequestParam("key") String key, @RequestParam("operation") String operation, @RequestParam("value") User value) {
+        return service.getFiltrated(new EntitySpecification<>(new SearchCriteria(key, operation, value)));
     }
 
     @GetMapping("{id}")
-    public void getUtility(@PathVariable("id")Long utilityID){
-
-    }
-
-    @GetMapping("{date}")
-    public void getUtilitiesFilteringDate(@PathVariable("date")Date date){
+    public void getUtility(@PathVariable("id") Long utilityID) {
 
     }
 
     @PostMapping("/add")
-    public void createUtility(){
+    public void createUtility() {
 
     }
 
     @PostMapping(value = "/attachPhoto",
-    params = {"utilityID", "photoURL"})
-    public void attachPhoto(@RequestParam("utilityID")Long utilityID, @RequestParam("photoURL")String photoURL){
+            params = {"utilityId", "photoURL"})
+    public void attachPhoto(@RequestParam("utilityId") Long utilityId, @RequestParam("photoURL") String photoURL) {
 
     }
 

@@ -1,20 +1,24 @@
 package com.netcracker.edu.rcnetcracker.servicies.servicesImpl;
 
 import com.netcracker.edu.rcnetcracker.model.Gate;
-import com.netcracker.edu.rcnetcracker.servicies.EntityServiceForPaging;
+import com.netcracker.edu.rcnetcracker.servicies.EntityService;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class GateService implements EntityServiceForPaging<Gate> {
+public class GateService implements EntityService<Gate> {
 
     @Override
-    public Page<Gate> findPagination(int page, int size) {
-        //        return dao.findAll(new PageRequest(page, size));
+    public List<Gate> findPagination(int size) {
+        return null;
+    }
+
+    @Override
+    public List<Gate> getFiltrated(EntitySpecification<Gate> specification) {
         return null;
     }
 
@@ -27,7 +31,7 @@ public class GateService implements EntityServiceForPaging<Gate> {
                 "context.xml");
         JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate", JdbcTemplate.class);
         String sql =    "SELECT o.object_id id, attr_name.value name, attr_desc.value description\n" +
-                 "FROM    objects o, objtype o_t,\n" +
+                "FROM    objects o, objtype o_t,\n" +
                 "        attributes attr_name, attrtype attr_t_name,\n" +
                 "        attributes attr_desc, attrtype attr_t_desc\n" +
                 "WHERE   o.OBJECT_TYPE_ID = o_t.OBJECT_TYPE_ID\n" +
