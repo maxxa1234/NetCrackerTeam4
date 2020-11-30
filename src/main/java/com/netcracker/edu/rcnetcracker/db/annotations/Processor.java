@@ -15,7 +15,8 @@ public class Processor {
         Attr[] attributes = new Attr[fields.length];
         for (int i = 0; i < fields.length; i++) {
             Attribute att = fields[i].getAnnotation(Attribute.class);
-            attributes[i] = new Attr(att.id(), att.valueType(), fields[i].getType(), fields[i].getName()); }
+            attributes[i] = new Attr(att.id(), att.valueType(), fields[i].getType(), fields[i].getName());
+        }
 
         return attributes;
     }
