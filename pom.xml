@@ -12,7 +12,7 @@
 	<artifactId>RCNetcracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>RCNetcracker</name>
-	<description>edu project for Netcrecker</description>
+	<description>edu project for Netcracker</description>
 
 
 	<properties>
@@ -43,6 +43,11 @@
 			<version>2.4.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
@@ -65,11 +70,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.22.Final</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

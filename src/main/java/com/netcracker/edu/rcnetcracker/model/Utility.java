@@ -1,30 +1,35 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import javax.persistence.Entity;
 import java.util.Date;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+@ObjectType(id = 14)
 public class Utility extends BaseEntity{
-//    private Long utilityID;
+
+    @Attribute(id = 37, valueType = ValueType.VALUE)
     private String bankBook;
+
+    @Attribute(id = 38, valueType = ValueType.DATE_VALUE)
     private Date date;
+
+    @Attribute(id = 39, valueType = ValueType.VALUE)
     private Integer currentMonthReading;
+
+    @Attribute(id = 40, valueType = ValueType.VALUE)
     private Float ammountToPay;
-    private boolean status;
+
+    @Attribute(id = 41, valueType = ValueType.VALUE)
+    private Boolean status;
+
+    @Attribute(id = 42, valueType = ValueType.VALUE)
     private String photoURL;
+
+    @Attribute(id = 43)
     private Long serviceID;
 
-    public Utility(Long id) {
-        super(id);
-    }
+
 
 }

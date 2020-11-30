@@ -1,10 +1,8 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
-import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.model.User;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +30,6 @@ public class EntranceController {
         return false;
     }
 
-    @GetMapping(value = "/filter",
-            params = {"key", "operation", "value"})
-    public List<Entrance> getAllEntrancesFiltered(@RequestParam("key") String key, @RequestParam("operation") String operation, @RequestParam("value") User value) {
-        return service.getFiltrated(new EntitySpecification<>(new SearchCriteria(key, operation, value)));
-    }
-
     @PostMapping("/add")
     public void createEntrance(@RequestBody Entrance entrance) {
 
@@ -62,4 +54,10 @@ public class EntranceController {
     public void getLog() {
 
     }
+
+    @RequestMapping(value = "/select-all", method = RequestMethod.GET)
+    public List<Entrance> test1() {
+        return TestAccess.selectAll(Entrance.class);
+    }
+    
 }

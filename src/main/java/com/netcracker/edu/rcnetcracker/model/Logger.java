@@ -1,46 +1,38 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import com.netcracker.edu.rcnetcracker.annotations.db.Attribute;
-import com.netcracker.edu.rcnetcracker.annotations.db.ObjectType;
-import com.netcracker.edu.rcnetcracker.annotations.db.ValueType;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
 import java.util.Date;
 
-@ObjectType(id = 3)
+@ObjectType(id = 1)
 public class Logger {
 /*	protected Long logger_id;*/
 
-	@Attribute(id = 13)
-	protected Long entrance_id;
+	@Attribute(id = 1)
+	protected Long entranceId;
 
-	@Attribute(id = 14)
-	protected Long eKey_id;
+	@Attribute(id = 2)
+	protected Long eKeyId;
 
-	@Attribute(id = 15, valueType = ValueType.DATE_VALUE)
+	@Attribute(id = 3, valueType = ValueType.DATE_VALUE)
 	protected Date dateAndTime;
 
-	/*public Long getLogger_id() {
-		return logger_id;
+	public Long getEntranceId() {
+		return entranceId;
 	}
 
-	public void setLogger_id(Long logger_id) {
-		this.logger_id = logger_id;
-	}*/
-
-	public Long getEntrance_id() {
-		return entrance_id;
+	public void setEntranceId(Long entranceId) {
+		this.entranceId = entranceId;
 	}
 
-	public void setEntrance_id(Long entrance_id) {
-		this.entrance_id = entrance_id;
+	public Long geteKeyId() {
+		return eKeyId;
 	}
 
-	public Long geteKey_id() {
-		return eKey_id;
-	}
-
-	public void seteKey_id(Long eKey_id) {
-		this.eKey_id = eKey_id;
+	public void seteKeyId(Long eKeyId) {
+		this.eKeyId = eKeyId;
 	}
 
 	public Date getDateAndTime() {

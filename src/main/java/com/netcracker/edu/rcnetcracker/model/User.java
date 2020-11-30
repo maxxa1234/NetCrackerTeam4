@@ -1,31 +1,97 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import javax.persistence.Entity;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+@ObjectType(id = 10)
 public class User extends BaseEntity {
-    //    private Long userID;
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private boolean isActive;
-    private boolean receiveUtilityNotification;
-    private Long roleID;
-    private Long contactID;
-    private Long adressID;
 
-    public User(Long id) {
-        super(id);
+    @Attribute(id = 21, valueType = ValueType.VALUE)
+    private String email;
+
+    @Attribute(id = 22, valueType = ValueType.VALUE)
+    private String password;
+
+    @Attribute(id = 23, valueType = ValueType.VALUE)
+    private String firstName;
+
+    @Attribute(id = 24, valueType = ValueType.VALUE)
+    private String lastName;
+
+    @Attribute(id = 25, valueType = ValueType.VALUE)
+    private String patronymic;
+
+    @Attribute(id = 26, valueType = ValueType.VALUE)
+    private Boolean isActive;
+
+    @Attribute(id = 27, valueType = ValueType.VALUE)
+    private Boolean receiveUtilityNotification;
+
+    @Attribute(id = 28)
+    private Long roleID;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Boolean getReceiveUtilityNotification() {
+        return receiveUtilityNotification;
+    }
+
+    public void setReceiveUtilityNotification(Boolean receiveUtilityNotification) {
+        this.receiveUtilityNotification = receiveUtilityNotification;
+    }
+
+    public Long getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(Long roleID) {
+        this.roleID = roleID;
     }
 }
