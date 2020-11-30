@@ -51,7 +51,7 @@ public class TestAccess {
         return list;
     }
 
-    private static String getSelectAllStatement(Class<?> clazz, List<Attr> attributes) {
+    private static String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes) {
         StringBuilder selectBlock = new StringBuilder("SELECT o.object_id id, o.name name, o.description description ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
@@ -69,4 +69,6 @@ public class TestAccess {
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
     }
+
+
 }

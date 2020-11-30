@@ -1,19 +1,29 @@
 package com.netcracker.edu.rcnetcracker.db.annotations;
 
+import com.netcracker.edu.rcnetcracker.model.BaseEntity;
+import org.springframework.core.annotation.AnnotationConfigurationException;
+
+import javax.naming.directory.NoSuchAttributeException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Processor {
-    public static int getObjtypeId(Class<?> clazz) {
-            return clazz.getAnnotation(ObjectType.class).id();
+    public static int getObjtypeId(Class<? extends BaseEntity> clazz) {
+        ObjectType ot = clazz.getAnnotation(ObjectType.class);
+        if (ot == null) {
+
+        }
+        return ot.id();
     }
 
-    public static ArrayList<Attr> getAttributes(Class<?> clazz) {
+    public static ArrayList<Attr> getAttributes(Class<? extends BaseEntity> clazz) {
         Field[] fields = clazz.getDeclaredFields();
         ArrayList<Attr> attributes = new  ArrayList<>();
         for (int i = 0; i < fields.length; i++) {
             Attribute att = fields[i].getAnnotation(Attribute.class);
-            attributes.add(new Attr(att.id(), att.valueType(), fields[i], false));
+            if (att != null) {
+                attributes.add(new Attr(att.id(), att.valueType(), fields[i], false));
+            }
         }
 
         fields = clazz.getSuperclass().getDeclaredFields();
