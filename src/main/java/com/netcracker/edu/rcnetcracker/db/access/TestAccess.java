@@ -37,7 +37,7 @@ public class TestAccess {
                     for(int i = 0; i < attributes.length; i++) {
                             field = clazz.getDeclaredField(attributes[i].name);
                             field.setAccessible(true);
-                            field.set(obj, rs.getObject(("" + i), attributes[i].clazz));
+                            field.set(obj, rs.getObject((attributes[i].name), attributes[i].clazz));
                     }
                 } catch (InstantiationException e) {
                     e.printStackTrace();
@@ -60,14 +60,15 @@ public class TestAccess {
         StringBuilder selectBlock = new StringBuilder("SELECT o.object_id id, o.name name, o.description description ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
+
         for(int i = 0; i < attributes.length; i++) {
             selectBlock.append(", a").append(i).append(".").append(attributes[i].valueType.getValueType())
-                    .append(" \"").append(i).append("\" ");
+                    .append(" \"").append(attributes[i].name).append("\" ");
             fromBlock.append(", ").append(attributes[i].valueType.getTable()).append(" a").append(i).append(" ");
             whereBlock.append("AND o.object_id = a").append(i).append(".object_id ").append("AND a")
                     .append(i).append(".attr_id = ").append(attributes[i].id).append(" ");
         }
 
-        return selectBlock + fromBlock.toString() + whereBlock;
+        return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
     }
 }

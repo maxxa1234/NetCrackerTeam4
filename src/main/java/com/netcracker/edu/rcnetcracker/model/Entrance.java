@@ -1,27 +1,42 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import javax.persistence.Entity;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+@ObjectType(id = 2)
 public class Entrance extends BaseEntity {
-    //	protected Long entrance_id; //changed with BaseEntity id
-    protected Long type_id;
-    protected Long location_id;
-    protected Long role_id;
-    protected Long building_id;
-    protected String name;
-    protected boolean isActive;
 
-    public Entrance(Long id) {
-        super(id);
+    @Attribute(id = 5)
+    protected Long type_id;
+
+    @Attribute(id = 7)
+    protected Long building_id;
+
+    @Attribute(id = 6, valueType = ValueType.VALUE)
+    protected Boolean isActive;
+
+    public Long getType_id() {
+        return type_id;
+    }
+
+    public void setType_id(Long type_id) {
+        this.type_id = type_id;
+    }
+
+    public Long getBuilding_id() {
+        return building_id;
+    }
+
+    public void setBuilding_id(Long building_id) {
+        this.building_id = building_id;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

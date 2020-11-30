@@ -1,27 +1,28 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Entity;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import java.util.Date;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+
+@ObjectType(id = 13)
 public class Notification extends BaseEntity {
-//    private Long id;
+
+    @Attribute(id = 32, valueType = ValueType.VALUE)
     private String text;
+
+    @Attribute(id = 33, valueType = ValueType.DATE_VALUE)
     private Date date;
+
+    @Attribute(id = 34, valueType = ValueType.VALUE)
     private String title;
-    //TODO mapping with category table
+
+    @Attribute(id = 35)
     private Long categoryId;
 
-    public Notification(Long id) {
-        super(id);
-    }
+    @Attribute(id = 36)
+    private Long createdBy;
+
+
 }

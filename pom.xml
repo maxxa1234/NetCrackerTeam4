@@ -70,11 +70,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.22.Final</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

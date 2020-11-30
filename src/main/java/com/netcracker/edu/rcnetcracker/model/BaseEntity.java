@@ -1,28 +1,33 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import javax.persistence.Id;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
-
-@NoArgsConstructor
-@AllArgsConstructor
-@MappedSuperclass
-@Getter
-@Setter
 public class BaseEntity implements Serializable {
-
-    @Id
-    @GeneratedValue
     private Long id;
+    private String name;
+    private String description;
 
-    public boolean isNew() {
-        return this.id == null;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

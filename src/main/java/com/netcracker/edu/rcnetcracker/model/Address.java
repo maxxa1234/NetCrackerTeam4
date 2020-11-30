@@ -1,25 +1,31 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Entity;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
 public class Address extends BaseEntity {
-//    private Long adressID;  // changed with BaseEntity id
     private String flat;
     private Long buildingID;
     private Long utilityID;
 
-    public Address(Long id) {
-        super(id);
+    public String getFlat() {
+        return flat;
     }
 
+    public void setFlat(String flat) {
+        this.flat = flat;
+    }
+
+    public Long getBuildingID() {
+        return buildingID;
+    }
+
+    public void setBuildingID(Long buildingID) {
+        this.buildingID = buildingID;
+    }
+
+    public Long getUtilityID() {
+        return utilityID;
+    }
+
+    public void setUtilityID(Long utilityID) {
+        this.utilityID = utilityID;
+    }
 }

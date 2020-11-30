@@ -1,23 +1,31 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import javax.persistence.Entity;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+@ObjectType(id = 16)
 public class Service extends BaseEntity {
-//    private Long serviceID;
+
+    @Attribute(id = 45, valueType = ValueType.VALUE)
     private String title;
+
+    @Attribute(id = 46, valueType = ValueType.VALUE)
     private Float tariff;
 
-    public Service(Long id) {
-        super(id);
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Float getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Float tariff) {
+        this.tariff = tariff;
     }
 }

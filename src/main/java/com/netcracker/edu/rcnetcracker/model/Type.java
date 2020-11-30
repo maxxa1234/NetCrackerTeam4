@@ -1,22 +1,14 @@
 package com.netcracker.edu.rcnetcracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
+import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import javax.persistence.Entity;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
+@ObjectType(id = 4)
 public class Type extends BaseEntity {
-//	protected Long type_id;
+
+	@Attribute(id = 11, valueType = ValueType.VALUE)
 	protected String value;
 
-	public Type(Long id) {
-		super(id);
-	}
+
 }
