@@ -3,9 +3,9 @@ package com.netcracker.edu.rcnetcracker.model;
 import java.io.Serializable;
 
 public class BaseEntity implements Serializable {
-    private Long id;
-    private String name;
-    private String description;
+    protected Long id;
+    protected String name;
+    protected String description;
 
     public Long getId() {
         return id;

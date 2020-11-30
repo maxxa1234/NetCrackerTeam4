@@ -2,6 +2,7 @@ package com.netcracker.edu.rcnetcracker.db.access;
 
 import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
+import com.netcracker.edu.rcnetcracker.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,18 +23,18 @@ public class TestAccess {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public static <T> List<T> selectAll(Class<T> clazz) {
-        Attr[] attributes = Processor.getAttributes(clazz);
+    public static <T extends BaseEntity> List<T> selectAll(Class<T> clazz) {
+        List<Attr> attributes = Processor.getAttributes(clazz);
         List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes), new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
                 T obj = null;
                 try {
                     obj = clazz.getDeclaredConstructor().newInstance();
-                    Field field;
-                    for(int i = 0; i < attributes.length; i++) {
-                            field = clazz.getDeclaredField(attributes[i].name);
-                            field.setAccessible(true);
-                            field.set(obj, rs.getObject((attributes[i].name), attributes[i].clazz));
+                    for(int i = 0; i < attributes.size(); i++) {
+
+                        attributes.get(i).field.setAccessible(true);
+                        attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
+                                attributes.get(i).field.getType()));
                     }
                 } catch (InstantiationException e) {
                     e.printStackTrace();
@@ -43,8 +44,6 @@ public class TestAccess {
                     e.printStackTrace();
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
                 }
                 return obj;
             }
@@ -52,17 +51,20 @@ public class TestAccess {
         return list;
     }
 
-    private static String getSelectAllStatement(Class<?> clazz, Attr[] attributes) {
+    private static String getSelectAllStatement(Class<?> clazz, List<Attr> attributes) {
         StringBuilder selectBlock = new StringBuilder("SELECT o.object_id id, o.name name, o.description description ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
 
-        for(int i = 0; i < attributes.length; i++) {
-            selectBlock.append(", a").append(i).append(".").append(attributes[i].valueType.getValueType())
-                    .append(" \"").append(attributes[i].name).append("\" ");
-            fromBlock.append(", ").append(attributes[i].valueType.getTable()).append(" a").append(i).append(" ");
+        for(int i = 0; i < attributes.size(); i++) {
+            if (attributes.get(i).isBaseAttr) {
+                continue;
+            }
+            selectBlock.append(", a").append(i).append(".").append(attributes.get(i).valueType.getValueType())
+                    .append(" \"").append(attributes.get(i).field.getName()).append("\" ");
+            fromBlock.append(", ").append(attributes.get(i).valueType.getTable()).append(" a").append(i).append(" ");
             whereBlock.append("AND o.object_id = a").append(i).append(".object_id ").append("AND a")
-                    .append(i).append(".attr_id = ").append(attributes[i].id).append(" ");
+                    .append(i).append(".attr_id = ").append(attributes.get(i).id).append(" ");
         }
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();

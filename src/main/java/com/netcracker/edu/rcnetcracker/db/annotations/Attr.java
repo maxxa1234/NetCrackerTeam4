@@ -1,15 +1,17 @@
 package com.netcracker.edu.rcnetcracker.db.annotations;
 
-public class Attr {
-    public int id;
-    public ValueType valueType;
-    public Class<?> clazz;
-    public String name;
+import java.lang.reflect.Field;
 
-    public Attr(int id, ValueType valueType, Class<?> clazz, String name) {
+public class Attr {
+    public Integer id;
+    public ValueType valueType;
+    public Field field;
+    public Boolean isBaseAttr;
+
+    public Attr(Integer id, ValueType valueType, Field field, Boolean isBaseAttr) {
         this.id = id;
         this.valueType = valueType;
-        this.clazz = clazz;
-        this.name = name;
+        this.field = field;
+        this.isBaseAttr = isBaseAttr;
     }
 }
