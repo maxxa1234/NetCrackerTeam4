@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.db.annotations;
 
 public enum ValueType {
+    BASE_VALUE("BASE_VALUE", "OBJECTS"),
     VALUE("VALUE", "ATTRIBUTES"),
     DATE_VALUE("DATE_VALUE", "ATTRIBUTES"),
     LIST_VALUE("LIST_VALUE", "ATTRIBUTES"),

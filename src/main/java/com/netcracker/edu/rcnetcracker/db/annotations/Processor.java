@@ -22,13 +22,13 @@ public class Processor {
         for (int i = 0; i < fields.length; i++) {
             Attribute att = fields[i].getAnnotation(Attribute.class);
             if (att != null) {
-                attributes.add(new Attr(att.id(), att.valueType(), fields[i], false));
+                attributes.add(new Attr(att.id(), att.valueType(), fields[i]));
             }
         }
 
         fields = clazz.getSuperclass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            attributes.add(new Attr(null, null, fields[i], true));
+            attributes.add(new Attr(null, ValueType.BASE_VALUE, fields[i]));
         }
 
         return attributes;

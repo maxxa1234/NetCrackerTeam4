@@ -59,5 +59,10 @@ public class EntranceController {
     public List<Entrance> test1() {
         return TestAccess.selectAll(Entrance.class);
     }
+
+    @RequestMapping(value = "/select-roles-to-first", method = RequestMethod.GET)
+    public List<Long> test2() {
+        return TestAccess.selectAll(Entrance.class).get(0).getRoleId();
+    }
     
 }

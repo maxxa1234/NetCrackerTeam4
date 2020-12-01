@@ -4,6 +4,8 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
 import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
+import java.util.List;
+
 @ObjectType(id = 6)
 public class Role extends BaseEntity {
 

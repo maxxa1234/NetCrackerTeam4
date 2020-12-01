@@ -2,6 +2,7 @@ package com.netcracker.edu.rcnetcracker.db.access;
 
 import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
+import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,10 +32,15 @@ public class TestAccess {
                 try {
                     obj = clazz.getDeclaredConstructor().newInstance();
                     for(int i = 0; i < attributes.size(); i++) {
-
                         attributes.get(i).field.setAccessible(true);
-                        attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
-                                attributes.get(i).field.getType()));
+                        if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
+                            attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
+                                    rs.getLong("id")));
+                        } else {
+                            attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
+                                    attributes.get(i).field.getType()));
+                        }
+
                     }
                 } catch (InstantiationException e) {
                     e.printStackTrace();
@@ -57,7 +63,8 @@ public class TestAccess {
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
 
         for(int i = 0; i < attributes.size(); i++) {
-            if (attributes.get(i).isBaseAttr) {
+            if (attributes.get(i).valueType == ValueType.BASE_VALUE
+            ||  attributes.get(i).valueType == ValueType.LIST_VALUE) {
                 continue;
             }
             selectBlock.append(", a").append(i).append(".").append(attributes.get(i).valueType.getValueType())
@@ -68,6 +75,12 @@ public class TestAccess {
         }
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
+    }
+
+    private static List<Long> getListForObjectAttribute(Attr attr, Long objectId) {
+        String sql =    "SELECT o1.reference \"id\" FROM objreference o1, objreference o2 WHERE o1.object_id = o2.object_id " +
+                        "AND o1.attr_id = " + attr.id + " AND o2.reference = " + objectId + " AND o2.attr_id != " + attr.id;
+        return jdbcTemplate.queryForList(sql, Long.class);
     }
 
 
