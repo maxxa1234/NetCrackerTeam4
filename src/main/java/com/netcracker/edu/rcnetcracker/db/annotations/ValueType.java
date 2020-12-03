@@ -4,7 +4,7 @@ public enum ValueType {
     BASE_VALUE("BASE_VALUE", "OBJECTS"),
     VALUE("VALUE", "ATTRIBUTES"),
     DATE_VALUE("DATE_VALUE", "ATTRIBUTES"),
-    LIST_VALUE("LIST_VALUE", "ATTRIBUTES"),
+    LIST_VALUE("REFERENCE", "OBJREFERENCE"),
     REF_VALUE("REFERENCE", "OBJREFERENCE");
 
     ValueType(String valueType, String table) {

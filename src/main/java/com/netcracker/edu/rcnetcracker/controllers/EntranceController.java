@@ -2,11 +2,13 @@ package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.Role;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RequestMapping("/entrance")
@@ -15,6 +17,9 @@ public class EntranceController {
 
     @Autowired
     private EntityServiceImpl<Entrance> service;
+
+    @Autowired
+    private TestAccess testAccess;
 
     @GetMapping(value = "/open",
             params = {"key_id", "entrance_id"})
@@ -57,12 +62,21 @@ public class EntranceController {
 
     @RequestMapping(value = "/select-all", method = RequestMethod.GET)
     public List<Entrance> test1() {
-        return TestAccess.selectAll(Entrance.class);
+        return testAccess.selectAll(Entrance.class);
     }
 
-    @RequestMapping(value = "/select-roles-to-first", method = RequestMethod.GET)
-    public List<Long> test2() {
-        return TestAccess.selectAll(Entrance.class).get(0).getRoleId();
+    @RequestMapping(value = "/select-roles", method = RequestMethod.GET)
+    public List<Role> test2() {
+        return testAccess.selectAll(Role.class);
     }
-    
+
+    @PostMapping("/insert-entrance")
+    public int test3(@RequestBody Entrance entrance) {
+        return testAccess.insert(entrance);
+    }
+
+    @PostMapping("/update-entrance")
+    public int test4(@RequestBody Entrance entrance) {
+        return testAccess.update(entrance);
+    }
 }

@@ -6,6 +6,7 @@ import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
 @ObjectType(id = 15)
 public class Category extends BaseEntity {
+
     @Attribute(id = 44, valueType = ValueType.VALUE)
     private Boolean important;
 
