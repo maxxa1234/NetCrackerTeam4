@@ -1,7 +1,6 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Ekey;
-import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;

@@ -41,12 +41,12 @@ public class EntranceController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteEntrance(@PathVariable("id") Entrance entrance) {
+    public void deleteEntrance(@PathVariable("id") Long entranceId) {
 
     }
 
     @PutMapping("{id}")
-    public void updateEntrance(@PathVariable("id") Entrance entrance, @RequestBody Entrance updatingEntrance) {
+    public void updateEntrance(@PathVariable("id") Long entranceId, @RequestBody Entrance updatingEntrance) {
 
     }
 

@@ -34,12 +34,12 @@ public class UsersController {
     }
 
     @PutMapping("{id}")
-    public void updateUser(@PathVariable("id") User user, @RequestBody User updatingUser) {
+    public void updateUser(@PathVariable("id") Long userId, @RequestBody User updatingUser) {
 
     }
 
     @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable("id") User user) {
+    public void deleteUser(@PathVariable("id") Long userId) {
 
     }
 }
