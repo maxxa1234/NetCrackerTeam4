@@ -15,7 +15,7 @@ import java.util.Set;
 
 @RequestMapping("/notification")
 @RestController
-public class NotificationController {
+public class  NotificationController {
 
     @Autowired
     private EntityServiceImpl<Notification> service;

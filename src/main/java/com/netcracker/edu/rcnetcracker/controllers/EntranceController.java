@@ -37,7 +37,7 @@ public class EntranceController {
 
     @DeleteMapping("{id}")
     public void deleteEntrance(@PathVariable("id") Entrance entrance) {
-
+        System.out.println(entrance);
     }
 
     @PutMapping("{id}")
