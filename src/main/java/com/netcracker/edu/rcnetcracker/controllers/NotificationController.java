@@ -55,24 +55,4 @@ public class NotificationController {
     public void getActualUtilityNotificationsByApartment(Long apartmentId) {
 
     }
-
-    @PostMapping("/setemail/{apartmentId}") //TODO do we have accounts for a livers?
-    public void setEmailsForNotificationByApartmentId(Long apartmentId, Set<String> emails) {
-
-    }
-
-    @PutMapping("/setemail/{apartmentId}")
-    public void updateEmailsForNotificationsByApartmentId(Long apartmentId, Set<String> emails) {
-
-    }
-
-    @PostMapping("/setdate/{apartmentId}/{date}")
-    public void setDateOfUtilityNotificationByApartmentId(Long apartmentId, Date date) {
-
-    }
-
-    @PutMapping("/setdate/{apartmentId}/{date}")
-    public void updateDateOfUtilityNotificationByApartmentId(Long apartmentId, Date date) {
-
-    }
 }
