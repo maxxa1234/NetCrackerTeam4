@@ -3,7 +3,6 @@ package com.netcracker.edu.rcnetcracker.servicies.servicesImpl;
 import com.netcracker.edu.rcnetcracker.servicies.EntityService;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
