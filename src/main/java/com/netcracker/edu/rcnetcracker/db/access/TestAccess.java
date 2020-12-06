@@ -161,7 +161,7 @@ public class TestAccess {
         }
 
         for (int i = 0; i < criterias.length; i++) {
-            whereBlock.append("AND " + criterias[i].getKey() + criterias[i].getValue() + " ");
+            whereBlock.append("AND \"" + criterias[i].getKey() + "\"" + criterias[i].getValue() + " ");
         }
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
