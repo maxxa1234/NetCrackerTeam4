@@ -4,6 +4,7 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -70,7 +71,7 @@ public class TestAccess {
         ArrayList<String> statements = new ArrayList<>();
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
-            statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
+                statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
                     + objId + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
                     + Processor.getObjtypeId(obj.getClass()) + "')");
 
@@ -103,9 +104,9 @@ public class TestAccess {
         return false;
     }
 
-    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz) {
+    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, SearchCriteria[] criterias) {
         List<Attr> attributes = Processor.getAttributes(clazz);
-        List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes), new RowMapper<T>() {
+        List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes, criterias), new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
                 T obj = null;
                 try {
@@ -136,12 +137,13 @@ public class TestAccess {
         return list;
     }
 
-    private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes) {
+    private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes
+            , SearchCriteria[] criterias) {
         StringBuilder selectBlock = new StringBuilder("SELECT o.object_id id, o.name name, o.description description ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
 
-        for(int i = 0; i < attributes.size(); i++) {
+        for (int i = 0; i < attributes.size(); i++) {
             if (attributes.get(i).valueType == ValueType.BASE_VALUE
             ||  attributes.get(i).valueType == ValueType.LIST_VALUE) {
                 continue;
@@ -151,6 +153,15 @@ public class TestAccess {
             fromBlock.append(", ").append(attributes.get(i).valueType.getTable()).append(" a").append(i).append(" ");
             whereBlock.append("AND o.object_id = a").append(i).append(".object_id ").append("AND a")
                     .append(i).append(".attr_id = ").append(attributes.get(i).id).append(" ");
+
+        }
+
+        for (int i = 0; i < criterias.length; i++) {
+            String value = "'" + criterias[i].getValue() + "'";
+            if (criterias[i].getValue() == null) {
+                value = null;
+            }
+            whereBlock.append("AND " + criterias[i].getKey() + criterias[i].getOperation() + value + " ");
         }
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
