@@ -4,6 +4,7 @@ import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.model.Role;
 import com.netcracker.edu.rcnetcracker.model.User;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,20 +63,20 @@ public class EntranceController {
 
     @RequestMapping(value = "/select-all", method = RequestMethod.GET)
     public List<Entrance> test1() {
-        return testAccess.selectAll(Entrance.class);
+        return testAccess.selectAll(Entrance.class, new SearchCriteria[0]);
     }
 
-    @RequestMapping(value = "/select-roles", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/select-roles", method = RequestMethod.GET)
     public List<Role> test2() {
         return testAccess.selectAll(Role.class);
-    }
+    }*/
 
     @PostMapping("/insert-entrance")
     public int test3(@RequestBody Entrance entrance) {
         return testAccess.insert(entrance);
     }
 
-    @PostMapping("/update-entrance")
+    @PutMapping("/update-entrance")
     public int test4(@RequestBody Entrance entrance) {
         return testAccess.update(entrance);
     }
