@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/entrance")
 @RestController
 public class EntranceController {
+
     private final EntranceDAO service;
 
     public EntranceController(EntranceDAO service) {
@@ -92,24 +93,42 @@ public class EntranceController {
     }
 
     @RequestMapping(value = "/select-all-with-filter", method = RequestMethod.GET)
-    public List<Entrance> testWithFilter(@RequestParam(value = "type_id", required = false) String type_id,
-                                         @RequestParam(value = "building_id", required = false) String building_id,
-                                         @RequestParam(value = "isActive", required = false) String isActive){
+    public Page<Entrance> testWithFilter(@RequestParam(value = "typeId", required = false) String type_id,
+                                         @RequestParam(value = "description", required = false) String description,
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @RequestParam(value = "buildingId", required = false) String building_id,
+                                         @RequestParam(value = "isActive", required = false) String isActive,
+                                         @RequestParam(value = "sort", required = false) String sort){
         List<SearchCriteria> filterParameters = new ArrayList<>();
+        EntityDAO<Entrance> ser = new EntityDAO<>(service);
         if (type_id != null) {
             Checker.checkNumParameter(type_id);
-            filterParameters.add(new SearchCriteria("type_id", type_id));
+            filterParameters.add(new SearchCriteria("typeId", type_id));
+        }
+        if (description != null) {
+            description = "like %"+description+"%";
+            filterParameters.add(new SearchCriteria("description", description));
+        }
+        if (name != null) {
+            name = "like %"+name+"%";
+            filterParameters.add(new SearchCriteria("name", name));
         }
         if (building_id != null) {
             Checker.checkNumParameter(building_id);
-            filterParameters.add(new SearchCriteria("building_id", building_id));
+            filterParameters.add(new SearchCriteria("buildingId", building_id));
         }
         if (isActive != null) {
             Checker.checkBooleanParameter(isActive);
             filterParameters.add(new SearchCriteria("isActive", isActive));
         }
-        
-        return testAccess.selectAll(Entrance.class, filterParameters.toArray(new SearchCriteria[0]));
+        return ser.getAll(1,5, filterParameters,sort);
+    }
+
+    @RequestMapping(value = "/get-one/{id}")
+    public List<Entrance> getOne(@PathVariable("id") String id){
+        List<SearchCriteria> params = new ArrayList<>();
+        params.add(new SearchCriteria("id", id));
+        return testAccess.selectAll(Entrance.class, params.toArray(new SearchCriteria[0]));
     }
 
     /*@RequestMapping(value = "/select-roles", method = RequestMethod.GET)
