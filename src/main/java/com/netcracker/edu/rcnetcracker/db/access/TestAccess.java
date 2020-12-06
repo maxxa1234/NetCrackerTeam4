@@ -28,6 +28,10 @@ public class TestAccess {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /*public <T extends BaseEntity> int modify (T obj) {
+
+    }*/
+
     public <T extends BaseEntity> int update (T obj) {
         Long objId = obj.getId();
         if (isUnique(objId)) {
@@ -157,11 +161,7 @@ public class TestAccess {
         }
 
         for (int i = 0; i < criterias.length; i++) {
-            String value = "'" + criterias[i].getValue() + "'";
-            if (criterias[i].getValue() == null) {
-                value = null;
-            }
-            whereBlock.append("AND " + criterias[i].getKey() + criterias[i].getOperation() + value + " ");
+            whereBlock.append("AND " + criterias[i].getKey() + criterias[i].getValue() + " ");
         }
 
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();

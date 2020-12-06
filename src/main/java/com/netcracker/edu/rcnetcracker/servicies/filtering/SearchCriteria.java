@@ -9,12 +9,12 @@ package com.netcracker.edu.rcnetcracker.servicies.filtering;
 public class SearchCriteria {
 
     private String key;
-    private Object value;
+    private String value;
 
-    public SearchCriteria(String key, Object value) {
+    public SearchCriteria(String key, String value) {
         super();
         this.key = key;
-        this.value = value;
+        this.value = value.substring(0, 1) + "'" + value.substring(1) + "'";
     }
 
     public String getKey() {
