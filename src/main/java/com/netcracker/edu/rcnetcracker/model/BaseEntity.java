@@ -2,7 +2,7 @@ package com.netcracker.edu.rcnetcracker.model;
 
 import java.io.Serializable;
 
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
     protected Long id;
     protected String name;
     protected String description;

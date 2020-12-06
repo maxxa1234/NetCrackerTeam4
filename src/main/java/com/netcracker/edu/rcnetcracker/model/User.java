@@ -4,6 +4,8 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
 import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
+import java.util.List;
+
 @ObjectType(id = 10)
 public class User extends BaseEntity {
 
@@ -30,6 +32,9 @@ public class User extends BaseEntity {
 
     @Attribute(id = 28)
     private Long roleID;
+
+    @Attribute(id = 20, valueType = ValueType.LIST_VALUE)
+    private List<Long> adressId;
 
     public String getEmail() {
         return email;
