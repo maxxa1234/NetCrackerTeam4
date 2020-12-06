@@ -143,7 +143,7 @@ public class TestAccess {
 
     private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes
             , SearchCriteria[] criterias) {
-        StringBuilder selectBlock = new StringBuilder("SELECT o.object_id id, o.name name, o.description description ");
+        StringBuilder selectBlock = new StringBuilder("SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
 
