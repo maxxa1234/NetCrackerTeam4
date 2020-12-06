@@ -1,46 +1,63 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.dao.Checker;
+import com.netcracker.edu.rcnetcracker.dao.EkeyDAO;
+import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.model.Ekey;
-import com.netcracker.edu.rcnetcracker.model.User;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 @RequestMapping("keys")
 @RestController
 public class ElectronicKeyController {
 
-    @Autowired
-    private EntityServiceImpl<Ekey> service;
+    private final EkeyDAO service;
 
-    @GetMapping(params = {"size"})
-    public List<Ekey> getAllKeys(@RequestParam("size") int size) {
-        return service.findPagination(size);
+    public ElectronicKeyController(EkeyDAO service) {
+        this.service = service;
     }
 
-    @GetMapping(value = "/filter",
-            params = {"key", "operation", "value"})
-    public List<Ekey> getAllEntrancesFiltered(@RequestParam("key") String key, @RequestParam("operation") String operation, @RequestParam("value") User value) {
-        return service.getFiltrated(new EntitySpecification<>(new SearchCriteria(key, operation, value)));
+    @GetMapping
+    public Page<Ekey> getAll(@RequestParam(value = "page", required = false) int page,
+                             @RequestParam(value = "size", required = false) int size,
+                             @RequestParam(value = "keyCode", required = false) String keyCode,
+                             @RequestParam(value = "isActive", required = false) String isActive,
+                             @RequestParam(value = "userId", required = false) String userId,
+                             @RequestParam(value = "sort", required = false) String sort) {
+        List<SearchCriteria> filterParameters = new ArrayList<>();
+        EntityDAO<Ekey> ser = new EntityDAO<>(service);
+        if (keyCode != null)
+            filterParameters.add(new SearchCriteria("keyCode", keyCode));
+        if (isActive != null) {
+            Checker.checkBooleanParameter(isActive);
+            filterParameters.add(new SearchCriteria("isActive", isActive));
+        }
+        if (userId != null) {
+            Checker.checkNumParameter(userId);
+            filterParameters.add(new SearchCriteria("userId", userId));
+        }
+
+        return ser.getAll(page, size, filterParameters, sort);
     }
 
     @PostMapping("/add")
     public void createKey(@RequestBody Ekey ekey) {
-
+        service.create(ekey);
     }
 
     @DeleteMapping("{id}")
     public void deleteKey(@PathVariable("id") Long keyID) {
-
+        service.delete(keyID);
     }
 
     @PutMapping("{id}")
-    public void updateKey(@PathVariable("id") Long keyID) {
-
+    public void updateKey(@PathVariable("id") Long id) {
+        service.update(id);
     }
 
 }
