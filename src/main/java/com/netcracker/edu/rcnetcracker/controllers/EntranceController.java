@@ -5,16 +5,11 @@ import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.dao.EntranceDAO;
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
-import com.netcracker.edu.rcnetcracker.model.Role;
-import com.netcracker.edu.rcnetcracker.model.User;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +89,27 @@ public class EntranceController {
     @RequestMapping(value = "/select-all", method = RequestMethod.GET)
     public List<Entrance> test1() {
         return testAccess.selectAll(Entrance.class, new SearchCriteria[0]);
+    }
+
+    @RequestMapping(value = "/select-all-with-filter", method = RequestMethod.GET)
+    public List<Entrance> testWithFilter(@RequestParam(value = "type_id", required = false) String type_id,
+                                         @RequestParam(value = "building_id", required = false) String building_id,
+                                         @RequestParam(value = "isActive", required = false) String isActive){
+        List<SearchCriteria> filterParameters = new ArrayList<>();
+        if (type_id != null) {
+            Checker.checkNumParameter(type_id);
+            filterParameters.add(new SearchCriteria("type_id", type_id));
+        }
+        if (building_id != null) {
+            Checker.checkNumParameter(building_id);
+            filterParameters.add(new SearchCriteria("building_id", building_id));
+        }
+        if (isActive != null) {
+            Checker.checkBooleanParameter(isActive);
+            filterParameters.add(new SearchCriteria("isActive", isActive));
+        }
+        
+        return testAccess.selectAll(Entrance.class, filterParameters.toArray(new SearchCriteria[0]));
     }
 
     /*@RequestMapping(value = "/select-roles", method = RequestMethod.GET)

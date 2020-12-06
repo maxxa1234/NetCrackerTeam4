@@ -4,11 +4,7 @@ import com.netcracker.edu.rcnetcracker.dao.Checker;
 import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.dao.NotificationDAO;
 import com.netcracker.edu.rcnetcracker.model.Notification;
-import com.netcracker.edu.rcnetcracker.model.User;
-import com.netcracker.edu.rcnetcracker.model.Utility;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.EntitySpecification;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.servicesImpl.EntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 
 @RequestMapping("notification")
