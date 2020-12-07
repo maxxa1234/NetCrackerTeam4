@@ -124,7 +124,7 @@ public class EntranceController {
         return ser.getAll(1,5, filterParameters,sort);
     }
 
-    @RequestMapping(value = "/get-one/{id}")
+    @GetMapping(value = "/get-one/{id}")
     public List<Entrance> getOne(@PathVariable("id") String id){
         List<SearchCriteria> params = new ArrayList<>();
         params.add(new SearchCriteria("id", id));
