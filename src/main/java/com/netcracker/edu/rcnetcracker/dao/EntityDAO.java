@@ -4,6 +4,7 @@ import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
 import org.springframework.data.domain.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,15 +24,30 @@ public class EntityDAO<T> {
             listOfResultElements = service.getFiltrated(filter);
             resultPage = new PageImpl<>(listOfResultElements, getPageable(page, size, sort), listOfResultElements.size());
         } else {
-            listOfResultElements = service.findPagination(getSortCriteria());
+            listOfResultElements = service.findPagination(getSortCriteria(getPageable(page, size, sort)));
             resultPage = new PageImpl<>(listOfResultElements, getPageable(page, size, sort), listOfResultElements.size());
         }
         return resultPage;
     }
 
-    private SortCriteria getSortCriteria() {
+    private SortCriteria getSortCriteria(Pageable pageable) {
+        SortCriteria sortCriteria = new SortCriteria();
 
-        return null;
+        if (pageable.getPageNumber() != 0 && pageable.getPageSize() != 0){
+            sortCriteria.setPage(String.valueOf(pageable.getPageNumber()));
+            sortCriteria.setSize(String.valueOf(pageable.getPageSize()));
+        }
+        Iterator<Sort.Order> orderIterator = pageable.getSort().iterator();
+        Sort.Order order = null;
+        while (orderIterator.hasNext()){
+            order = orderIterator.next();
+        }
+        if (order != null) {
+            sortCriteria.setDirection(order.getDirection().toString());
+            sortCriteria.setProperty(order.getProperty());
+        }
+
+        return sortCriteria;
     }
 
     private Pageable getPageable(int page, int size, String sort) {
@@ -52,7 +68,7 @@ public class EntityDAO<T> {
                 return PageRequest.of(page, size, Sort.Direction.DESC, sortParams[0]);
             }
         }
-        return PageRequest.of(page, size);
+        return PageRequest.of(page, size, Sort.unsorted());
     }
 
 }
