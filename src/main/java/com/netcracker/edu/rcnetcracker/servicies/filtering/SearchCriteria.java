@@ -3,28 +3,22 @@ package com.netcracker.edu.rcnetcracker.servicies.filtering;
 /*
 * Class to create criteria for filtering
 * key - field name
-* operation - equality, less than etc.
 * value - parameter value
 * */
 
 public class SearchCriteria {
 
     private String key;
-    private String operation;
-    private Object value;
+    private String value;
 
-    public SearchCriteria(String key, String operator, Object value) {
+    public SearchCriteria(String key, String value) {
+        super();
         this.key = key;
-        this.operation = operator;
-        this.value = value;
+        this.value = value.substring(0, 1) + "'" + value.substring(1) + "'";
     }
 
     public String getKey() {
         return key;
-    }
-
-    public String getOperation() {
-        return operation;
     }
 
     public Object getValue() {
