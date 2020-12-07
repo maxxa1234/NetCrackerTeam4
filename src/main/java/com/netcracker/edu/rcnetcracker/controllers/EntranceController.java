@@ -126,6 +126,7 @@ public class EntranceController {
 
     @GetMapping(value = "/get-one/{id}")
     public List<Entrance> getOne(@PathVariable("id") String id){
+        id = "=" +  id;
         List<SearchCriteria> params = new ArrayList<>();
         params.add(new SearchCriteria("id", id));
         return testAccess.selectAll(Entrance.class, params.toArray(new SearchCriteria[0]));
