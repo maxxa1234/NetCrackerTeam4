@@ -30,6 +30,7 @@ public class NotificationController {
                                      @RequestParam(value = "text", required = false) String text,
                                      @RequestParam(value = "dateFrom", required = false) String dateFrom,
                                      @RequestParam(value = "dateTo", required = false) String dateTo,
+                                     @RequestParam(value = "name", required = false) String name,
                                      @RequestParam(value = "title", required = false) String title,
                                      @RequestParam(value = "categoryId", required = false) String categoryId,
                                      @RequestParam(value = "createdBy", required = false) String createdBy,
@@ -47,7 +48,9 @@ public class NotificationController {
             filterParameters.add(new SearchCriteria("dateTo", dateTo));
         }
         if (title != null)
-            filterParameters.add(new SearchCriteria("title", title));
+            filterParameters.add(new SearchCriteria("title", "like %"+title+"% "));
+        if (name != null)
+            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
         if (categoryId != null) {
             Checker.checkNumParameter(categoryId);
             filterParameters.add(new SearchCriteria("categoryId", categoryId));

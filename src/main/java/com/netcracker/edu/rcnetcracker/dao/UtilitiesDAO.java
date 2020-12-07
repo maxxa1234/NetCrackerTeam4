@@ -2,6 +2,7 @@ package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.model.Utility;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class UtilitiesDAO implements DAO<Utility> {
     }
 
     @Override
-    public Page<Utility> findPagination(PageRequest pageRequest) {
+    public List<Utility> findPagination(SortCriteria sortCriteria) {
         return null;
     }
 

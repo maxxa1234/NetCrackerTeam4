@@ -2,8 +2,10 @@ package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class NotificationDAO implements DAO<Notification> {
     }
 
     @Override
-    public Page<Notification> findPagination(PageRequest pageRequest) {
+    public List<Notification> findPagination(SortCriteria sortCriteria) {
         return null;
     }
 

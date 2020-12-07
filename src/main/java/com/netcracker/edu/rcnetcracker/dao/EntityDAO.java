@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
 import org.springframework.data.domain.*;
 
 import java.util.List;
@@ -22,9 +23,15 @@ public class EntityDAO<T> {
             listOfResultElements = service.getFiltrated(filter);
             resultPage = new PageImpl<>(listOfResultElements, getPageable(page, size, sort), listOfResultElements.size());
         } else {
-            resultPage = service.findPagination((PageRequest) getPageable(page, size, sort));
+            listOfResultElements = service.findPagination(getSortCriteria());
+            resultPage = new PageImpl<>(listOfResultElements, getPageable(page, size, sort), listOfResultElements.size());
         }
         return resultPage;
+    }
+
+    private SortCriteria getSortCriteria() {
+
+        return null;
     }
 
     private Pageable getPageable(int page, int size, String sort) {

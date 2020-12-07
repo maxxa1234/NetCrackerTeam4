@@ -42,11 +42,11 @@ public class UsersController {
             filterParameters.add(new SearchCriteria("isActive", isActive));
         }
         if (firstName != null)
-            filterParameters.add(new SearchCriteria("firstName", firstName));
+            filterParameters.add(new SearchCriteria("firstName", "like %"+firstName+"% "));
         if (lastName != null)
-            filterParameters.add(new SearchCriteria("lastName", lastName));
+            filterParameters.add(new SearchCriteria("lastName", "like %"+lastName+"% "));
         if (patronymic != null)
-            filterParameters.add(new SearchCriteria("patronymic", patronymic));
+            filterParameters.add(new SearchCriteria("patronymic", "like %"+patronymic+"% "));
         if (receiveUtilityNotification != null) {
             Checker.checkBooleanParameter(receiveUtilityNotification);
             filterParameters.add(new SearchCriteria("receiveUtilityNotification", receiveUtilityNotification));
