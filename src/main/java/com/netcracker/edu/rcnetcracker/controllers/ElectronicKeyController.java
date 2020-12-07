@@ -27,6 +27,7 @@ public class ElectronicKeyController {
     public Page<Ekey> getAll(@RequestParam(value = "page", required = false) int page,
                              @RequestParam(value = "size", required = false) int size,
                              @RequestParam(value = "keyCode", required = false) String keyCode,
+                             @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "isActive", required = false) String isActive,
                              @RequestParam(value = "userId", required = false) String userId,
                              @RequestParam(value = "sort", required = false) String sort) {
@@ -34,6 +35,8 @@ public class ElectronicKeyController {
         EntityDAO<Ekey> ser = new EntityDAO<>(service);
         if (keyCode != null)
             filterParameters.add(new SearchCriteria("keyCode", keyCode));
+        if (name != null)
+            filterParameters.add(new SearchCriteria("name", "like %"+keyCode+"% "));
         if (isActive != null) {
             Checker.checkBooleanParameter(isActive);
             filterParameters.add(new SearchCriteria("isActive", isActive));

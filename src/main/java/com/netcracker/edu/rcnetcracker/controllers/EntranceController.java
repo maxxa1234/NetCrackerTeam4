@@ -59,6 +59,7 @@ public class EntranceController {
     @GetMapping
     public Page<Entrance> getAll(@RequestParam("page") int page, @RequestParam("size") int size,
                                  @RequestParam(value = "type_id", required = false) String type_id,
+                                 @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "building_id", required = false) String building_id,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
@@ -71,6 +72,9 @@ public class EntranceController {
         if (building_id != null) {
             Checker.checkNumParameter(building_id);
             filterParameters.add(new SearchCriteria("building_id", building_id));
+        }
+        if (name != null) {
+            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
         }
         if (isActive != null) {
             Checker.checkBooleanParameter(isActive);
@@ -94,7 +98,6 @@ public class EntranceController {
 
     @RequestMapping(value = "/select-all-with-filter", method = RequestMethod.GET)
     public Page<Entrance> testWithFilter(@RequestParam(value = "typeId", required = false) String type_id,
-                                         @RequestParam(value = "description", required = false) String description,
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "buildingId", required = false) String building_id,
                                          @RequestParam(value = "isActive", required = false) String isActive,
@@ -105,13 +108,8 @@ public class EntranceController {
             Checker.checkNumParameter(type_id);
             filterParameters.add(new SearchCriteria("typeId", type_id));
         }
-        if (description != null) {
-            description = "like %"+description+"%";
-            filterParameters.add(new SearchCriteria("description", description));
-        }
         if (name != null) {
-            name = "like %"+name+"%";
-            filterParameters.add(new SearchCriteria("name", name));
+            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
         }
         if (building_id != null) {
             Checker.checkNumParameter(building_id);
@@ -125,11 +123,12 @@ public class EntranceController {
     }
 
     @RequestMapping(value = "/get-one/{id}")
-    public List<Entrance> getOne(@PathVariable("id") String id){
-        id = "=" +  id;
+    public Entrance getOne(@PathVariable("id") String id){
         List<SearchCriteria> params = new ArrayList<>();
-        params.add(new SearchCriteria("id", id));
-        return testAccess.selectAll(Entrance.class, params.toArray(new SearchCriteria[0]));
+        params.add(new SearchCriteria("id", "="+id));
+        List<Entrance> list = testAccess.selectAll(Entrance.class, params.toArray(new SearchCriteria[0]));
+        Entrance entrance = list.get(0);
+        return entrance;
     }
 
     /*@RequestMapping(value = "/select-roles", method = RequestMethod.GET)

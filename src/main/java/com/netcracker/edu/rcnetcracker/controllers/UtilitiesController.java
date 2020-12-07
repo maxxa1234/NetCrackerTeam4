@@ -27,6 +27,7 @@ public class UtilitiesController {
     public Page<Utility> getAll(@RequestParam("page") int page, @RequestParam("size") int size,
                                 @RequestParam(value = "bankBook", required = false) String bankBook,
                                 @RequestParam(value = "dateFrom", required = false) String dateFrom,
+                                @RequestParam(value = "name", required = false) String name,
                                 @RequestParam(value = "dateTo", required = false) String dateTo,
                                 @RequestParam(value = "currentMonthReading", required = false) String currentMonthReading,
                                 @RequestParam(value = "status", required = false) String status,
@@ -35,7 +36,9 @@ public class UtilitiesController {
         List<SearchCriteria> filterParameters = new ArrayList<>();
         EntityDAO<Utility> ser = new EntityDAO<>(service);
         if (bankBook != null)
-            filterParameters.add(new SearchCriteria("bankBook", bankBook));
+            filterParameters.add(new SearchCriteria("bankBook", "like %"+bankBook+"% "));
+        if (name != null)
+            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
         if (dateFrom != null) {
             Checker.checkDateParameter(dateFrom);
             filterParameters.add(new SearchCriteria("dateFrom", dateFrom));
