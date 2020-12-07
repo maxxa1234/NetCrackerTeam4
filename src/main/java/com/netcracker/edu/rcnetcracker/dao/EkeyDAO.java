@@ -46,6 +46,7 @@ public class EkeyDAO implements DAO<Ekey> {
         while (orderIterator.hasNext()){
             orders.add(orderIterator.next());
         }
+        Sort.Order order = orders.get(1);
         System.out.println();
         return null;
     }

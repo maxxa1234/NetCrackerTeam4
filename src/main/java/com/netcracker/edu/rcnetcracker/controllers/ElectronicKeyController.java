@@ -5,6 +5,7 @@ import com.netcracker.edu.rcnetcracker.dao.EkeyDAO;
 import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.model.Ekey;
 import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,8 +57,9 @@ public class ElectronicKeyController {
     }
 
     @PutMapping("{id}")
-    public void updateKey(@PathVariable("id") Long id) {
-        service.update(id);
+    public void updateKey(@PathVariable("id") Long id, @RequestBody Ekey ekey) {
+        BeanUtils.copyProperties(ekey, service.getById(id), "id");
+//        service.save(id);
     }
 
 }

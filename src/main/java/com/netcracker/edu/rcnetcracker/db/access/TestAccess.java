@@ -143,9 +143,10 @@ public class TestAccess {
 
     private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes
             , SearchCriteria[] criterias) {
-        StringBuilder selectBlock = new StringBuilder("SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
+        StringBuilder selectBlock = new StringBuilder("SELECT * FROM ( SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
+        StringBuilder filterBlock = new StringBuilder(") WHERE 1=1");
 
         for (int i = 0; i < attributes.size(); i++) {
             if (attributes.get(i).valueType == ValueType.BASE_VALUE
@@ -161,10 +162,10 @@ public class TestAccess {
         }
 
         for (int i = 0; i < criterias.length; i++) {
-            whereBlock.append("AND \"" + criterias[i].getKey() + "\"" + criterias[i].getValue() + " ");
+            filterBlock.append("AND \"" + criterias[i].getKey() + "\"" + criterias[i].getValue() + " ");
         }
 
-        return selectBlock.toString() + fromBlock.toString() + whereBlock.toString();
+        return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();
     }
 
     private List<Long> getListForObjectAttribute(Attr attr, Long objectId) {
