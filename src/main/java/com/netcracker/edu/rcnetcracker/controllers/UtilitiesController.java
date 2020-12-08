@@ -28,34 +28,7 @@ public class UtilitiesController {
                                 @RequestParam(value = "status", required = false) String status,
                                 @RequestParam(value = "serviceID", required = false) String serviceID,
                                 @RequestParam(value = "sort", required = false)String sort) {
-//        List<SearchCriteria> filterParameters = new ArrayList<>();
-//        EntityDAO<Utility> ser = new EntityDAO<>(service);
-//        if (bankBook != null)
-//            filterParameters.add(new SearchCriteria("bankBook", "like %"+bankBook+"% "));
-//        if (name != null)
-//            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
-//        if (dateFrom != null) {
-//            Checker.checkDateParameter(dateFrom);
-//            filterParameters.add(new SearchCriteria("dateFrom", dateFrom));
-//        }
-//        if (dateTo != null) {
-//            Checker.checkDateParameter(dateTo);
-//            filterParameters.add(new SearchCriteria("dateTo", dateTo));
-//        }
-//        if (currentMonthReading != null) {
-//            Checker.checkNumParameter(currentMonthReading);
-//            filterParameters.add(new SearchCriteria("currentMonthReading", currentMonthReading));
-//        }
-//        if (status != null) {
-//            Checker.checkBooleanParameter(status);
-//            filterParameters.add(new SearchCriteria("status", status));
-//        }
-//        if (serviceID != null) {
-//            Checker.checkNumParameter(serviceID);
-//            filterParameters.add(new SearchCriteria("serviceID", serviceID));
-//        }
-//
-//        return ser.getAll(page, size, filterParameters, sort);
+
         return null;
     }
 

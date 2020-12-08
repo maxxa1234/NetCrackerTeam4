@@ -1,11 +1,12 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.dao.Checker;
-import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
+import com.netcracker.edu.rcnetcracker.servicies.RequestBuilder;
 import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -58,31 +59,28 @@ public class EntranceController {
 
     @GetMapping
     public Page<Entrance> getAll(@RequestParam("page") int page, @RequestParam("size") int size,
-                                 @RequestParam(value = "type_id", required = false) String type_id,
+                                 @RequestParam(value = "typeId", required = false) String typeId,
                                  @RequestParam(value = "name", required = false) String name,
-                                 @RequestParam(value = "building_id", required = false) String building_id,
+                                 @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-//        EntityDAO<Entrance> ser = new EntityDAO<>(service);
-//        List<SearchCriteria> filterParameters = new ArrayList<>();
-//        if (type_id != null) {
-//            Checker.checkNumParameter(type_id);
-//            filterParameters.add(new SearchCriteria("type_id", type_id));
-//        }
-//        if (building_id != null) {
-//            Checker.checkNumParameter(building_id);
-//            filterParameters.add(new SearchCriteria("building_id", building_id));
-//        }
-//        if (name != null) {
-//            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
-//        }
-//        if (isActive != null) {
-//            Checker.checkBooleanParameter(isActive);
-//            filterParameters.add(new SearchCriteria("isActive", isActive));
-//        }
-//
-//        return ser.getAll(page, size, filterParameters, sort);
-        return null;
+        RequestBuilder builder = new RequestBuilder(page, size);
+        if (typeId != null){
+            builder.addFilterCriteria("typeId", typeId);
+        }
+        if (name != null){
+            builder.addFilterCriteria("name", name);
+        }
+        if (buildingId != null){
+            builder.addFilterCriteria("buildingId", buildingId);
+        }
+        if (isActive != null){
+            builder.addFilterCriteria("isActive", isActive);
+        }
+        if (sort != null){
+            builder.setSortCriteria(new SortCriteria(sort));
+        }
+        return service.getAll(builder);
     }
 
     @GetMapping("/log")
@@ -98,7 +96,9 @@ public class EntranceController {
     }
 
     @RequestMapping(value = "/select-all-with-filter", method = RequestMethod.GET)
-    public Page<Entrance> testWithFilter(@RequestParam(value = "typeId", required = false) String type_id,
+    public Page<Entrance> testWithFilter(@RequestParam("page") int page,
+                                         @RequestParam("size") int size,
+                                         @RequestParam(value = "typeId", required = false) String type_id,
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "buildingId", required = false) String building_id,
                                          @RequestParam(value = "isActive", required = false) String isActive,
@@ -119,7 +119,8 @@ public class EntranceController {
             Checker.checkBooleanParameter(isActive);
             filterParameters.add(new SearchCriteria("isActive", isActive));
         }
-        return new PageImpl<>(testAccess.selectAll(Entrance.class, filterParameters.toArray(new SearchCriteria[0])));
+        List<Entrance> resultArray = testAccess.selectAll(Entrance.class, filterParameters.toArray(new SearchCriteria[0]));
+        return new PageImpl<>(resultArray, PageRequest.of(page, size), resultArray.size());
     }
 
     @RequestMapping(value = "/get-one/{id}")
