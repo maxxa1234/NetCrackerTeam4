@@ -1,0 +1,35 @@
+package com.netcracker.edu.rcnetcracker.servicies;
+
+import com.netcracker.edu.rcnetcracker.model.User;
+import com.netcracker.edu.rcnetcracker.servicies.RequestBuilder;
+import com.netcracker.edu.rcnetcracker.servicies.Service;
+import org.springframework.data.domain.Page;
+
+@org.springframework.stereotype.Service
+public class UsersService implements Service<User> {
+
+    @Override
+    public User getById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void create(User object) {
+
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public Integer update(User object) {
+        return null;
+    }
+
+    @Override
+    public Page<User> getAll(RequestBuilder params) {
+        return null;
+    }
+}

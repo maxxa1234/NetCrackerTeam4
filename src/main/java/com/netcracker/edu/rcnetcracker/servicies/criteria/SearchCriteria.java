@@ -1,5 +1,4 @@
-package com.netcracker.edu.rcnetcracker.servicies.filtering;
-
+package com.netcracker.edu.rcnetcracker.servicies.criteria;
 /*
 * Class to create criteria for filtering
 * key - field name
@@ -9,12 +8,14 @@ package com.netcracker.edu.rcnetcracker.servicies.filtering;
 public class SearchCriteria {
 
     private String key;
-    private String value;
+    private Object value;
+    private String operation;
 
-    public SearchCriteria(String key, String value) {
+    public SearchCriteria(String key, Object value, String operation) {
         super();
         this.key = key;
-        this.value = value.substring(0, 1) + "'" + value.substring(1) + "'";
+        this.value = value;
+        this.operation = operation;
     }
 
     public String getKey() {

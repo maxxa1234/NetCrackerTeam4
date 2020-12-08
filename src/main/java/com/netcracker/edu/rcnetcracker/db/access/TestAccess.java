@@ -4,8 +4,10 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.RequestBuilder;
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -106,6 +108,12 @@ public class TestAccess {
         if (jdbcTemplate.queryForList("SELECT object_id FROM objects WHERE object_id =" + id).isEmpty())
             return true;
         return false;
+    }
+
+    public <T extends BaseEntity> Page<T> selectAll(Class<T> clazz, RequestBuilder builder) {
+        List<T> listOfResultElements = selectAll(clazz, builder.getFilterCriteria().toArray(new SearchCriteria[0]));
+        System.out.println();
+        return null;
     }
 
     public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, SearchCriteria[] criterias) {
