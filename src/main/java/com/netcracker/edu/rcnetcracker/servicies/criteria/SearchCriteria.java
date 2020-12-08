@@ -11,6 +11,11 @@ public class SearchCriteria {
     private Object value;
     private String operation;
 
+    public SearchCriteria(String key, Object value) {
+        this.key = key;
+        this.value = value;
+    }
+
     public SearchCriteria(String key, Object value, String operation) {
         super();
         this.key = key;

@@ -2,11 +2,11 @@ package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.dao.Checker;
 import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
-import com.netcracker.edu.rcnetcracker.dao.EntranceDAO;
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +18,9 @@ import java.util.List;
 @RestController
 public class EntranceController {
 
-    private final EntranceDAO service;
+    private final EntranceService service;
 
-    public EntranceController(EntranceDAO service) {
+    public EntranceController(EntranceService service) {
         this.service = service;
     }
 
@@ -52,8 +52,8 @@ public class EntranceController {
     }
 
     @PutMapping("{id}")
-    public void updateEntrance(@PathVariable("id")Long id) {
-        service.update(id);
+    public void updateEntrance(@PathVariable("id")Entrance object) {
+        service.update(object);
     }
 
     @GetMapping
@@ -63,25 +63,26 @@ public class EntranceController {
                                  @RequestParam(value = "building_id", required = false) String building_id,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-        EntityDAO<Entrance> ser = new EntityDAO<>(service);
-        List<SearchCriteria> filterParameters = new ArrayList<>();
-        if (type_id != null) {
-            Checker.checkNumParameter(type_id);
-            filterParameters.add(new SearchCriteria("type_id", type_id));
-        }
-        if (building_id != null) {
-            Checker.checkNumParameter(building_id);
-            filterParameters.add(new SearchCriteria("building_id", building_id));
-        }
-        if (name != null) {
-            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
-        }
-        if (isActive != null) {
-            Checker.checkBooleanParameter(isActive);
-            filterParameters.add(new SearchCriteria("isActive", isActive));
-        }
-
-        return ser.getAll(page, size, filterParameters, sort);
+//        EntityDAO<Entrance> ser = new EntityDAO<>(service);
+//        List<SearchCriteria> filterParameters = new ArrayList<>();
+//        if (type_id != null) {
+//            Checker.checkNumParameter(type_id);
+//            filterParameters.add(new SearchCriteria("type_id", type_id));
+//        }
+//        if (building_id != null) {
+//            Checker.checkNumParameter(building_id);
+//            filterParameters.add(new SearchCriteria("building_id", building_id));
+//        }
+//        if (name != null) {
+//            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
+//        }
+//        if (isActive != null) {
+//            Checker.checkBooleanParameter(isActive);
+//            filterParameters.add(new SearchCriteria("isActive", isActive));
+//        }
+//
+//        return ser.getAll(page, size, filterParameters, sort);
+        return null;
     }
 
     @GetMapping("/log")
@@ -103,7 +104,6 @@ public class EntranceController {
                                          @RequestParam(value = "isActive", required = false) String isActive,
                                          @RequestParam(value = "sort", required = false) String sort){
         List<SearchCriteria> filterParameters = new ArrayList<>();
-        EntityDAO<Entrance> ser = new EntityDAO<>(service);
         if (type_id != null) {
             Checker.checkNumParameter(type_id);
             filterParameters.add(new SearchCriteria("typeId", type_id));
@@ -119,7 +119,7 @@ public class EntranceController {
             Checker.checkBooleanParameter(isActive);
             filterParameters.add(new SearchCriteria("isActive", isActive));
         }
-        return ser.getAll(1,5, filterParameters,sort);
+        return new PageImpl<>(testAccess.selectAll(Entrance.class, filterParameters.toArray(new SearchCriteria[0])));
     }
 
     @RequestMapping(value = "/get-one/{id}")

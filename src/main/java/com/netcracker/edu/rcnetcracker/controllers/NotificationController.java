@@ -1,17 +1,12 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.dao.Checker;
-import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.dao.NotificationDAO;
 import com.netcracker.edu.rcnetcracker.model.Notification;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 @RequestMapping("notification")
@@ -35,32 +30,33 @@ public class NotificationController {
                                      @RequestParam(value = "categoryId", required = false) String categoryId,
                                      @RequestParam(value = "createdBy", required = false) String createdBy,
                                      @RequestParam(value = "sort", required = false) String sort) {
-        EntityDAO<Notification> ser = new EntityDAO<>(service);
-        List<SearchCriteria> filterParameters = new ArrayList<>();
-        if (text != null)
-            filterParameters.add(new SearchCriteria("text", text));
-        if (dateFrom != null) {
-            Checker.checkDateParameter(dateFrom);
-            filterParameters.add(new SearchCriteria("dateFrom", dateFrom));
-        }
-        if (dateTo != null) {
-            Checker.checkDateParameter(dateTo);
-            filterParameters.add(new SearchCriteria("dateTo", dateTo));
-        }
-        if (title != null)
-            filterParameters.add(new SearchCriteria("title", "like %"+title+"% "));
-        if (name != null)
-            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
-        if (categoryId != null) {
-            Checker.checkNumParameter(categoryId);
-            filterParameters.add(new SearchCriteria("categoryId", categoryId));
-        }
-        if (createdBy != null) {
-            Checker.checkNumParameter(createdBy);
-            filterParameters.add(new SearchCriteria("createdBy", createdBy));
-        }
-
-        return ser.getAll(page, size, filterParameters, sort);
+//        EntityDAO<Notification> ser = new EntityDAO<>(service);
+//        List<SearchCriteria> filterParameters = new ArrayList<>();
+//        if (text != null)
+//            filterParameters.add(new SearchCriteria("text", text));
+//        if (dateFrom != null) {
+//            Checker.checkDateParameter(dateFrom);
+//            filterParameters.add(new SearchCriteria("dateFrom", dateFrom));
+//        }
+//        if (dateTo != null) {
+//            Checker.checkDateParameter(dateTo);
+//            filterParameters.add(new SearchCriteria("dateTo", dateTo));
+//        }
+//        if (title != null)
+//            filterParameters.add(new SearchCriteria("title", "like %"+title+"% "));
+//        if (name != null)
+//            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
+//        if (categoryId != null) {
+//            Checker.checkNumParameter(categoryId);
+//            filterParameters.add(new SearchCriteria("categoryId", categoryId));
+//        }
+//        if (createdBy != null) {
+//            Checker.checkNumParameter(createdBy);
+//            filterParameters.add(new SearchCriteria("createdBy", createdBy));
+//        }
+//
+//        return ser.getAll(page, size, filterParameters, sort);
+        return null;
     }
 
     @PostMapping("/utility/{utilityNotificationId}/{apartmentId}/{date}")

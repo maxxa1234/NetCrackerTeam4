@@ -1,25 +1,21 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.dao.Checker;
-import com.netcracker.edu.rcnetcracker.dao.EkeyDAO;
-import com.netcracker.edu.rcnetcracker.dao.EntityDAO;
 import com.netcracker.edu.rcnetcracker.model.Ekey;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.EkeyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 @RequestMapping("keys")
 @RestController
 public class ElectronicKeyController {
 
-    private final EkeyDAO service;
+    private final EkeyService service;
 
-    public ElectronicKeyController(EkeyDAO service) {
+    public ElectronicKeyController(EkeyService service) {
         this.service = service;
     }
 
@@ -31,22 +27,23 @@ public class ElectronicKeyController {
                              @RequestParam(value = "isActive", required = false) String isActive,
                              @RequestParam(value = "userId", required = false) String userId,
                              @RequestParam(value = "sort", required = false) String sort) {
-        List<SearchCriteria> filterParameters = new ArrayList<>();
-        EntityDAO<Ekey> ser = new EntityDAO<>(service);
-        if (keyCode != null)
-            filterParameters.add(new SearchCriteria("keyCode", keyCode));
-        if (name != null)
-            filterParameters.add(new SearchCriteria("name", "like %"+keyCode+"% "));
-        if (isActive != null) {
-            Checker.checkBooleanParameter(isActive);
-            filterParameters.add(new SearchCriteria("isActive", isActive));
-        }
-        if (userId != null) {
-            Checker.checkNumParameter(userId);
-            filterParameters.add(new SearchCriteria("userId", userId));
-        }
-
-        return ser.getAll(page, size, filterParameters, sort);
+//        List<SearchCriteria> filterParameters = new ArrayList<>();
+//        EntityDAO<Ekey> ser = new EntityDAO<>(service);
+//        if (keyCode != null)
+//            filterParameters.add(new SearchCriteria("keyCode", keyCode));
+//        if (name != null)
+//            filterParameters.add(new SearchCriteria("name", "like %"+keyCode+"% "));
+//        if (isActive != null) {
+//            Checker.checkBooleanParameter(isActive);
+//            filterParameters.add(new SearchCriteria("isActive", isActive));
+//        }
+//        if (userId != null) {
+//            Checker.checkNumParameter(userId);
+//            filterParameters.add(new SearchCriteria("userId", userId));
+//        }
+//
+//        return ser.getAll(page, size, filterParameters, sort);
+        return null;
     }
 
     @PostMapping("/add")

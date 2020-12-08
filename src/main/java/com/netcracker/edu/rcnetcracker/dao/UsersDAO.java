@@ -1,17 +1,15 @@
 package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.model.User;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SortCriteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UsersDAO implements DAO<User> {
-
     @Override
     public User getById(Long id) {
         return null;

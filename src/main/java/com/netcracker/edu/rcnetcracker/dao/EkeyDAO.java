@@ -1,8 +1,9 @@
 package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.model.Ekey;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.filtering.SortCriteria;
+
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.criteria.SortCriteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
