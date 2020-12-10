@@ -32,4 +32,9 @@ public class UsersService implements Service<User> {
     public Page<User> getAll(RequestBuilder params) {
         return null;
     }
+
+    public User findUserByEmail(String email) {
+
+        return null;
+    }
 }
