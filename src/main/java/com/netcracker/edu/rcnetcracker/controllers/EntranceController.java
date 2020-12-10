@@ -80,6 +80,7 @@ public class EntranceController {
         if (sort != null){
             builder.setSortCriteria(new SortCriteria(sort));
         }
+
         return service.getAll(builder);
     }
 
@@ -109,7 +110,7 @@ public class EntranceController {
             filterParameters.add(new SearchCriteria("typeId", type_id));
         }
         if (name != null) {
-            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
+            filterParameters.add(new SearchCriteria("name", "like '%"+name+"%' "));
         }
         if (building_id != null) {
             Checker.checkNumParameter(building_id);

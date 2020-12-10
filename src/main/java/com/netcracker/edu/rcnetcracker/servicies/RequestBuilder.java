@@ -14,11 +14,12 @@ public class RequestBuilder {
     private List<SearchCriteria> filterCriteria;
     private SortCriteria sortCriteria;
 
-    public RequestBuilder() {
+    public RequestBuilder(int page, int size) {
         filterCriteria = new ArrayList<>();
+        pageable = PageRequest.of(page, size);
     }
 
-    public RequestBuilder(List<SearchCriteria> filterCriteria, SortCriteria sortCriteria) {
+    public RequestBuilder(List<SearchCriteria> filterCriteria, SortCriteria sortCriteria) {//
         this.filterCriteria = filterCriteria;
         this.sortCriteria = sortCriteria;
     }
@@ -29,10 +30,6 @@ public class RequestBuilder {
 
     public boolean addFilterCriteria(String key, String value){
         return filterCriteria.add(new SearchCriteria(key, value.substring(1), value.substring(0, 1)));
-    }
-
-    public void createPageable(int page, int size){
-        pageable = PageRequest.of(page, size);
     }
 
     public Pageable getPageable() {
