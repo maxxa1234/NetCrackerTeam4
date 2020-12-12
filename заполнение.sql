@@ -1,51 +1,51 @@
 --------------------------objtype----------------------------------------------------------
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Logger'); 		  --1
+VALUES (1, 'Logger'); 		  --1
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Entrance');  		  --2
+VALUES (2, 'Entrance');  		  --2
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'E-key');     		  --3
+VALUES (3, 'E-key');     		  --3
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)  
-VALUES (objtype_seq.nextval, 'Type');	   		  --4
+VALUES (4, 'Type');	   		  --4
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Role_To_Entance');  --5
+VALUES (5, 'Role_To_Entance');  --5
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Role'); 	   		  --6
+VALUES (6, 'Role'); 	   		  --6
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Building'); 		  --7
+VALUES (7, 'Building'); 		  --7
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Adress');    		  --8
+VALUES (8, 'Adress');    		  --8
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'User_To_Adress');   --9
+VALUES (9, 'User_To_Adress');   --9
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'User');  			  --10
+VALUES (10, 'User');  			  --10
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Contact');  		  --11
+VALUES (11, 'Contact');  		  --11
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Contact_Type');  	  --12
+VALUES (12, 'Contact_Type');  	  --12
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'AD');  			  --13
+VALUES (13, 'AD');  			  --13
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Utility');  		  --14
+VALUES (14, 'Utility');  		  --14
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Category');  		  --15
+VALUES (15, 'Category');  		  --15
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (objtype_seq.nextval, 'Services');  		  --16
+VALUES (16, 'Services');  		  --16
 
 ---------------------------------Attrtype Logger-------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
@@ -202,37 +202,37 @@ VALUES (46, 16, 'tariff');
 
 --------------------------------Objects---------------------------------------------------
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 1);
+VALUES (1, 1);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (objects_seq.nextval, 2, 'name');            --Entrance
+VALUES (2, 2, 'name');            --Entrance
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 3);
+VALUES (3, 3);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 4);
+VALUES (4, 4);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 5);
+VALUES (5, 5);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 6);
+VALUES (6, 6);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, description)
-VALUES (objects_seq.nextval, 7, 'description');		--Building
+VALUES (7, 7, 'description');		--Building
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 8);
+VALUES (8, 8);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 9);
+VALUES (9, 9);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 10);
+VALUES (10, 10);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 11);
+VALUES (11, 11);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (objects_seq.nextval, 12, 'name'); 			--Contact_Type
+VALUES (12, 12, 'name'); 			--Contact_Type
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 13);
+VALUES (13, 13);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 14);
+VALUES (14, 14);
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (objects_seq.nextval, 15, 'name'); 			--Category
+VALUES (15, 15, 'name'); 			--Category
 INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (objects_seq.nextval, 16);
+VALUES (16, 16);
 
 --------------------------------Attributes---------------------------------------------------
 
