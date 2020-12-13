@@ -1,4 +1,4 @@
-package com.netcracker.edu.rcnetcracker.servicies.criteria;
+package com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria;
 
 public class SortCriteria {
 
@@ -14,9 +14,11 @@ public class SortCriteria {
     }
 
     public SortCriteria(String sortParameters) {
-        String params [] = sortParameters.split("\\:");
-        property = params[0];
-        direction = params[1];
+        if (sortParameters != null){
+            String params [] = sortParameters.split("\\:");
+            property = params[0];
+            direction = params[1];
+        }
     }
 
     public String getProperty() {

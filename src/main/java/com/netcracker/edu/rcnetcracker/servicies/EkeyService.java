@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.model.Ekey;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
 import org.springframework.data.domain.Page;
 
 @org.springframework.stereotype.Service
@@ -27,7 +28,7 @@ public class EkeyService implements Service<Ekey> {
     }
 
     @Override
-    public Page<Ekey> getAll(RequestBuilder params) {
+    public Page<Ekey> getAll(RequestParams params) {
         return null;
     }
 }

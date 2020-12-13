@@ -4,9 +4,9 @@ import com.netcracker.edu.rcnetcracker.dao.Checker;
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
-import com.netcracker.edu.rcnetcracker.servicies.RequestBuilder;
-import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.criteria.SortCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.*;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -64,24 +64,38 @@ public class EntranceController {
                                  @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-        RequestBuilder builder = new RequestBuilder(page, size);
+        Director director = new Director();
+        RequestParams requestParams = new RequestParams();
+        List<SearchCriteria> filters = new ArrayList<>();
         if (typeId != null){
-            builder.addFilterCriteria("typeId", typeId);
+            filters.add(new SearchCriteria( "typeId",typeId));
         }
         if (name != null){
-            builder.addFilterCriteria("name", name);
+            filters.add(new SearchCriteria( "name", name));
         }
         if (buildingId != null){
-            builder.addFilterCriteria("buildingId", buildingId);
+            filters.add(new SearchCriteria( "buildingId", buildingId));
         }
         if (isActive != null){
-            builder.addFilterCriteria("isActive", isActive);
+            filters.add(new SearchCriteria( "isActive", isActive));
         }
-        if (sort != null){
-            builder.setSortCriteria(new SortCriteria(sort));
+        if (filters.size() != 0 && sort != null){
+            director.setBuilder(new RequestWithFilterAndSort());
+            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, new SortCriteria(sort));
         }
-
-        return service.getAll(builder);
+        if (filters.size() != 0 && sort == null){
+            director.setBuilder(new RequestWithFilter());
+            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, null);
+        }
+        if (filters.size() == 0 && sort != null){
+            director.setBuilder(new RequestWithSort());
+            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, new SortCriteria(sort));
+        }
+        if (filters.size() == 0 && sort == null){
+            director.setBuilder(new RequestWithoutFilterAndSort());
+            requestParams = director.buildRequestParams(PageRequest.of(page, size), null, null);
+        }
+        return service.getAll(requestParams);
     }
 
     @GetMapping("/log")
