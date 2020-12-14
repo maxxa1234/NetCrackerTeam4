@@ -95,7 +95,6 @@ public class EntranceController {
     public List<Entrance> test1() {
         return testAccess.selectAll(Entrance.class, new SearchCriteria[0]);
     }
-
     @RequestMapping(value = "/select-all-with-filter", method = RequestMethod.GET)
     public Page<Entrance> testWithFilter(@RequestParam("page") int page,
                                          @RequestParam("size") int size,
