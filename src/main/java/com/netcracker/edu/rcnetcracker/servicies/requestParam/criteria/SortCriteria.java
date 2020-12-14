@@ -5,9 +5,6 @@ public class SortCriteria {
     private String property;
     private String direction;
 
-    public SortCriteria() {//
-    }
-
     public SortCriteria(String property, String direction) {//
         this.property = property;
         this.direction = direction;

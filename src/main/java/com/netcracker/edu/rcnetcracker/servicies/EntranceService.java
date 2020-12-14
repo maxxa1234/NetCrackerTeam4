@@ -34,7 +34,7 @@ public class EntranceService implements Service<Entrance> {
 
     @Override
     public Page<Entrance> getAll(RequestParams params) {
-        return null;
+        return testAccess.selectAll(Entrance.class, params);
     }
 
 }

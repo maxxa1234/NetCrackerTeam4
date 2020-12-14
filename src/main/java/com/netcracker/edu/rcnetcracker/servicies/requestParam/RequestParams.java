@@ -23,4 +23,16 @@ public class RequestParams {
     public void setSortCriteria(SortCriteria sortCriteria) {
         this.sortCriteria = sortCriteria;
     }
+
+    public Pageable getPageable() {
+        return pageable;
+    }
+
+    public List<SearchCriteria> getFilterCriteria() {
+        return filterCriteria;
+    }
+
+    public SortCriteria getSortCriteria() {
+        return sortCriteria;
+    }
 }

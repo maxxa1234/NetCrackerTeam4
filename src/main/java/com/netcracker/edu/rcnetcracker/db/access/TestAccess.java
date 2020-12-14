@@ -6,8 +6,11 @@ import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
 import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
 import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -34,7 +37,7 @@ public class TestAccess {
 
     }*/
 
-    public <T extends BaseEntity> int update (T obj) {
+    public <T extends BaseEntity> int update(T obj) {
         Long objId = obj.getId();
         if (isUnique(objId)) {
             return -1;
@@ -43,9 +46,9 @@ public class TestAccess {
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
             statements.add("UPDATE OBJECTS SET name = '" + obj.getName() + "', description = '" + obj.getDescription()
-            + "' WHERE object_id = " + objId);
+                    + "' WHERE object_id = " + objId);
 
-            for(int i = 0; i < attributes.size(); i++) {
+            for (int i = 0; i < attributes.size(); i++) {
                 attributes.get(i).field.setAccessible(true);
                 if (attributes.get(i).valueType == ValueType.BASE_VALUE) {
                     continue;
@@ -64,7 +67,7 @@ public class TestAccess {
             e.printStackTrace();
             return 1;
         }
-        String[] str = new String [0];
+        String[] str = new String[0];
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
     }
@@ -77,11 +80,11 @@ public class TestAccess {
         ArrayList<String> statements = new ArrayList<>();
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
-                statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
+            statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
                     + objId + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
                     + Processor.getObjtypeId(obj.getClass()) + "')");
 
-            for(int i = 0; i < attributes.size(); i++) {
+            for (int i = 0; i < attributes.size(); i++) {
                 attributes.get(i).field.setAccessible(true);
                 if (attributes.get(i).valueType == ValueType.BASE_VALUE) {
                     continue;
@@ -99,7 +102,7 @@ public class TestAccess {
             e.printStackTrace();
             return 1;
         }
-        String[] str = new String [0];
+        String[] str = new String[0];
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
     }
@@ -111,19 +114,34 @@ public class TestAccess {
     }
 
     public <T extends BaseEntity> Page<T> selectAll(Class<T> clazz, RequestParams builder) {
-//        List<T> listOfResultElements = selectAll(clazz, builder.getFilterCriteria().toArray(new SearchCriteria[0]));
-        System.out.println();
-        return null;
+        SearchCriteria[] list;
+        SortCriteria sortCriteria = null;
+        if (builder.getFilterCriteria() == null) {
+            list = new SearchCriteria[0];
+        } else {
+            list = builder.getFilterCriteria().toArray(new SearchCriteria[0]);
+        }
+
+        if (builder.getSortCriteria() == null) {
+            sortCriteria = new SortCriteria("id", "ASC");
+        } else {
+            sortCriteria = builder.getSortCriteria();
+        }
+        List<T> listOfResultElements = selectAll(clazz, list, sortCriteria, builder.getPageable());
+
+//        Integer totalElements = selectCountOfFilterElements(clazz, builder.getFilterCriteria().toArray(new SearchCriteria[0]));
+//        return new PageImpl<T>(listOfResultElements, builder.getPageable(), totalElements);
+        return new PageImpl<>(listOfResultElements);
     }
 
-    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, SearchCriteria[] criterias) {
+    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, SearchCriteria[] criterias, SortCriteria sort, Pageable pageable) {
         List<Attr> attributes = Processor.getAttributes(clazz);
-        List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes, criterias), new RowMapper<T>() {
+        List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes, criterias, sort, pageable), new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
                 T obj = null;
                 try {
                     obj = clazz.getDeclaredConstructor().newInstance();
-                    for(int i = 0; i < attributes.size(); i++) {
+                    for (int i = 0; i < attributes.size(); i++) {
                         attributes.get(i).field.setAccessible(true);
                         if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
                             attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
@@ -150,15 +168,23 @@ public class TestAccess {
     }
 
     private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes
-            , SearchCriteria[] criterias) {
-        StringBuilder selectBlock = new StringBuilder("SELECT * FROM ( SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
+            , SearchCriteria[] criterias, SortCriteria sort, Pageable pageable) {
+
+        StringBuilder selectBlock = new StringBuilder("select * from (" +
+                "  select row_number() over (order by \""
+                + sort.getProperty() + "\"" + sort.getDirection() +
+                ") rowRank, a.* from (" +
+                "SELECT * FROM ( SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
         StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
         StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
-        StringBuilder filterBlock = new StringBuilder(") WHERE 1=1");
+        StringBuilder filterBlock = new StringBuilder(") WHERE 1=1" +
+                ") a" +
+                ") where rowRank between " + (((pageable.getPageNumber() - 1) * pageable.getPageSize()) + 1) + " AND " +
+                pageable.getPageSize() * pageable.getPageNumber());
 
         for (int i = 0; i < attributes.size(); i++) {
             if (attributes.get(i).valueType == ValueType.BASE_VALUE
-            ||  attributes.get(i).valueType == ValueType.LIST_VALUE) {
+                    || attributes.get(i).valueType == ValueType.LIST_VALUE) {
                 continue;
             }
             selectBlock.append(", a").append(i).append(".").append(attributes.get(i).valueType.getValueType())
@@ -172,33 +198,32 @@ public class TestAccess {
         for (int i = 0; i < criterias.length; i++) {
             filterBlock.append("AND \"" + criterias[i].getKey() + "\"" + criterias[i].getValue() + " ");
         }
-
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();
     }
 
     private List<Long> getListForObjectAttribute(Attr attr, Long objectId) {
-        String sql =    "SELECT reference \"id\" FROM objreference WHERE attr_id = " + attr.id +
-                        " AND object_id = " + objectId;
+        String sql = "SELECT reference \"id\" FROM objreference WHERE attr_id = " + attr.id +
+                " AND object_id = " + objectId;
         return jdbcTemplate.queryForList(sql, Long.class);
     }
 
 
-    private String getInsertStatement (Attr attr, Long objectId, Object value) throws IllegalAccessException {
+    private String getInsertStatement(Attr attr, Long objectId, Object value) throws IllegalAccessException {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
         }
         return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
                 + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
-            + newValue + ")";
+                + newValue + ")";
     }
 
-    private String getDeleteStatement (Attr attr, Long objectId) {
+    private String getDeleteStatement(Attr attr, Long objectId) {
         return "DELETE FROM " + attr.valueType.getTable() + " WHERE attr_id = " + attr.id + " AND object_id = "
-        + objectId;
+                + objectId;
     }
 
-    private String getUpdateStatement (Attr attr, Long objectId, Object value) {
+    private String getUpdateStatement(Attr attr, Long objectId, Object value) {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
