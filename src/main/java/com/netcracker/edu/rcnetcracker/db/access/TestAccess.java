@@ -4,12 +4,16 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SortCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.CountElementsRequest;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.Director;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.Request;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.RequestGetByID;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,10 +36,6 @@ public class TestAccess {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    /*public <T extends BaseEntity> int modify (T obj) {
-
-    }*/
 
     public <T extends BaseEntity> int update(T obj) {
         Long objId = obj.getId();
@@ -113,30 +113,22 @@ public class TestAccess {
         return false;
     }
 
-    public <T extends BaseEntity> Page<T> selectAll(Class<T> clazz, RequestParams builder) {
-        SearchCriteria[] list;
-        SortCriteria sortCriteria = null;
-        if (builder.getFilterCriteria() == null) {
-            list = new SearchCriteria[0];
-        } else {
-            list = builder.getFilterCriteria().toArray(new SearchCriteria[0]);
+    public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
+        Director director = new Director(clazz);
+        List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
+        Director director1 = new Director(clazz);
+        Long countOfElements = selectCountOfFilterElements(director1.buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).toString());
+        if (pageable == null)
+            return new PageImpl<>(resultElements);
+        if (resultElements.size() != pageable.getPageSize()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), resultElements.size());
         }
-
-        if (builder.getSortCriteria() == null) {
-            sortCriteria = new SortCriteria("id", "ASC");
-        } else {
-            sortCriteria = builder.getSortCriteria();
-        }
-        List<T> listOfResultElements = selectAll(clazz, list, sortCriteria, builder.getPageable());
-
-//        Integer totalElements = selectCountOfFilterElements(clazz, builder.getFilterCriteria().toArray(new SearchCriteria[0]));
-//        return new PageImpl<T>(listOfResultElements, builder.getPageable(), totalElements);
-        return new PageImpl<>(listOfResultElements);
+        return new PageImpl<>(resultElements, pageable, countOfElements);
     }
 
-    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, SearchCriteria[] criterias, SortCriteria sort, Pageable pageable) {
+    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, String request) {
         List<Attr> attributes = Processor.getAttributes(clazz);
-        List<T> list = jdbcTemplate.query(getSelectAllStatement(clazz, attributes, criterias, sort, pageable), new RowMapper<T>() {
+        List<T> list = jdbcTemplate.query(request, new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
                 T obj = null;
                 try {
@@ -150,7 +142,6 @@ public class TestAccess {
                             attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
                                     attributes.get(i).field.getType()));
                         }
-
                     }
                 } catch (InstantiationException e) {
                     e.printStackTrace();
@@ -167,38 +158,16 @@ public class TestAccess {
         return list;
     }
 
-    private String getSelectAllStatement(Class<? extends BaseEntity> clazz, List<Attr> attributes
-            , SearchCriteria[] criterias, SortCriteria sort, Pageable pageable) {
+    public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
+        Director director = new Director(clazz);
+        String request = director.buildRequest(new RequestGetByID(new Request(clazz), id)).toString();
+        List<T> result = selectAll(clazz, request);
+        return result.get(0);
+    }
 
-        StringBuilder selectBlock = new StringBuilder("select * from (" +
-                "  select row_number() over (order by \""
-                + sort.getProperty() + "\"" + sort.getDirection() +
-                ") rowRank, a.* from (" +
-                "SELECT * FROM ( SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
-        StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
-        StringBuilder whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
-        StringBuilder filterBlock = new StringBuilder(") WHERE 1=1" +
-                ") a" +
-                ") where rowRank between " + (((pageable.getPageNumber() - 1) * pageable.getPageSize()) + 1) + " AND " +
-                pageable.getPageSize() * pageable.getPageNumber());
-
-        for (int i = 0; i < attributes.size(); i++) {
-            if (attributes.get(i).valueType == ValueType.BASE_VALUE
-                    || attributes.get(i).valueType == ValueType.LIST_VALUE) {
-                continue;
-            }
-            selectBlock.append(", a").append(i).append(".").append(attributes.get(i).valueType.getValueType())
-                    .append(" \"").append(attributes.get(i).field.getName()).append("\" ");
-            fromBlock.append(", ").append(attributes.get(i).valueType.getTable()).append(" a").append(i).append(" ");
-            whereBlock.append("AND o.object_id = a").append(i).append(".object_id ").append("AND a")
-                    .append(i).append(".attr_id = ").append(attributes.get(i).id).append(" ");
-
-        }
-
-        for (int i = 0; i < criterias.length; i++) {
-            filterBlock.append("AND \"" + criterias[i].getKey() + "\"" + criterias[i].getValue() + " ");
-        }
-        return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();
+    private Long selectCountOfFilterElements(String request) {
+        List<Long> list = jdbcTemplate.queryForList(request, Long.class);
+        return list.get(0);
     }
 
     private List<Long> getListForObjectAttribute(Attr attr, Long objectId) {

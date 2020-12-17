@@ -1,4 +1,4 @@
-package com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria;
+package com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria;
 
 public class SortCriteria {
 

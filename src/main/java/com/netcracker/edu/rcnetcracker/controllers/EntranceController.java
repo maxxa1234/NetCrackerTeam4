@@ -3,9 +3,8 @@ package com.netcracker.edu.rcnetcracker.controllers;
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.*;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SortCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -57,20 +56,23 @@ public class EntranceController {
     }
 
     @GetMapping
-    public Page<Entrance> getAll(@RequestParam("page") int page, @RequestParam("size") int size,
+    public Page<Entrance> getAll(@RequestParam(value = "page", required = false) Integer page,
+                                 @RequestParam(value = "size", required = false) Integer size,
                                  @RequestParam(value = "typeId", required = false) String typeId,
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-        Director director = new Director();
-        RequestParams requestParams = new RequestParams();
+        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
+        Pageable pageable = null;
+        if (page != null || size != null)
+            pageable = PageRequest.of(page, size);
         if (typeId != null) {
             filters.add(new SearchCriteria("typeId", typeId));
         }
         if (name != null) {
-            filters.add(new SearchCriteria("name", name));
+            filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (buildingId != null) {
             filters.add(new SearchCriteria("buildingId", buildingId));
@@ -78,23 +80,10 @@ public class EntranceController {
         if (isActive != null) {
             filters.add(new SearchCriteria("isActive", isActive));
         }
-        if (filters.size() != 0 && sort != null) {
-            director.setBuilder(new RequestWithFilterAndSort());
-            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, new SortCriteria(sort));
+        if (sort != null) {
+            sortCriteria = new SortCriteria(sort);
         }
-        if (filters.size() != 0 && sort == null) {
-            director.setBuilder(new RequestWithFilter());
-            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, null);
-        }
-        if (filters.size() == 0 && sort != null) {
-            director.setBuilder(new RequestWithSort());
-            requestParams = director.buildRequestParams(PageRequest.of(page, size), filters, new SortCriteria(sort));
-        }
-        if (filters.size() == 0 && sort == null) {
-            director.setBuilder(new RequestWithoutFilterAndSort());
-            requestParams = director.buildRequestParams(PageRequest.of(page, size), null, null);
-        }
-        return service.getAll(requestParams);
+        return service.getAll(pageable, filters, sortCriteria);
     }
 
     @GetMapping("/log")
@@ -105,16 +94,8 @@ public class EntranceController {
     }
 
     @RequestMapping(value = "/get-one/{id}")
-    public Entrance getOne(@PathVariable("id") String id) {
-        List<SearchCriteria> params = new ArrayList<>();
-        params.add(new SearchCriteria("id", "=" + id));
-
-        Director director = new Director();
-        director.setBuilder(new RequestWithFilter());
-        RequestParams requestParams = director.buildRequestParams(PageRequest.of(1, 10), params, null);
-        List<Entrance> list = testAccess.selectAll(Entrance.class, requestParams).toList();
-        Entrance entrance = list.get(0);
-        return entrance;
+    public Entrance getOne(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
     @PostMapping("/insert-entrance")
