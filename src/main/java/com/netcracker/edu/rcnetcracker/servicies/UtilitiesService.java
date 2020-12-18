@@ -13,8 +13,8 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class UtilitiesService implements Service<Utility> {
 
-    @Autowired
-    private OracleDbAccess<Utility> oracleDbAccess;
+//    @Autowired
+//    private OracleDbAccess<Utility> oracleDbAccess;
 
     @Override
     public Utility getById(Long id) {

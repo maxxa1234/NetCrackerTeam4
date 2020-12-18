@@ -75,10 +75,10 @@ public class EntranceController {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (buildingId != null) {
-            filters.add(new SearchCriteria("buildingId", buildingId));
+            filters.add(new SearchCriteria("buildingId","like '%" + buildingId+"%' "));
         }
         if (isActive != null) {
-            filters.add(new SearchCriteria("isActive", isActive));
+            filters.add(new SearchCriteria("isActive", "like '%"+isActive+"%' "));
         }
         if (sort != null) {
             sortCriteria = new SortCriteria(sort);

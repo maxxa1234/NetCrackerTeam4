@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
@@ -27,8 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Transactional
-public class OracleDbAccess<T extends BaseEntity> implements DbAccess {
+public class OracleDbAccess implements DbAccess {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
