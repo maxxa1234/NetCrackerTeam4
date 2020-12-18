@@ -14,7 +14,7 @@ import java.util.List;
 public class EntranceService implements Service<Entrance> {
 
     @Autowired
-    private OracleDbAccess oracleDbAccess;
+    private OracleDbAccess<Entrance> oracleDbAccess;
 
     @Override
     public Entrance getById(Long id) {

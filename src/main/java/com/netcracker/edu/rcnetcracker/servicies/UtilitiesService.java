@@ -14,7 +14,7 @@ import java.util.List;
 public class UtilitiesService implements Service<Utility> {
 
     @Autowired
-    private OracleDbAccess oracleDbAccess;
+    private OracleDbAccess<Utility> oracleDbAccess;
 
     @Override
     public Utility getById(Long id) {

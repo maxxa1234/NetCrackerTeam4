@@ -28,11 +28,12 @@ import java.util.List;
 
 @Component
 @Transactional
-public class OracleDbAccess {
+public class OracleDbAccess<T extends BaseEntity> implements DbAccess {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public <T extends BaseEntity> int update(T obj) {
         Long objId = obj.getId();
         if (isUnique(objId)) {
@@ -68,6 +69,7 @@ public class OracleDbAccess {
         return 0;
     }
 
+    @Override
     public <T extends BaseEntity> int insert(T obj) {
         Long objId = obj.getId();
         if (!isUnique(objId)) {
@@ -109,12 +111,14 @@ public class OracleDbAccess {
         return false;
     }
 
+    @Override
     public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
         int objTypeId = Processor.getObjtypeId(clazz);
         jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
                 " AND OBJECTS.OBJECT_ID = " + id);
     }
 
+    @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         Director director = new Director(clazz);
         List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
@@ -167,6 +171,7 @@ public class OracleDbAccess {
         return list;
     }
 
+    @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
         Director director = new Director(clazz);
         String request = director.buildRequest(new RequestGetByID(new Request(clazz), id)).toString();
