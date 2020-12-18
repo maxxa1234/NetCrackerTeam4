@@ -1,7 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.dao.NotificationDAO;
 import com.netcracker.edu.rcnetcracker.model.Notification;
+import com.netcracker.edu.rcnetcracker.servicies.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +12,16 @@ import java.util.Date;
 @RequestMapping("notification")
 @RestController
 public class NotificationController {
-    private final NotificationDAO service;
+    private final NotificationService service;
 
     @Autowired
-    public NotificationController(NotificationDAO service) {
+    public NotificationController(NotificationService service) {
         this.service = service;
     }
 
     @GetMapping
-    public Page<Notification> getAll(@RequestParam("page") int page,
-                                     @RequestParam("size") int size,
+    public Page<Notification> getAll(@RequestParam(value = "page", required = false) int page,
+                                     @RequestParam(value = "size", required = false) int size,
                                      @RequestParam(value = "text", required = false) String text,
                                      @RequestParam(value = "dateFrom", required = false) String dateFrom,
                                      @RequestParam(value = "dateTo", required = false) String dateTo,
@@ -30,32 +30,6 @@ public class NotificationController {
                                      @RequestParam(value = "categoryId", required = false) String categoryId,
                                      @RequestParam(value = "createdBy", required = false) String createdBy,
                                      @RequestParam(value = "sort", required = false) String sort) {
-//        EntityDAO<Notification> ser = new EntityDAO<>(service);
-//        List<SearchCriteria> filterParameters = new ArrayList<>();
-//        if (text != null)
-//            filterParameters.add(new SearchCriteria("text", text));
-//        if (dateFrom != null) {
-//            Checker.checkDateParameter(dateFrom);
-//            filterParameters.add(new SearchCriteria("dateFrom", dateFrom));
-//        }
-//        if (dateTo != null) {
-//            Checker.checkDateParameter(dateTo);
-//            filterParameters.add(new SearchCriteria("dateTo", dateTo));
-//        }
-//        if (title != null)
-//            filterParameters.add(new SearchCriteria("title", "like %"+title+"% "));
-//        if (name != null)
-//            filterParameters.add(new SearchCriteria("name", "like %"+name+"% "));
-//        if (categoryId != null) {
-//            Checker.checkNumParameter(categoryId);
-//            filterParameters.add(new SearchCriteria("categoryId", categoryId));
-//        }
-//        if (createdBy != null) {
-//            Checker.checkNumParameter(createdBy);
-//            filterParameters.add(new SearchCriteria("createdBy", createdBy));
-//        }
-//
-//        return ser.getAll(page, size, filterParameters, sort);
         return null;
     }
 

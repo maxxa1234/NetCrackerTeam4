@@ -1,7 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.dao.UtilitiesDAO;
 import com.netcracker.edu.rcnetcracker.model.Utility;
+import com.netcracker.edu.rcnetcracker.servicies.UtilitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UtilitiesController {
 
-    private final UtilitiesDAO service;
+    private final UtilitiesService service;
 
     @Autowired
-    public UtilitiesController(UtilitiesDAO service) {
+    public UtilitiesController(UtilitiesService service) {
         this.service = service;
     }
 
     @GetMapping
-    public Page<Utility> getAll(@RequestParam("page") int page, @RequestParam("size") int size,
+    public Page<Utility> getAll(@RequestParam(value = "page", required = false) int page,
+                                @RequestParam(value = "size", required = false) int size,
                                 @RequestParam(value = "bankBook", required = false) String bankBook,
                                 @RequestParam(value = "dateFrom", required = false) String dateFrom,
                                 @RequestParam(value = "name", required = false) String name,
