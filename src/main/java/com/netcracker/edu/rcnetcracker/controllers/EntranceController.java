@@ -98,14 +98,4 @@ public class EntranceController {
         return service.getById(id);
     }
 
-    @PostMapping("/insert-entrance")
-    public int test3(@RequestBody Entrance entrance) {
-        return testAccess.insert(entrance);
-    }
-
-    @PutMapping("/update-entrance")
-    public int test4(@RequestBody Entrance entrance) {
-        return testAccess.update(entrance);
-    }
-
 }

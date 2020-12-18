@@ -28,7 +28,7 @@ public class EntranceService implements Service<Entrance> {
 
     @Override
     public void delete(Long id) {
-
+        testAccess.delete(Entrance.class, id);
     }
 
     @Override

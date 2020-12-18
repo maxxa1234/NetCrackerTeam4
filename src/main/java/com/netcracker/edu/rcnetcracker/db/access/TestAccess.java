@@ -113,6 +113,12 @@ public class TestAccess {
         return false;
     }
 
+    public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
+        int objTypeId = Processor.getObjtypeId(clazz);
+        jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
+                " AND OBJECTS.OBJECT_ID = " + id);
+    }
+
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         Director director = new Director(clazz);
         List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
@@ -126,7 +132,7 @@ public class TestAccess {
         return new PageImpl<>(resultElements, pageable, countOfElements);
     }
 
-    public <T extends BaseEntity> List<T> selectAll(Class<T> clazz, String request) {
+    private <T extends BaseEntity> List<T> selectAll(Class<T> clazz, String request) {
         List<Attr> attributes = Processor.getAttributes(clazz);
         List<T> list = jdbcTemplate.query(request, new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
