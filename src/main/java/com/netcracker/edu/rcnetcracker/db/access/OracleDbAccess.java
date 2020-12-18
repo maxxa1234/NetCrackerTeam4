@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
@@ -27,16 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Transactional
-public class TestAccess {
-
-    private static JdbcTemplate jdbcTemplate;
+public class OracleDbAccess implements DbAccess {
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
 
+    @Override
     public <T extends BaseEntity> int update(T obj) {
         Long objId = obj.getId();
         if (isUnique(objId)) {
@@ -72,6 +67,7 @@ public class TestAccess {
         return 0;
     }
 
+    @Override
     public <T extends BaseEntity> int insert(T obj) {
         Long objId = obj.getId();
         if (!isUnique(objId)) {
@@ -113,12 +109,14 @@ public class TestAccess {
         return false;
     }
 
+    @Override
     public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
         int objTypeId = Processor.getObjtypeId(clazz);
         jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
                 " AND OBJECTS.OBJECT_ID = " + id);
     }
 
+    @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         Director director = new Director(clazz);
         List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
@@ -144,6 +142,13 @@ public class TestAccess {
                         if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
                             attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
                                     rs.getLong("id")));
+                        } else if (attributes.get(i).valueType == ValueType.REF_VALUE) {
+                            List<Long> references = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
+                            Long ref = null;
+                            if (!references.isEmpty()) {
+                                ref = references.get(0);
+                            }
+                            attributes.get(i).field.set(obj, ref);
                         } else {
                             attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
                                     attributes.get(i).field.getType()));
@@ -164,6 +169,7 @@ public class TestAccess {
         return list;
     }
 
+    @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
         Director director = new Director(clazz);
         String request = director.buildRequest(new RequestGetByID(new Request(clazz), id)).toString();

@@ -1,6 +1,6 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
+import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
@@ -24,7 +24,7 @@ public class EntranceController {
     }
 
     @Autowired
-    private TestAccess testAccess;
+    private OracleDbAccess oracleDbAccess;
 
     @GetMapping(value = "/open",
             params = {"key_id", "entrance_id"})
@@ -75,10 +75,10 @@ public class EntranceController {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (buildingId != null) {
-            filters.add(new SearchCriteria("buildingId", buildingId));
+            filters.add(new SearchCriteria("buildingId","like '%" + buildingId+"%' "));
         }
         if (isActive != null) {
-            filters.add(new SearchCriteria("isActive", isActive));
+            filters.add(new SearchCriteria("isActive", "like '%"+isActive+"%' "));
         }
         if (sort != null) {
             sortCriteria = new SortCriteria(sort);

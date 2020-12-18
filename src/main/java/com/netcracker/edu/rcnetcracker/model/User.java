@@ -44,6 +44,14 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
+    public List<Long> getAdressId() {
+        return adressId;
+    }
+
+    public void setAdressId(List<Long> adressId) {
+        this.adressId = adressId;
+    }
+
     public String getPassword() {
         return password;
     }

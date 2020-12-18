@@ -1,6 +1,6 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
-import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
+import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Utility;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -13,8 +13,8 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class UtilitiesService implements Service<Utility> {
 
-    @Autowired
-    private TestAccess testAccess;
+//    @Autowired
+//    private OracleDbAccess<Utility> oracleDbAccess;
 
     @Override
     public Utility getById(Long id) {
