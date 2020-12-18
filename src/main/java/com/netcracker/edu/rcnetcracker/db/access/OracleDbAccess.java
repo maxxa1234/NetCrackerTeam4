@@ -28,14 +28,10 @@ import java.util.List;
 
 @Component
 @Transactional
-public class TestAccess {
-
-    private static JdbcTemplate jdbcTemplate;
+public class OracleDbAccess {
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
 
     public <T extends BaseEntity> int update(T obj) {
         Long objId = obj.getId();
@@ -144,6 +140,13 @@ public class TestAccess {
                         if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
                             attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
                                     rs.getLong("id")));
+                        } else if (attributes.get(i).valueType == ValueType.REF_VALUE) {
+                            List<Long> references = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
+                            Long ref = null;
+                            if (!references.isEmpty()) {
+                                ref = references.get(0);
+                            }
+                            attributes.get(i).field.set(obj, ref);
                         } else {
                             attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
                                     attributes.get(i).field.getType()));

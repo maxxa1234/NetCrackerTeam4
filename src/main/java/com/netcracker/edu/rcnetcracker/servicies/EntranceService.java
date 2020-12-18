@@ -1,6 +1,6 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
-import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
+import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -14,31 +14,31 @@ import java.util.List;
 public class EntranceService implements Service<Entrance> {
 
     @Autowired
-    private TestAccess testAccess;
+    private OracleDbAccess oracleDbAccess;
 
     @Override
     public Entrance getById(Long id) {
-        return testAccess.getById(Entrance.class, id);
+        return oracleDbAccess.getById(Entrance.class, id);
     }
 
     @Override
     public void create(Entrance object) {
-        testAccess.insert(object);
+        oracleDbAccess.insert(object);
     }
 
     @Override
     public void delete(Long id) {
-        testAccess.delete(Entrance.class, id);
+        oracleDbAccess.delete(Entrance.class, id);
     }
 
     @Override
     public Integer update(Entrance entrance) {
-        return testAccess.update(entrance);
+        return oracleDbAccess.update(entrance);
     }
 
     @Override
     public Page<Entrance> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
-        return testAccess.selectPage(Entrance.class, pageable, filter, sort);
+        return oracleDbAccess.selectPage(Entrance.class, pageable, filter, sort);
     }
 
 }
