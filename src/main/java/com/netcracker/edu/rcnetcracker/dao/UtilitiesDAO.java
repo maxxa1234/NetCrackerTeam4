@@ -2,8 +2,8 @@ package com.netcracker.edu.rcnetcracker.dao;
 
 import com.netcracker.edu.rcnetcracker.model.Utility;
 
-import com.netcracker.edu.rcnetcracker.servicies.criteria.SearchCriteria;
-import com.netcracker.edu.rcnetcracker.servicies.criteria.SortCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SearchCriteria;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria.SortCriteria;
 
 import org.springframework.stereotype.Service;
 

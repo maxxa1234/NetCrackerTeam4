@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.model.Notification;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
 import org.springframework.data.domain.Page;
 
 @org.springframework.stereotype.Service
@@ -26,7 +27,7 @@ public class NotificationService implements Service<Notification> {
     }
 
     @Override
-    public Page<Notification> getAll(RequestBuilder params) {
+    public Page<Notification> getAll(RequestParams params) {
         return null;
     }
 

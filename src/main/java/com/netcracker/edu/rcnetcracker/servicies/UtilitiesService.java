@@ -2,7 +2,7 @@ package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.TestAccess;
 import com.netcracker.edu.rcnetcracker.model.Utility;
-import com.netcracker.edu.rcnetcracker.servicies.Service;
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
@@ -33,7 +33,7 @@ public class UtilitiesService implements Service<Utility> {
     }
 
     @Override
-    public Page<Utility> getAll(RequestBuilder params) {
+    public Page<Utility> getAll(RequestParams params) {
         testAccess.selectAll(Utility.class, params);
         return null;
     }

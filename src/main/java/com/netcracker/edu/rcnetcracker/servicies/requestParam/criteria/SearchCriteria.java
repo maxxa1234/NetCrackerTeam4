@@ -1,4 +1,4 @@
-package com.netcracker.edu.rcnetcracker.servicies.criteria;
+package com.netcracker.edu.rcnetcracker.servicies.requestParam.criteria;
 /*
 * Class to create criteria for filtering
 * key - field name

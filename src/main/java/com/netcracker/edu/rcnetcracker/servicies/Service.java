@@ -1,5 +1,6 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
+import com.netcracker.edu.rcnetcracker.servicies.requestParam.RequestParams;
 import org.springframework.data.domain.Page;
 
 public interface Service<T> {
@@ -12,6 +13,6 @@ public interface Service<T> {
 
     Integer update(T object);
 
-    Page<T> getAll(RequestBuilder params);
+    Page<T> getAll(RequestParams params);
 
 }
