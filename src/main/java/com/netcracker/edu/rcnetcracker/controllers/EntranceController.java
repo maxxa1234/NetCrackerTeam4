@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *Если запрос подразумевает фильтр, то строковые переменные типа имени надо привети к виду "like '%"+name+"%'" иначе не сработает
+ * Фильтры записываются в список, не смотря на их количество и передаются дальше
+ * Указывать несколько критериев сортировки нельзя
+ * */
 
 @RequestMapping("/entrance")
 @RestController
@@ -83,7 +88,8 @@ public class EntranceController {
         if (sort != null) {
             sortCriteria = new SortCriteria(sort);
         }
-        return service.getAll(pageable, filters, sortCriteria);
+        Page<Entrance> page1 = service.getAll(pageable, filters, sortCriteria);
+        return page1;
     }
 
     @GetMapping("/log")

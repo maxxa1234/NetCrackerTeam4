@@ -6,6 +6,15 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+/**
+ * Хранит билдер для запроса и начальный запрос.
+ *
+ * При вызове метода buildRequest проверяет переменные и используя подходящий билдер строит запрос.
+ *
+ * Если фильтра нет, то он просто добавит ничего в блок фильтрции.
+ * Если нет сортировки, то применяется стандартная сортировка по полю id, по возрастанию ASC
+ * */
+
 public class Director {
 
     protected RequestBuilder builder;

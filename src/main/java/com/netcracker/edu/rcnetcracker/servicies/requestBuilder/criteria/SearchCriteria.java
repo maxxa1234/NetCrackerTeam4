@@ -1,9 +1,11 @@
 package com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria;
-/*
-* Class to create criteria for filtering
-* key - field name
-* value - parameter value
-* */
+/**
+ * Класс критериев фильтрации
+ *
+ * Хранит в себе:
+ * key - поле для фильтра
+ * value - поиск по этому значению
+ * */
 
 public class SearchCriteria {
 
