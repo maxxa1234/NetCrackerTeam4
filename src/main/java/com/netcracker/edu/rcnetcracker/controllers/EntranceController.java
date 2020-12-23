@@ -1,15 +1,22 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.lowagie.text.DocumentException;
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
+import com.netcracker.edu.rcnetcracker.servicies.ExportPDFService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -108,4 +115,23 @@ public class EntranceController {
         return service.getById(id);
     }
 
+    @GetMapping("/export")
+    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename = entrance_" + currentDateTime + ".pdf";
+
+        response.setHeader(headerKey,headerValue);
+
+        SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
+        Page<Entrance> pageEntrance = service.getAll(null,null,sortCriteria);
+        List<Entrance> entranceList = pageEntrance.getContent();
+
+        ExportPDFService exporter = new ExportPDFService(entranceList);
+        exporter.export(response);
+    }
 }

@@ -33,6 +33,8 @@ public class User extends BaseEntity {
     @Attribute(id = 28)
     private Long roleID;
 
+    private String activationCode;
+
     @Attribute(id = 20, valueType = ValueType.LIST_VALUE)
     private List<Long> adressId;
 
@@ -42,6 +44,14 @@ public class User extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     public List<Long> getAdressId() {

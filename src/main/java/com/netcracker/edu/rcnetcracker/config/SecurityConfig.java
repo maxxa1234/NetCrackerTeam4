@@ -10,17 +10,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Override
-//    public void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/resources/**", "/css/**", "/js/**", "/images/**")
+                .antMatchers("/signup", "/", "/resources/**", "/css/**", "/js/**", "/images/**")
                 .permitAll()
                 .antMatchers("/account")
                 .authenticated()
