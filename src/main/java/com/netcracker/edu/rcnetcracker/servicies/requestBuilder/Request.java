@@ -53,6 +53,9 @@ public class Request {
         this.filterBlock = filterBlock;
     }
 
+    /**
+     * Возвращает готовую строку запроса
+     * */
     @Override
     public String toString() {
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();

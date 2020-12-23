@@ -131,12 +131,17 @@ public class OracleDbAccess implements DbAccess {
      * */
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
-        Director director = new Director(clazz);
-        List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
-        Director director1 = new Director(clazz);
-        Long countOfElements = selectCountOfFilterElements(director1.buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).toString());
-        if (pageable == null)
+        List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
+                buildRequest(pageable, filter, sort).
+                toString());
+
+        Long countOfElements = selectCountOfFilterElements(
+                Director.valueOf(clazz).
+                        buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
+                        toString());
+        if (pageable == null) {
             return new PageImpl<>(resultElements);
+        }
         if (resultElements.size() != pageable.getPageSize()) {
             pageable = PageRequest.of(pageable.getPageNumber(), resultElements.size());
         }
@@ -189,9 +194,10 @@ public class OracleDbAccess implements DbAccess {
 
     @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
-        Director director = new Director(clazz);
-        String request = director.buildRequest(new RequestGetByID(new Request(clazz), id)).toString();
-        List<T> result = selectAll(clazz, request);
+        List<T> result = selectAll(clazz, Director.valueOf(clazz).
+                buildRequest(new RequestGetByID(new Request(clazz), id)).
+                toString());
+
         return result.get(0);
     }
 

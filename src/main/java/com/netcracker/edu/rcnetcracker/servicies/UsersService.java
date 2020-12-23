@@ -1,7 +1,6 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
-import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -16,6 +15,13 @@ import java.util.List;
 public class UsersService implements Service<User> {
     @Autowired
     private OracleDbAccess oracleDbAccess;
+
+    private final OracleDbAccess oracleDbAccess;
+
+    @Autowired
+    public UsersService(OracleDbAccess oracleDbAccess) {
+        this.oracleDbAccess = oracleDbAccess;
+    }
 
     @Override
     public User getById(Long id) {
@@ -33,8 +39,8 @@ public class UsersService implements Service<User> {
     }
 
     @Override
-    public Integer update(User entrance) {
-        return oracleDbAccess.update(entrance);
+    public Integer update(User object) {
+        return oracleDbAccess.update(object);
     }
 
     @Override

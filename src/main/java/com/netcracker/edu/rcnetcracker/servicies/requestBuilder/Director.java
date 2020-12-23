@@ -20,7 +20,7 @@ public class Director {
     protected RequestBuilder builder;
     protected Request request;
 
-    public Director(Class clazz) {
+    private Director(Class clazz) {
         request = new Request(clazz);
     }
 
@@ -28,12 +28,19 @@ public class Director {
         this.builder = builder;
     }
 
+    public static Director valueOf(Class clazz){
+        Director director = new Director(clazz);
+        return director;
+    }
+
     public Request buildRequest(Pageable pageable, List<SearchCriteria> filters, SortCriteria sortCriteria) {
 
-        if (pageable == null)
+        if (pageable == null) {
             setBuilder(new RequestWithoutPaging(request, filters, sortCriteria));
-        else setBuilder(new RequestWithPaging(request, filters, sortCriteria, pageable));
-
+        }
+        else{
+            setBuilder(new RequestWithPaging(request, filters, sortCriteria, pageable));
+        }
 
         builder.buildSelectBlock();
         builder.buildFilterBlock();
