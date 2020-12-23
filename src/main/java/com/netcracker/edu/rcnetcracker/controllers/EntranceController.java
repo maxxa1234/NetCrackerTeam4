@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *Если запрос подразумевает фильтр, то строковые переменные типа имени надо привети к виду "like '%"+name+"%'" иначе не сработает
+ * Если запрос подразумевает фильтр, то строковые переменные типа имени надо привети к виду "like '%"+name+"%'" иначе не сработает
  * Фильтры записываются в список, не смотря на их количество и передаются дальше
  * Указывать несколько критериев сортировки нельзя
- * */
+ */
 
 @RequestMapping("/entrance")
 @RestController
@@ -71,8 +71,12 @@ public class EntranceController {
         SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
-        if (page != null || size != null)
+        if (page == null && size != null) {
+            pageable = PageRequest.of(0, size);
+        }
+        if (page != null && size != null) {
             pageable = PageRequest.of(page, size);
+        }
         if (typeId != null) {
             filters.add(new SearchCriteria("typeId", typeId));
         }
@@ -80,10 +84,10 @@ public class EntranceController {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (buildingId != null) {
-            filters.add(new SearchCriteria("buildingId","like '%" + buildingId+"%' "));
+            filters.add(new SearchCriteria("buildingId", "like '%" + buildingId + "%' "));
         }
         if (isActive != null) {
-            filters.add(new SearchCriteria("isActive", "like '%"+isActive+"%' "));
+            filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
         }
         if (sort != null) {
             sortCriteria = new SortCriteria(sort);
