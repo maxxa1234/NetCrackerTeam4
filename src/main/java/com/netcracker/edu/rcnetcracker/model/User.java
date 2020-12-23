@@ -33,6 +33,7 @@ public class User extends BaseEntity {
     @Attribute(id = 28)
     private Long roleID;
 
+    @Attribute(id = 55)
     private String activationCode;
 
     @Attribute(id = 20, valueType = ValueType.LIST_VALUE)

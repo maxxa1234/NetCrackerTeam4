@@ -6,8 +6,10 @@ import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,24 +43,31 @@ public class AuthenticationController {
 
         user.setActivationCode(UUID.randomUUID().toString()); //создаём активационный код
 
-        usersService.create(user);
+        //usersService.create(user);
+
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "You are welcome! Please, visit next link: http://localhost:8085/activate/%s",
+                user.getLastName(),
+                user.getActivationCode()
+        );
+        mailSenderService.sendEmail("testingsender12368@gmail.com", "Activation code", message);
 
         save(user);
 
         if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "You are welcome! Please, visit next link: http://localhost:8085/activate/%s",
-                    user.getLastName(),
-                    user.getActivationCode()
-            );
-            mailSenderService.sendEmail(user.getEmail(), "Activation code", message);
+//            String message = String.format(
+//                    "Hello, %s! \n" +
+//                            "You are welcome! Please, visit next link: http://localhost:8085/activate/%s",
+//                    user.getLastName(),
+//                    user.getActivationCode()
+//            );
+//            mailSenderService.sendEmail(user.getEmail(), "Activation code", message);
 
 //            mailSenderService.sendEmail("testingsender12368@gmail.com", "Activation code", message);
 
         }
         //usersService.create(user);
-
 
         return user;
     }
@@ -90,18 +99,21 @@ public class AuthenticationController {
     }
 
     private void save(User user) {
-        String query = "INSERT INTO objects(object_id, object_type_id) VALUES" + " (150, 10)";
-        String query1 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (21, 150" + ", '" + user.getEmail() + "')";
-        String query2 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (22, 150" + ", '" + user.getPassword() + "')";
-        String query3 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (23, 150" + ", '" + user.getFirstName() + "')";
-        String query4 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (24, 150" +
+        String query = "INSERT INTO objects(object_id, object_type_id) VALUES" + " (198, 10)";
+        String query1 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (21, 198" + ", '" + user.getEmail() + "')";
+        String query2 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (22, 198" + ", '" + user.getPassword() + "')";
+        String query3 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (23, 198" + ", '" + user.getFirstName() + "')";
+        String query4 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (24, 198" +
                 "" + ", '" + user.getLastName() + "')";
+        String query5 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (55, 198" + ", '" + user.getActivationCode() + "')";
 
         jdbcTemplate.execute(query);
         jdbcTemplate.execute(query1);
         jdbcTemplate.execute(query2);
         jdbcTemplate.execute(query3);
         jdbcTemplate.execute(query4);
+        jdbcTemplate.execute(query5);
+
     }
 
     private void findUserById(Long id) {
@@ -116,5 +128,20 @@ public class AuthenticationController {
 
         System.err.println(jdbcTemplate);
         return jdbcTemplate.queryForList(query, Long.class);
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code){
+        boolean isActivated = usersService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("messageType", "success");
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("message", "Activation code is not found!");
+        }
+
+        return null; //страничку пользователя
     }
 }

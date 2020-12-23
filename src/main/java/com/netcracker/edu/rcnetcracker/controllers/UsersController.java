@@ -45,4 +45,6 @@ public class UsersController {
     public void deleteUser(@RequestParam("id") Long userId) {
         service.delete(userId);
     }
+
+
 }
