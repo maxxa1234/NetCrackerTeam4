@@ -70,6 +70,7 @@ public class UsersController {
 
     @PostMapping("/add")
     public void createUser(@RequestBody User user) {
+        System.out.println();
         service.create(user);
     }
 
