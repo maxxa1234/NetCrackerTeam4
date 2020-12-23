@@ -73,8 +73,8 @@ public class UsersController {
         service.create(user);
     }
 
-    @PutMapping("{id}")
-    public void updateUser(@PathVariable("id") User user) {
+    @PutMapping
+    public void updateUser(@RequestBody User user) {
         service.update(user);
     }
 

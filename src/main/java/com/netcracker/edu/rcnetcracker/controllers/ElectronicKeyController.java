@@ -66,8 +66,8 @@ public class ElectronicKeyController {
         service.delete(keyID);
     }
 
-    @PutMapping("{id}")
-    public void updateKey(@PathVariable("id") Ekey ekey) {
+    @PutMapping
+    public void updateKey(@RequestBody Ekey ekey) {
         service.update(ekey);
     }
 

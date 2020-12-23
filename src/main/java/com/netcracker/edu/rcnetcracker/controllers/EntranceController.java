@@ -62,8 +62,8 @@ public class EntranceController {
         service.delete(entranceId);
     }
 
-    @PutMapping("{id}")
-    public void updateEntrance(@PathVariable("id") Entrance object) {
+    @PutMapping
+    public void updateEntrance(@RequestBody Entrance object) {
         service.update(object);
     }
 
