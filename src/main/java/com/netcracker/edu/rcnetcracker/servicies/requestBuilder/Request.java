@@ -6,6 +6,10 @@ import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
 import java.util.List;
 
+/**
+ * Этот класс хранит начальный зарос, тут желательно ничего не менять
+ * */
+
 public class Request {
 
     protected List<Attr> attributes;
@@ -49,6 +53,9 @@ public class Request {
         this.filterBlock = filterBlock;
     }
 
+    /**
+     * Возвращает готовую строку запроса
+     * */
     @Override
     public String toString() {
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();

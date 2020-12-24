@@ -116,14 +116,32 @@ public class OracleDbAccess implements DbAccess {
                 " AND OBJECTS.OBJECT_ID = " + id);
     }
 
+    /**
+     * Принимаем все критерии, которые могут быть, в requestBuilder все предусмотрено, что бы запрос создался адекватно
+     * но могут быть проблемы со специальными запросами, хотя они вряд ли понадобятся.
+     *
+     * Создается director в его конструктор необходимо передать класс, с корорым мы сейчас работаем.
+     * Для получения запроса у директора вызывается метод buildRequest, в сигнатуру которого необходимо передать все параметры,
+     * несмотря на нулы, внутри все проверяется.
+     *
+     * Вывозв toString строит запрос из 4 частей select, from, where, filter блоки, они описаны внутри класса Request.
+     *
+     * После получения строки запроса вызывается метод selectAll, который возвращает список необходимых элементов,
+     * после чего этот список необходимо передать в PageImpl, который уже построит страницу
+     * */
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
-        Director director = new Director(clazz);
-        List<T> resultElements = selectAll(clazz, director.buildRequest(pageable, filter, sort).toString());
-        Director director1 = new Director(clazz);
-        Long countOfElements = selectCountOfFilterElements(director1.buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).toString());
-        if (pageable == null)
+        List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
+                buildRequest(pageable, filter, sort).
+                toString());
+
+        Long countOfElements = selectCountOfFilterElements(
+                Director.valueOf(clazz).
+                        buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
+                        toString());
+        if (pageable == null) {
             return new PageImpl<>(resultElements);
+        }
         if (resultElements.size() != pageable.getPageSize()) {
             pageable = PageRequest.of(pageable.getPageNumber(), resultElements.size());
         }
@@ -169,14 +187,24 @@ public class OracleDbAccess implements DbAccess {
         return list;
     }
 
+    /**
+     * При использовании специальных запросов, например как getById или countElements, необходимо создать директора,
+     * после чего при візове метода buildRequest передать ссілку на необходимій билдер, внутрь которого передать параметры.
+     * */
+
     @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
-        Director director = new Director(clazz);
-        String request = director.buildRequest(new RequestGetByID(new Request(clazz), id)).toString();
-        List<T> result = selectAll(clazz, request);
+        List<T> result = selectAll(clazz, Director.valueOf(clazz).
+                buildRequest(new RequestGetByID(new Request(clazz), id)).
+                toString());
+
         return result.get(0);
     }
 
+    /**
+     * Получает цифру - общее количество элементов, которые соответсвуют фильтру.
+     * Если фильтра нет, то просто возвращается общее количество элементов БД
+     * */
     private Long selectCountOfFilterElements(String request) {
         List<Long> list = jdbcTemplate.queryForList(request, Long.class);
         return list.get(0);
@@ -187,7 +215,6 @@ public class OracleDbAccess implements DbAccess {
                 " AND object_id = " + objectId;
         return jdbcTemplate.queryForList(sql, Long.class);
     }
-
 
     private String getInsertStatement(Attr attr, Long objectId, Object value) throws IllegalAccessException {
         String newValue = "'" + value + "'";

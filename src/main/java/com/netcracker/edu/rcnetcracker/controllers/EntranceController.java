@@ -1,17 +1,29 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.lowagie.text.DocumentException;
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
+import com.netcracker.edu.rcnetcracker.servicies.ExportPDFService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+/**
+ * Если запрос подразумевает фильтр, то строковые переменные типа имени надо привети к виду "like '%"+name+"%'" иначе не сработает
+ * Фильтры записываются в список, не смотря на их количество и передаются дальше
+ * Указывать несколько критериев сортировки нельзя
+ */
 
 @RequestMapping("/entrance")
 @RestController
@@ -50,8 +62,8 @@ public class EntranceController {
         service.delete(entranceId);
     }
 
-    @PutMapping("{id}")
-    public void updateEntrance(@PathVariable("id") Entrance object) {
+    @PutMapping
+    public void updateEntrance(@RequestBody Entrance object) {
         service.update(object);
     }
 
@@ -66,8 +78,12 @@ public class EntranceController {
         SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
-        if (page != null || size != null)
+        if (page == null && size != null) {
+            pageable = PageRequest.of(0, size);
+        }
+        if (page != null && size != null) {
             pageable = PageRequest.of(page, size);
+        }
         if (typeId != null) {
             filters.add(new SearchCriteria("typeId", typeId));
         }
@@ -75,15 +91,16 @@ public class EntranceController {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (buildingId != null) {
-            filters.add(new SearchCriteria("buildingId","like '%" + buildingId+"%' "));
+            filters.add(new SearchCriteria("buildingId", "like '%" + buildingId + "%' "));
         }
         if (isActive != null) {
-            filters.add(new SearchCriteria("isActive", "like '%"+isActive+"%' "));
+            filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
         }
         if (sort != null) {
             sortCriteria = new SortCriteria(sort);
         }
-        return service.getAll(pageable, filters, sortCriteria);
+        Page<Entrance> page1 = service.getAll(pageable, filters, sortCriteria);
+        return page1;
     }
 
     @GetMapping("/log")
@@ -98,4 +115,23 @@ public class EntranceController {
         return service.getById(id);
     }
 
+    @GetMapping("/export")
+    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename = entrance_" + currentDateTime + ".pdf";
+
+        response.setHeader(headerKey,headerValue);
+
+        SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
+        Page<Entrance> pageEntrance = service.getAll(null,null,sortCriteria);
+        List<Entrance> entranceList = pageEntrance.getContent();
+
+        ExportPDFService exporter = new ExportPDFService(entranceList);
+        exporter.export(response);
+    }
 }

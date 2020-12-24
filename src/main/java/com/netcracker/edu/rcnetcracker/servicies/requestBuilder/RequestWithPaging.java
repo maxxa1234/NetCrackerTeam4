@@ -31,8 +31,8 @@ public class RequestWithPaging extends RequestBuilder {
         request.setFilterBlock(new StringBuilder(
                 request.getFilterBlock() +
                         ") a) where rowRank between " +
-                        (((pageable.getPageNumber() - 1) * pageable.getPageSize()) + 1) +
-                        " AND " + pageable.getPageSize() * pageable.getPageNumber()
+                        (((pageable.getPageNumber()) * pageable.getPageSize())+1) +
+                        " AND " + pageable.getPageSize() * (pageable.getPageNumber()+1)
         ));
     }
 }
