@@ -1,8 +1,10 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
+import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,29 +12,48 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class NotificationService implements Service<Notification> {
+
+    private final OracleDbAccess oracleDbAccess;
+
+    @Autowired
+    public NotificationService(OracleDbAccess oracleDbAccess) {
+        this.oracleDbAccess = oracleDbAccess;
+    }
+
     @Override
     public Notification getById(Long id) {
-        return null;
+        return oracleDbAccess.getById(Notification.class, id);
     }
 
     @Override
-    public void create(Notification object) {
-
+    public boolean create(Notification object) {
+        if (oracleDbAccess.insert(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void delete(Long id) {
-
+    public boolean delete(Long id) {
+        if (oracleDbAccess.delete(Notification.class, id) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Integer update(Notification object) {
-        return null;
+    public boolean update(Notification object) {
+        if (oracleDbAccess.update(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public Page<Notification> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
-        return null;
+        return oracleDbAccess.selectPage(Notification.class, pageable, filter, sort);
     }
-
 }

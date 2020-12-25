@@ -26,18 +26,30 @@ public class EkeyService implements Service<Ekey> {
     }
 
     @Override
-    public void create(Ekey object) {
-        oracleDbAccess.insert(object);
+    public boolean create(Ekey object) {
+        if (oracleDbAccess.insert(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void delete(Long id) {
-        oracleDbAccess.delete(Ekey.class, id);
+    public boolean delete(Long id) {
+        if (oracleDbAccess.delete(Ekey.class, id) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Integer update(Ekey object) {
-        return oracleDbAccess.update(object);
+    public boolean update(Ekey object) {
+        if (oracleDbAccess.update(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

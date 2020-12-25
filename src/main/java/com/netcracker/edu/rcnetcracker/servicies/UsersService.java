@@ -13,8 +13,6 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class UsersService implements Service<User> {
-    @Autowired
-    private OracleDbAccess oracleDbAccess;
 
     private final OracleDbAccess oracleDbAccess;
 
@@ -29,18 +27,30 @@ public class UsersService implements Service<User> {
     }
 
     @Override
-    public void create(User object) {
-        oracleDbAccess.insert(object);
+    public boolean create(User object) {
+        if (oracleDbAccess.insert(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void delete(Long id) {
-        oracleDbAccess.delete(User.class, id);
+    public boolean delete(Long id) {
+        if (oracleDbAccess.delete(User.class, id) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Integer update(User object) {
-        return oracleDbAccess.update(object);
+    public boolean update(User object) {
+        if (oracleDbAccess.update(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -53,20 +63,19 @@ public class UsersService implements Service<User> {
         return null;
     }
 
-    public User findByActivatedCode(String code){
+    public User findByActivatedCode(String code) {
         List<SearchCriteria> filter = new ArrayList<>();
-        filter.add(new SearchCriteria("activationCode", "like '"+code+"' "));
-        User user = oracleDbAccess.selectPage(User.class, null, filter, null)
+        filter.add(new SearchCriteria("activationCode", " = '" + code + "' "));
+
+        return oracleDbAccess.selectPage(User.class, null, filter, null)
                 .getContent()
                 .get(0);
-        System.out.println();
-        return null;
     }
 
     public boolean activateUser(String code) {
         User user = findByActivatedCode(code);
 
-        if(user == null){       //если кода пользователя нет в бд
+        if (user == null) {       //если кода пользователя нет в бд
             return false;
         }
 

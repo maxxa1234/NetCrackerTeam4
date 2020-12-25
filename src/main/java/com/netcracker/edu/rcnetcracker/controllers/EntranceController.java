@@ -53,18 +53,18 @@ public class EntranceController {
     }
 
     @PostMapping("/add")
-    public void createEntrance(@RequestBody Entrance entrance) {
-        service.create(entrance);
+    public boolean createEntrance(@RequestBody Entrance entrance) {
+        return service.create(entrance);
     }
 
     @DeleteMapping(params = {"id"})
-    public void deleteEntrance(@RequestParam("id") Long entranceId) {
-        service.delete(entranceId);
+    public boolean deleteEntrance(@RequestParam("id") Long entranceId) {
+        return service.delete(entranceId);
     }
 
     @PutMapping
-    public void updateEntrance(@RequestBody Entrance object) {
-        service.update(object);
+    public boolean updateEntrance(@RequestBody Entrance object) {
+        return service.update(object);
     }
 
     @GetMapping
@@ -75,7 +75,6 @@ public class EntranceController {
                                  @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
         if (page == null && size != null) {
@@ -96,10 +95,7 @@ public class EntranceController {
         if (isActive != null) {
             filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
         }
-        if (sort != null) {
-            sortCriteria = new SortCriteria(sort);
-        }
-        Page<Entrance> page1 = service.getAll(pageable, filters, sortCriteria);
+        Page<Entrance> page1 = service.getAll(pageable, filters, new SortCriteria(sort));
         return page1;
     }
 

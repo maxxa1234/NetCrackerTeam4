@@ -99,6 +99,13 @@ public class OracleDbAccess implements DbAccess {
             return 1;
         }
         String[] str = new String[0];
+
+        for (int i = 0; i < statements.size(); i ++) {
+            if (statements.get(i) == null) {
+                statements.remove(i);
+            }
+        }
+
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
     }
@@ -110,9 +117,9 @@ public class OracleDbAccess implements DbAccess {
     }
 
     @Override
-    public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
+    public <T extends BaseEntity> Integer delete(Class<T> clazz, Long id) {
         int objTypeId = Processor.getObjtypeId(clazz);
-        jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
+        return jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
                 " AND OBJECTS.OBJECT_ID = " + id);
     }
 
@@ -132,13 +139,13 @@ public class OracleDbAccess implements DbAccess {
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
-                buildRequest(pageable, filter, sort).
-                toString());
+                getRequest(pageable, filter, sort).
+                buildRequest());
 
         Long countOfElements = selectCountOfFilterElements(
                 Director.valueOf(clazz).
-                        buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
-                        toString());
+                        getRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
+                        buildRequest());
         if (pageable == null) {
             return new PageImpl<>(resultElements);
         }
@@ -195,8 +202,8 @@ public class OracleDbAccess implements DbAccess {
     @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
         List<T> result = selectAll(clazz, Director.valueOf(clazz).
-                buildRequest(new RequestGetByID(new Request(clazz), id)).
-                toString());
+                getRequest(new RequestGetByID(new Request(clazz), id)).
+                buildRequest());
 
         return result.get(0);
     }
@@ -220,6 +227,9 @@ public class OracleDbAccess implements DbAccess {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
+            if (attr.valueType.getTable() == "OBJREFERENCE"){
+                return null;
+            }
         }
         return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
                 + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "

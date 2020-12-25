@@ -28,10 +28,8 @@ public class ElectronicKeyController {
                              @RequestParam(value = "isActive", required = false) String isActive,
                              @RequestParam(value = "userId", required = false) String userId,
                              @RequestParam(value = "sort", required = false) String sort) {
-        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
-
         if (page == null && size != null) {
             pageable = PageRequest.of(0, size);
         }
@@ -50,25 +48,22 @@ public class ElectronicKeyController {
         if (userId != null) {
             filters.add(new SearchCriteria("keyCode", userId));
         }
-        if (sort != null) {
-            sortCriteria = new SortCriteria(sort);
-        }
-        return service.getAll(pageable, filters, sortCriteria);
+        return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
     @PostMapping("/add")
-    public void createKey(@RequestBody Ekey ekey) {
-        service.create(ekey);
+    public boolean createKey(@RequestBody Ekey ekey) {
+        return service.create(ekey);
     }
 
     @DeleteMapping("{id}")
-    public void deleteKey(@PathVariable("id") Long keyID) {
-        service.delete(keyID);
+    public boolean deleteKey(@PathVariable("id") Long keyID) {
+        return service.delete(keyID);
     }
 
     @PutMapping
-    public void updateKey(@RequestBody Ekey ekey) {
-        service.update(ekey);
+    public boolean updateKey(@RequestBody Ekey ekey) {
+        return service.update(ekey);
     }
 
 }

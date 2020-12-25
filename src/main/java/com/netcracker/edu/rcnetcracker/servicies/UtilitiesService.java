@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
+import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.model.Utility;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
@@ -27,18 +28,30 @@ public class UtilitiesService implements Service<Utility> {
     }
 
     @Override
-    public void create(Utility object) {
-        oracleDbAccess.insert(object);
+    public boolean create(Utility object) {
+        if (oracleDbAccess.insert(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void delete(Long id) {
-        oracleDbAccess.delete(Utility.class, id);
+    public boolean delete(Long id) {
+        if (oracleDbAccess.delete(Utility.class, id) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public Integer update(Utility object) {
-        return oracleDbAccess.update(object);
+    public boolean update(Utility object) {
+        if (oracleDbAccess.update(object) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Director {
         return director;
     }
 
-    public Request buildRequest(Pageable pageable, List<SearchCriteria> filters, SortCriteria sortCriteria) {
+    public Request getRequest(Pageable pageable, List<SearchCriteria> filters, SortCriteria sortCriteria) {
 
         if (pageable == null) {
             setBuilder(new RequestWithoutPaging(request, filters, sortCriteria));
@@ -47,7 +47,7 @@ public class Director {
         return builder.getRequest();
     }
 
-    public Request buildRequest(RequestBuilder builder) {
+    public Request getRequest(RequestBuilder builder) {
         setBuilder(builder);
 
         this.builder.buildSelectBlock();

@@ -32,7 +32,6 @@ public class UsersController {
                              @RequestParam(value = "receiveUtilityNotification", required = false) String receiveUtilityNotification,
                              @RequestParam(value = "roleID", required = false) String roleID,
                              @RequestParam(value = "sort", required = false) String sort) {
-        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
         if (page == null && size != null) {
@@ -62,26 +61,22 @@ public class UsersController {
         if (roleID != null) {
             filters.add(new SearchCriteria("roleID", roleID));
         }
-        if (sort != null) {
-            sortCriteria = new SortCriteria(sort);
-        }
-        return service.getAll(pageable, filters, sortCriteria);
+        return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
     @PostMapping("/add")
-    public void createUser(@RequestBody User user) {
-        System.out.println();
-        service.create(user);
+    public boolean createUser(@RequestBody User user) {
+        return service.create(user);
     }
 
     @PutMapping
-    public void updateUser(@RequestBody User user) {
-        service.update(user);
+    public boolean updateUser(@RequestBody User user) {
+        return service.update(user);
     }
 
     @DeleteMapping(params = {"id"})
-    public void deleteUser(@RequestParam("id") Long userId) {
-        service.delete(userId);
+    public boolean deleteUser(@RequestParam("id") Long userId) {
+        return service.delete(userId);
     }
 
 

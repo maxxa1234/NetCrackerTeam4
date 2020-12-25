@@ -5,19 +5,15 @@ import com.netcracker.edu.rcnetcracker.servicies.MailSenderService;
 import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 public class AuthenticationController {
 
     private final UsersService usersService;
@@ -43,8 +39,8 @@ public class AuthenticationController {
 
         user.setActivationCode(UUID.randomUUID().toString()); //создаём активационный код
 
-        //usersService.create(user);
-
+        usersService.create(user);
+        System.out.println();
         String message = String.format(
                 "Hello, %s! \n" +
                         "You are welcome! Please, visit next link: http://localhost:8085/activate/%s",
@@ -53,7 +49,6 @@ public class AuthenticationController {
         );
         mailSenderService.sendEmail("testingsender12368@gmail.com", "Activation code", message);
 
-        save(user);
 
         if (!StringUtils.isEmpty(user.getEmail())) {
 //            String message = String.format(
@@ -98,14 +93,17 @@ public class AuthenticationController {
         return user == null;
     }
 
+    /**
+     * Можно использовать userService для CRUD операций
+     * */
     private void save(User user) {
-        String query = "INSERT INTO objects(object_id, object_type_id) VALUES" + " (198, 10)";
-        String query1 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (21, 198" + ", '" + user.getEmail() + "')";
-        String query2 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (22, 198" + ", '" + user.getPassword() + "')";
-        String query3 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (23, 198" + ", '" + user.getFirstName() + "')";
-        String query4 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (24, 198" +
+        String query = "INSERT INTO objects(object_id, object_type_id) VALUES" + " (203, 10)";
+        String query1 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (21, 203" + ", '" + user.getEmail() + "')";
+        String query2 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (22, 203" + ", '" + user.getPassword() + "')";
+        String query3 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (23, 203" + ", '" + user.getFirstName() + "')";
+        String query4 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (24, 203" +
                 "" + ", '" + user.getLastName() + "')";
-        String query5 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (55, 198" + ", '" + user.getActivationCode() + "')";
+        String query5 = "INSERT INTO attributes(attr_id, object_id, value) VALUES" + " (55, 203" + ", '" + user.getActivationCode() + "')";
 
         jdbcTemplate.execute(query);
         jdbcTemplate.execute(query1);
@@ -116,13 +114,18 @@ public class AuthenticationController {
 
     }
 
+    /**
+     * Можно использовать getById из userService
+    * */
     private void findUserById(Long id) {
         String query = "SELECT * FROM attributes WHERE OBJECT_ID = " + id;
 
         jdbcTemplate.execute(query);
 //        return user???
     }
-
+    /**
+     * Можно добавить фильтр и получать страничку, из которой потом извлекать контент
+     * */
     private List<Long> findUserIdByEmail(String email) {
         String query = "SELECT OBJECT_ID FROM attributes WHERE value = '" + email + "'";
 

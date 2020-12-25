@@ -19,7 +19,13 @@ public abstract class RequestBuilder {
         if (filter == null || filter.size() <= 0)
             this.filter = new ArrayList<>();
         else this.filter = filter;
-        this.sort = sort;
+        if (sort != null){
+            if (sort.getDirection() == null || sort.getProperty() == null){
+                this.sort = null;
+            }else {
+                this.sort = sort;
+            }
+        }
         this.pageable = pageable;
     }
 

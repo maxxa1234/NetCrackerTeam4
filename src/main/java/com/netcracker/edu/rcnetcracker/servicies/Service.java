@@ -11,11 +11,11 @@ public interface Service<T> {
 
     T getById(Long id);
 
-    void create(T object);
+    boolean create(T object);
 
-    void delete(Long id);
+    boolean delete(Long id);
 
-    Integer update(T object);
+    boolean update(T object);
 
     Page<T> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort);
 
