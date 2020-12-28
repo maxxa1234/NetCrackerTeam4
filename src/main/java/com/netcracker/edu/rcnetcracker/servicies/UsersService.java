@@ -59,8 +59,12 @@ public class UsersService implements Service<User> {
     }
 
     public User findUserByEmail(String email) {
+        List<SearchCriteria> filter = new ArrayList<>();
+        filter.add(new SearchCriteria("email", " = '" + email + "' "));
 
-        return null;
+        return oracleDbAccess.selectPage(User.class, null, filter, null)
+                .getContent()
+                .get(0);
     }
 
     public User findByActivatedCode(String code) {
@@ -80,7 +84,7 @@ public class UsersService implements Service<User> {
         }
 
         user.setActivationCode(null);    //пользователь подтвердил почтовый ящик
-        //.save(user); cохранить юзера б бд
+        update(user);
 
         return true;
     }

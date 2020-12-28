@@ -3,8 +3,10 @@ package com.netcracker.edu.rcnetcracker.controllers;
 import com.lowagie.text.DocumentException;
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.Logger;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
 import com.netcracker.edu.rcnetcracker.servicies.ExportPDFService;
+import com.netcracker.edu.rcnetcracker.servicies.LoggerService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,11 @@ import java.util.List;
 public class EntranceController {
 
     private final EntranceService service;
+    private final LoggerService loggerService;
 
-    public EntranceController(EntranceService service) {
+    public EntranceController(EntranceService service,LoggerService loggerService) {
         this.service = service;
+        this.loggerService = loggerService;
     }
 
     @Autowired
@@ -123,11 +127,11 @@ public class EntranceController {
 
         response.setHeader(headerKey,headerValue);
 
-        SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
-        Page<Entrance> pageEntrance = service.getAll(null,null,sortCriteria);
-        List<Entrance> entranceList = pageEntrance.getContent();
+        //SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
+        Page<Logger> pageEntrance = loggerService.getAll(null,null,null);
+        List<Logger> loggerList = pageEntrance.getContent();
 
-        ExportPDFService exporter = new ExportPDFService(entranceList);
+        ExportPDFService exporter = new ExportPDFService(loggerList);
         exporter.export(response);
     }
 }
