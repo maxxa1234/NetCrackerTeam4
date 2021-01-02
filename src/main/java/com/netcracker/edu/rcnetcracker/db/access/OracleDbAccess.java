@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +102,7 @@ public class OracleDbAccess implements DbAccess {
         }
         String[] str = new String[0];
 
-        for (int i = 0; i < statements.size(); i ++) {
+        for (int i = 0; i < statements.size(); i++) {
             if (statements.get(i) == null) {
                 statements.remove(i);
             }
@@ -132,10 +134,9 @@ public class OracleDbAccess implements DbAccess {
      * несмотря на нулы, внутри все проверяется.
      *
      * Вывозв toString строит запрос из 4 частей select, from, where, filter блоки, они описаны внутри класса Request.
-     *
      * После получения строки запроса вызывается метод selectAll, который возвращает список необходимых элементов,
      * после чего этот список необходимо передать в PageImpl, который уже построит страницу
-     * */
+     */
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
@@ -197,7 +198,7 @@ public class OracleDbAccess implements DbAccess {
     /**
      * При использовании специальных запросов, например как getById или countElements, необходимо создать директора,
      * после чего при візове метода buildRequest передать ссілку на необходимій билдер, внутрь которого передать параметры.
-     * */
+     */
 
     @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
@@ -211,7 +212,7 @@ public class OracleDbAccess implements DbAccess {
     /**
      * Получает цифру - общее количество элементов, которые соответсвуют фильтру.
      * Если фильтра нет, то просто возвращается общее количество элементов БД
-     * */
+     */
     private Long selectCountOfFilterElements(String request) {
         List<Long> list = jdbcTemplate.queryForList(request, Long.class);
         return list.get(0);
@@ -227,13 +228,21 @@ public class OracleDbAccess implements DbAccess {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
-            if (attr.valueType.getTable() == "OBJREFERENCE"){
+            if (attr.valueType.getTable() == "OBJREFERENCE") {
                 return null;
             }
         }
-        return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
-                + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
-                + newValue + ")";
+        if (attr.valueType.getValueType().equals("DATE_VALUE")){
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            newValue = dateFormat.format(value);
+            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", to_date('"
+                    + newValue + "', 'DD-MM-YYYY HH24:MI:SS'))";
+        }else{
+            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
+                    + newValue + ")";
+        }
     }
 
     private String getDeleteStatement(Attr attr, Long objectId) {
