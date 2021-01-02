@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
+import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;

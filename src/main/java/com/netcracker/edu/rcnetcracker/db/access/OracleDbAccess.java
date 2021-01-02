@@ -72,7 +72,7 @@ public class OracleDbAccess implements DbAccess {
     @Override
     public <T extends BaseEntity> int insert(T obj) {
 
-        Long id = jdbcTemplate.queryForList("select OBJECTS_SEQ.NEXTVAL from dual;", Long.class).get(0);
+        Long id = jdbcTemplate.queryForList("select OBJECTS_SEQ.NEXTVAL from dual ", Long.class).get(0);
 
 //        Long objId = obj.getId();
 //        if (!isUnique(objId)) {
@@ -237,11 +237,11 @@ public class OracleDbAccess implements DbAccess {
             }
         }
         if (attr.valueType.getValueType().equals("DATE_VALUE")){
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             newValue = dateFormat.format(value);
             return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
-                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", to_date('"
-                    + newValue + "', 'DD-MM-YYYY HH24:MI:SS'))";
+                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", (TO_DATE('"
+                    + newValue + "', 'yyyy-mm-dd hh24:mi:ss')))";
         }else{
             return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
                     + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
