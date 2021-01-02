@@ -71,15 +71,19 @@ public class OracleDbAccess implements DbAccess {
 
     @Override
     public <T extends BaseEntity> int insert(T obj) {
-        Long objId = obj.getId();
-        if (!isUnique(objId)) {
-            return -1;
-        }
+
+        Long id = jdbcTemplate.queryForList("select OBJECTS_SEQ.NEXTVAL from dual;", Long.class).get(0);
+
+//        Long objId = obj.getId();
+//        if (!isUnique(objId)) {
+//            return -1;
+//        }
+
         ArrayList<String> statements = new ArrayList<>();
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
             statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
-                    + objId + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
+                    + id + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
                     + Processor.getObjtypeId(obj.getClass()) + "')");
 
             for (int i = 0; i < attributes.size(); i++) {
@@ -90,10 +94,10 @@ public class OracleDbAccess implements DbAccess {
                 if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
                     List<Long> list = (List<Long>) attributes.get(i).field.get(obj);
                     for (int j = 0; j < list.size(); j++) {
-                        statements.add(getInsertStatement(attributes.get(i), objId, list.get(j)));
+                        statements.add(getInsertStatement(attributes.get(i), id, list.get(j)));
                     }
                 } else {
-                    statements.add(getInsertStatement(attributes.get(i), objId, attributes.get(i).field.get(obj)));
+                    statements.add(getInsertStatement(attributes.get(i), id, attributes.get(i).field.get(obj)));
                 }
             }
         } catch (IllegalAccessException e) {

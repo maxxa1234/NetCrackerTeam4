@@ -15,6 +15,9 @@ public class Utility extends BaseEntity{
     @Attribute(id = 38, valueType = ValueType.DATE_VALUE)
     private Date date;
 
+    @Attribute(id = 47 ,valueType = ValueType.VALUE)
+    private Integer lastMonthReadings;
+
     @Attribute(id = 39, valueType = ValueType.VALUE)
     private Integer currentMonthReading;
 

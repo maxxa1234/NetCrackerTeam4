@@ -4,7 +4,6 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
 import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
-import java.sql.Time;
 import java.util.Date;
 
 @ObjectType(id = 1)
@@ -18,7 +17,7 @@ public class Logger extends BaseEntity {
 	protected Long eKeyId;
 
 	@Attribute(id = 3, valueType = ValueType.DATE_VALUE)
-	protected String date;
+	protected Date date;
 
 	@Attribute(id = 4, valueType = ValueType.DATE_VALUE)
 	protected String time;
@@ -39,11 +38,11 @@ public class Logger extends BaseEntity {
 		this.eKeyId = eKeyId;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

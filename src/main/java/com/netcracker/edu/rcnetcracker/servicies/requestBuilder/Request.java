@@ -29,10 +29,15 @@ public class Request {
                     || attributes.get(i).valueType == ValueType.LIST_VALUE) {
                 continue;
             }
-
-            selectBlock.append(",\n listagg(a"+i+".")
-                    .append(attributes.get(i).valueType.getValueType()+") ")
-                    .append("\""+attributes.get(i).field.getName()+"\"");
+            if (attributes.get(i).valueType == ValueType.DATE_VALUE){
+                selectBlock.append(",\n to_date(listagg(a"+i+".")
+                        .append(attributes.get(i).valueType.getValueType()+")) ")
+                        .append("\""+attributes.get(i).field.getName()+"\"");
+            }else {
+                selectBlock.append(",\n listagg(a"+i+".")
+                        .append(attributes.get(i).valueType.getValueType()+") ")
+                        .append("\""+attributes.get(i).field.getName()+"\"");
+            }
 
             fromBlock.append("left join "+attributes.get(i).valueType.getTable()+" a"+i+" ")
                     .append("on o.object_id = a"+i+".object_id and a"+i+".attr_id = "+attributes.get(i).id+" \n");
