@@ -13,8 +13,8 @@ import java.util.List;
 
 @org.springframework.stereotype.Service
 public class UsersService implements Service<User> {
-    @Autowired
-    private OracleDbAccess oracleDbAccess;
+//    @Autowired
+//    private OracleDbAccess oracleDbAccess;
 
     private final OracleDbAccess oracleDbAccess;
 

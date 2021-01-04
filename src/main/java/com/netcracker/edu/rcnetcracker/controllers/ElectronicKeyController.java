@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Ekey;
+import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.servicies.EkeyService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -69,6 +70,11 @@ public class ElectronicKeyController {
     @PutMapping
     public void updateKey(@RequestBody Ekey ekey) {
         service.update(ekey);
+    }
+
+    @RequestMapping(value = "/get-one/{id}")
+    public Ekey getOne(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
 }
