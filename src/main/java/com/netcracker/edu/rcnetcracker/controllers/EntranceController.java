@@ -33,6 +33,7 @@ public class EntranceController {
 
     private final EntranceService service;
     private final LoggerService loggerService;
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntranceController.class.getName());
 
     public EntranceController(EntranceService service,LoggerService loggerService) {
         this.service = service;
@@ -118,6 +119,10 @@ public class EntranceController {
     @GetMapping("/export")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
+//        logger.debug("This is a debug message"); //TODO: почистить
+//        logger.info("This is an info message");
+//        logger.warn("This is a warn message");
+//        logger.error("This is an error message");
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
