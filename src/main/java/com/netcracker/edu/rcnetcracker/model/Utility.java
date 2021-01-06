@@ -88,4 +88,12 @@ public class Utility extends BaseEntity{
     public void setServiceID(Long serviceID) {
         this.serviceID = serviceID;
     }
+
+    public Integer getLastMonthReadings() {
+        return lastMonthReadings;
+    }
+
+    public void setLastMonthReadings(Integer lastMonthReadings) {
+        this.lastMonthReadings = lastMonthReadings;
+    }
 }
