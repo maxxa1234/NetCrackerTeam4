@@ -24,19 +24,19 @@ public class Address extends BaseEntity {
         this.flat = flat;
     }
 
-    public Building getBuildingID() {
+    public Building getBuilding() {
         return building;
     }
 
-    public void setBuildingID(Building building) {
+    public void setBuilding(Building building) {
         this.building = building;
     }
 
-    public Utility getUtilityID() {
+    public Utility getUtility() {
         return utility;
     }
 
-    public void setUtilityID(Utility utility) {
+    public void setUtility(Utility utility) {
         this.utility = utility;
     }
 }

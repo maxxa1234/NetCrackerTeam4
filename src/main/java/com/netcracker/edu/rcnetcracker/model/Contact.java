@@ -24,19 +24,19 @@ public class Contact extends BaseEntity {
         this.value = value;
     }
 
-    public ContactType getContactTypeId() {
+    public ContactType getContactType() {
         return contactType;
     }
 
-    public void setContactTypeId(ContactType contactType) {
+    public void setContactType(ContactType contactType) {
         this.contactType = contactType;
     }
 
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 
-    public void setUserId(User userId) {
+    public void setUser(User userId) {
         this.user = user;
     }
 }

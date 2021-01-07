@@ -22,19 +22,19 @@ public class Entrance extends BaseEntity {
     @Attribute(id = 6, valueType = ValueType.VALUE)
     protected Boolean isActive;
 
-    public Type getTypeId() {
+    public Type getType() {
         return type;
     }
 
-    public void setTypeId(Type type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
-    public Building getBuildingId() {
+    public Building getBuilding() {
         return building;
     }
 
-    public void setBuildingId(Building building) {
+    public void setBuilding(Building building) {
         this.building = building;
     }
 

@@ -8,13 +8,13 @@ import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 public class Building extends BaseEntity {
 
     @Attribute(id = 15, valueType = ValueType.VALUE)
-    protected Long number;
+    protected String number;
 
-    public Long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 }

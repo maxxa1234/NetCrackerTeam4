@@ -120,11 +120,11 @@ public class User extends BaseEntity {
         this.receiveUtilityNotification = receiveUtilityNotification;
     }
 
-    public Role getRoleID() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRoleID(Role roleID) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
