@@ -11,10 +11,10 @@ public class Address extends BaseEntity {
     private String flat;
 
     @Attribute(id = 16)
-    private Long buildingID;
+    private Building building;
 
     @Attribute(id = 18)
-    private Long utilityID;
+    private Utility utility;
 
     public String getFlat() {
         return flat;
@@ -24,19 +24,19 @@ public class Address extends BaseEntity {
         this.flat = flat;
     }
 
-    public Long getBuildingID() {
-        return buildingID;
+    public Building getBuildingID() {
+        return building;
     }
 
-    public void setBuildingID(Long buildingID) {
-        this.buildingID = buildingID;
+    public void setBuildingID(Building building) {
+        this.building = building;
     }
 
-    public Long getUtilityID() {
-        return utilityID;
+    public Utility getUtilityID() {
+        return utility;
     }
 
-    public void setUtilityID(Long utilityID) {
-        this.utilityID = utilityID;
+    public void setUtilityID(Utility utility) {
+        this.utility = utility;
     }
 }
