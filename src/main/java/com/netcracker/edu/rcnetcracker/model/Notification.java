@@ -19,10 +19,10 @@ public class Notification extends BaseEntity {
     private String title;
 
     @Attribute(id = 35)
-    private Long categoryId;
+    private Category category;
 
     @Attribute(id = 36)
-    private Long createdBy;
+    private User createdBy;
 
     public String getText() {
         return text;
@@ -48,19 +48,19 @@ public class Notification extends BaseEntity {
         this.title = title;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Category getCategoryId() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryId(Category category) {
+        this.category = category;
     }
 
-    public Long getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

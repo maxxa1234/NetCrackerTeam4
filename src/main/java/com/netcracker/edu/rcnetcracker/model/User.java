@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     private Boolean receiveUtilityNotification;
 
     @Attribute(id = 28)
-    private Long roleID;
+    private Role role;
 
     @Attribute(id = 55, valueType = ValueType.VALUE)
     private String activationCode;
@@ -120,11 +120,11 @@ public class User extends BaseEntity {
         this.receiveUtilityNotification = receiveUtilityNotification;
     }
 
-    public Long getRoleID() {
-        return roleID;
+    public Role getRoleID() {
+        return role;
     }
 
-    public void setRoleID(Long roleID) {
-        this.roleID = roleID;
+    public void setRoleID(Role roleID) {
+        this.role = role;
     }
 }

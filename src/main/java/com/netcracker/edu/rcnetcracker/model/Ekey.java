@@ -14,7 +14,7 @@ public class Ekey extends BaseEntity {
     protected Boolean isActive;
 
     @Attribute(id = 10)
-    protected Long userId;
+    protected User user;
 
     public String getKeyCode() {
         return keyCode;
@@ -32,11 +32,11 @@ public class Ekey extends BaseEntity {
         isActive = active;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(User userId) {
+        this.user = user;
     }
 }

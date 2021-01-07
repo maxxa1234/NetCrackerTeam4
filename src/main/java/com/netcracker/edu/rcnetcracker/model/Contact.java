@@ -11,10 +11,10 @@ public class Contact extends BaseEntity {
     private String value;
 
     @Attribute(id = 30)
-    private Long contactTypeId;
+    private ContactType contactType;
 
     @Attribute(id = 31)
-    private Long userId;
+    private User user;
 
     public String getValue() {
         return value;
@@ -24,19 +24,19 @@ public class Contact extends BaseEntity {
         this.value = value;
     }
 
-    public Long getContactTypeId() {
-        return contactTypeId;
+    public ContactType getContactTypeId() {
+        return contactType;
     }
 
-    public void setContactTypeId(Long contactTypeId) {
-        this.contactTypeId = contactTypeId;
+    public void setContactTypeId(ContactType contactType) {
+        this.contactType = contactType;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(User userId) {
+        this.user = user;
     }
 }
