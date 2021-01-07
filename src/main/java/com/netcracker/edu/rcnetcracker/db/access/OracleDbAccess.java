@@ -146,7 +146,7 @@ public class OracleDbAccess implements DbAccess {
         List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
                 getRequest(pageable, filter, sort).
                 buildRequest());
-
+        System.out.println();
         Long countOfElements = selectCountOfFilterElements(
                 Director.valueOf(clazz).
                         getRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
@@ -173,12 +173,17 @@ public class OracleDbAccess implements DbAccess {
                             attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
                                     rs.getLong("id")));
                         } else if (attributes.get(i).valueType == ValueType.REF_VALUE) {
-                            List<Long> references = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
-                            Long ref = null;
-                            if (!references.isEmpty()) {
-                                ref = references.get(0);
+                            List<Long> referencesId = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
+                            List<BaseEntity> references = new ArrayList<>();
+                            for (int j =0; j< referencesId.size(); j++){
+                                references.add(getById(attributes.get(i).clazz, referencesId.get(j)));
                             }
-                            attributes.get(i).field.set(obj, ref);
+                            if (references.size() <= 0){
+                                attributes.get(i).field.set(obj, null);
+                            }else {
+                                attributes.get(i).field.set(obj, references.get(0));
+                            }
+
                         } else {
                             attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
                                     attributes.get(i).field.getType()));
@@ -209,7 +214,9 @@ public class OracleDbAccess implements DbAccess {
         List<T> result = selectAll(clazz, Director.valueOf(clazz).
                 getRequest(new RequestGetByID(new Request(clazz), id)).
                 buildRequest());
-
+        if (result.size()<=0){
+            return null;
+        }
         return result.get(0);
     }
 

@@ -1,5 +1,6 @@
 package com.netcracker.edu.rcnetcracker.db.annotations;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 
@@ -22,7 +23,7 @@ public class Processor {
         for (int i = 0; i < fields.length; i++) {
             Attribute att = fields[i].getAnnotation(Attribute.class);
             if (att != null) {
-                attributes.add(new Attr(att.id(), att.valueType(), fields[i]));
+                attributes.add(new Attr(att.id(), att.valueType(), fields[i], att.clazz()));
             }
         }
 
