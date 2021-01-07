@@ -18,10 +18,10 @@ public class Notification extends BaseEntity {
     @Attribute(id = 34, valueType = ValueType.VALUE)
     private String title;
 
-    @Attribute(id = 35)
+    @Attribute(id = 35, clazz = Category.class)
     private Category category;
 
-    @Attribute(id = 36)
+    @Attribute(id = 36, clazz = User.class)
     private User createdBy;
 
     public String getText() {

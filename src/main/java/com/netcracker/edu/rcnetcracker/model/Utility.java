@@ -30,8 +30,8 @@ public class Utility extends BaseEntity{
     @Attribute(id = 42, valueType = ValueType.VALUE)
     private String photoURL;
 
-    @Attribute(id = 43)
-    private Long serviceID;
+    @Attribute(id = 43, clazz = Service.class)
+    private Service service;
 
     public String getBankBook() {
         return bankBook;
@@ -81,12 +81,12 @@ public class Utility extends BaseEntity{
         this.photoURL = photoURL;
     }
 
-    public Long getServiceID() {
-        return serviceID;
+    public Service getService() {
+        return service;
     }
 
-    public void setServiceID(Long serviceID) {
-        this.serviceID = serviceID;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public Integer getLastMonthReadings() {

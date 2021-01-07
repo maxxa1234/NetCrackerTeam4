@@ -13,7 +13,7 @@ public class Ekey extends BaseEntity {
     @Attribute(id = 9, valueType = ValueType.VALUE)
     protected Boolean isActive;
 
-    @Attribute(id = 10)
+    @Attribute(id = 10, clazz = User.class)
     protected User user;
 
     public String getKeyCode() {

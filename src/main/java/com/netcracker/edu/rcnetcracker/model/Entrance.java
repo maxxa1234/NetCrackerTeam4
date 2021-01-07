@@ -9,10 +9,10 @@ import java.util.List;
 @ObjectType(id = 2)
 public class Entrance extends BaseEntity {
 
-    @Attribute(id = 5)
+    @Attribute(id = 5, clazz = Type.class)
     protected Type type;
 
-    @Attribute(id = 7)
+    @Attribute(id = 7, clazz = Building.class)
     protected Building building;
 
     private RoleToEntrance roleToEntrance;

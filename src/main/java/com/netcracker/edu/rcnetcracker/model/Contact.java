@@ -10,10 +10,10 @@ public class Contact extends BaseEntity {
     @Attribute(id = 29, valueType = ValueType.VALUE)
     private String value;
 
-    @Attribute(id = 30)
+    @Attribute(id = 30, clazz = ContactType.class)
     private ContactType contactType;
 
-    @Attribute(id = 31)
+    @Attribute(id = 31, clazz = User.class)
     private User user;
 
     public String getValue() {

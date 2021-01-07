@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     @Attribute(id = 27, valueType = ValueType.VALUE)
     private Boolean receiveUtilityNotification;
 
-    @Attribute(id = 28)
+    @Attribute(id = 28, clazz = Role.class)
     private Role role;
 
     @Attribute(id = 55, valueType = ValueType.VALUE)
