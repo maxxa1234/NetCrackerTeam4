@@ -259,7 +259,14 @@ public class OracleDbAccess implements DbAccess {
         if (value == null) {
             newValue = null;
         }
-        return "UPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = " + newValue
-                + " WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        if (attr.valueType == ValueType.DATE_VALUE){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            newValue = dateFormat.format(value);
+            return "UPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = to_date('" + newValue
+                    + "', 'yyyy-mm-dd hh24:mi:ss') WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        }else {
+            return "UPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = " + newValue
+                    + " WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        }
     }
 }

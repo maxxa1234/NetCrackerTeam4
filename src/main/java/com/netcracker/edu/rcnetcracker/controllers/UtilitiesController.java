@@ -66,8 +66,8 @@ public class UtilitiesController {
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
-    @GetMapping(params = {"id"})
-    public Utility getUtility(@RequestParam("id") Long utilityID) {
+    @GetMapping("{id}")
+    public Utility getUtility(@PathVariable("id") Long utilityID) {
         return service.getById(utilityID);
     }
 
@@ -76,10 +76,8 @@ public class UtilitiesController {
         return service.create(utility);
     }
 
-    @PutMapping(value = "/attachPhoto/{id}")
-    public boolean attachPhoto(@PathVariable("id") Long id, @RequestParam(value = "photoURL", required = true) String photoURL) {
-        Utility utility = service.getById(id);
-        utility.setPhotoURL(photoURL);
+    @PutMapping
+    public boolean updateUtility(@RequestBody Utility utility) {
         return service.update(utility);
     }
 
