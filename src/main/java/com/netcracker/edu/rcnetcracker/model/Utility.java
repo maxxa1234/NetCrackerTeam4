@@ -16,13 +16,13 @@ public class Utility extends BaseEntity{
     private Date date;
 
     @Attribute(id = 47 ,valueType = ValueType.VALUE)
-    private Integer lastMonthReadings;
+    private Integer lastMonthReading;
 
     @Attribute(id = 39, valueType = ValueType.VALUE)
     private Integer currentMonthReading;
 
     @Attribute(id = 40, valueType = ValueType.VALUE)
-    private Float ammountToPay;
+    private Float amountToPay;
 
     @Attribute(id = 41, valueType = ValueType.VALUE)
     private Boolean status;
@@ -31,7 +31,7 @@ public class Utility extends BaseEntity{
     private String photoURL;
 
     @Attribute(id = 43)
-    private Long serviceID;
+    private Service service;
 
     public String getBankBook() {
         return bankBook;
@@ -57,12 +57,12 @@ public class Utility extends BaseEntity{
         this.currentMonthReading = currentMonthReading;
     }
 
-    public Float getAmmountToPay() {
-        return ammountToPay;
+    public Float getAmountToPay() {
+        return amountToPay;
     }
 
-    public void setAmmountToPay(Float ammountToPay) {
-        this.ammountToPay = ammountToPay;
+    public void setAmountToPay(Float amountToPay) {
+        this.amountToPay = amountToPay;
     }
 
     public Boolean getStatus() {
@@ -81,19 +81,19 @@ public class Utility extends BaseEntity{
         this.photoURL = photoURL;
     }
 
-    public Long getServiceID() {
-        return serviceID;
+    public Service getServiceID() {
+        return service;
     }
 
-    public void setServiceID(Long serviceID) {
-        this.serviceID = serviceID;
+    public void setServiceID(Service service) {
+        this.service = service;
     }
 
-    public Integer getLastMonthReadings() {
-        return lastMonthReadings;
+    public Integer getLastMonthReading() {
+        return lastMonthReading;
     }
 
-    public void setLastMonthReadings(Integer lastMonthReadings) {
-        this.lastMonthReadings = lastMonthReadings;
+    public void setLastMonthReading(Integer lastMonthReading) {
+        this.lastMonthReading = lastMonthReading;
     }
 }
