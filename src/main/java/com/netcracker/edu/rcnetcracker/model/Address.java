@@ -7,14 +7,14 @@ import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 @ObjectType(id = 8)
 public class Address extends BaseEntity {
 
-    @Attribute(id = 17)
+    @Attribute(id = 17, valueType = ValueType.VALUE)
     private String flat;
 
-    @Attribute(id = 16)
-    private Long buildingID;
+    @Attribute(id = 16, clazz = Building.class)
+    private Building building;
 
-    @Attribute(id = 18)
-    private Long utilityID;
+    @Attribute(id = 18, clazz = Utility.class)
+    private Utility utility;
 
     public String getFlat() {
         return flat;
@@ -24,19 +24,19 @@ public class Address extends BaseEntity {
         this.flat = flat;
     }
 
-    public Long getBuildingID() {
-        return buildingID;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuildingID(Long buildingID) {
-        this.buildingID = buildingID;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
-    public Long getUtilityID() {
-        return utilityID;
+    public Utility getUtility() {
+        return utility;
     }
 
-    public void setUtilityID(Long utilityID) {
-        this.utilityID = utilityID;
+    public void setUtility(Utility utility) {
+        this.utility = utility;
     }
 }

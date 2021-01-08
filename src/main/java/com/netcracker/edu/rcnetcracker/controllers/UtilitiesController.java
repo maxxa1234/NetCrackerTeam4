@@ -9,12 +9,15 @@ import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 @RequestMapping("utilities")
 @RestController
 public class UtilitiesController {
+
 
     private final UtilitiesService service;
 
@@ -31,8 +34,9 @@ public class UtilitiesController {
                                 @RequestParam(value = "name", required = false) String name,
                                 @RequestParam(value = "dateTo", required = false) String dateTo,
                                 @RequestParam(value = "currentMonthReading", required = false) String currentMonthReading,
+                                @RequestParam(value = "lastMonthReading", required = false) String lastMonthReading,
                                 @RequestParam(value = "status", required = false) String status,
-                                @RequestParam(value = "serviceID", required = false) String serviceID,
+                                @RequestParam(value = "service", required = false) String serviceID,
                                 @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
@@ -57,11 +61,14 @@ public class UtilitiesController {
         if (currentMonthReading != null) {
             filters.add(new SearchCriteria("currentMonthReading", "like '%" + currentMonthReading + "%' "));
         }
+        if (currentMonthReading != null) {
+            filters.add(new SearchCriteria("lastMonthReading", "like '%" + lastMonthReading + "%' "));
+        }
         if (status != null) {
             filters.add(new SearchCriteria("status", "like '%" + status + "%' "));
         }
         if (serviceID != null) {
-            filters.add(new SearchCriteria("roleID", serviceID));
+            filters.add(new SearchCriteria("service", serviceID));
         }
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }
@@ -78,7 +85,37 @@ public class UtilitiesController {
 
     @PutMapping
     public boolean updateUtility(@RequestBody Utility utility) {
+        if (utility.getEndMonthReading() == null || utility.getStartMonthReading() == null){
+            Utility utilityFromDB = service.getById(utility.getId());
+            if (utility.getEndMonthReading() != null) {
+                if (utility.getEndMonthReading() > utilityFromDB.getStartMonthReading()) {
+                    utility.setAmountToPay(
+                            (utility.getEndMonthReading() - utility.getStartMonthReading())
+                                    * utility.getService().getTariff()
+                    );
+                    utility.setStatus(true);
+                    /**
+                     * Создание новой записи, при условии, что происходит внесение новых записей
+                     * */
+                    Utility newUtility = new Utility();
+                    newUtility.setDate(monthIncrement(utility.getDate()));
+                    newUtility.setStartMonthReading(utility.getEndMonthReading());
+                    newUtility.setService(utility.getService());
+                    newUtility.setStatus(false);
+                    service.create(newUtility);
+
+                }
+            }
+        }
+
         return service.update(utility);
+    }
+
+    private Date monthIncrement(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, 1);
+        return calendar.getTime();
     }
 
 }

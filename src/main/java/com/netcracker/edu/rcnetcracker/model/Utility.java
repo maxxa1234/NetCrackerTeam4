@@ -16,10 +16,10 @@ public class Utility extends BaseEntity{
     private Date date;
 
     @Attribute(id = 47 ,valueType = ValueType.VALUE)
-    private Integer lastMonthReading;
+    private Integer startMonthReading;
 
     @Attribute(id = 39, valueType = ValueType.VALUE)
-    private Integer currentMonthReading;
+    private Integer endMonthReading;
 
     @Attribute(id = 40, valueType = ValueType.VALUE)
     private Float amountToPay;
@@ -30,7 +30,7 @@ public class Utility extends BaseEntity{
     @Attribute(id = 42, valueType = ValueType.VALUE)
     private String photoURL;
 
-    @Attribute(id = 43)
+    @Attribute(id = 43, clazz = Service.class)
     private Service service;
 
     public String getBankBook() {
@@ -49,12 +49,12 @@ public class Utility extends BaseEntity{
         this.date = date;
     }
 
-    public Integer getCurrentMonthReading() {
-        return currentMonthReading;
+    public Integer getEndMonthReading() {
+        return endMonthReading;
     }
 
-    public void setCurrentMonthReading(Integer currentMonthReading) {
-        this.currentMonthReading = currentMonthReading;
+    public void setEndMonthReading(Integer endMonthReading) {
+        this.endMonthReading = endMonthReading;
     }
 
     public Float getAmountToPay() {
@@ -81,19 +81,19 @@ public class Utility extends BaseEntity{
         this.photoURL = photoURL;
     }
 
-    public Service getServiceID() {
+    public Service getService() {
         return service;
     }
 
-    public void setServiceID(Service service) {
+    public void setService(Service service) {
         this.service = service;
     }
 
-    public Integer getLastMonthReading() {
-        return lastMonthReading;
+    public Integer getStartMonthReading() {
+        return startMonthReading;
     }
 
-    public void setLastMonthReading(Integer lastMonthReading) {
-        this.lastMonthReading = lastMonthReading;
+    public void setStartMonthReading(Integer startMonthReading) {
+        this.startMonthReading = startMonthReading;
     }
 }

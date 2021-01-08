@@ -11,10 +11,10 @@ public class Logger extends BaseEntity {
 /*	protected Long logger_id;*/
 
 	@Attribute(id = 1)
-	protected Long entranceId;
+	protected Entrance entrance;
 
 	@Attribute(id = 2)
-	protected Long eKeyId;
+	protected Ekey eKey;
 
 	@Attribute(id = 3, valueType = ValueType.DATE_VALUE)
 	protected Date date;
@@ -22,20 +22,20 @@ public class Logger extends BaseEntity {
 	@Attribute(id = 4, valueType = ValueType.DATE_VALUE)
 	protected String time;
 
-	public Long getEntranceId() {
-		return entranceId;
+	public Entrance getEntranceId() {
+		return entrance;
 	}
 
-	public void setEntranceId(Long entranceId) {
-		this.entranceId = entranceId;
+	public void setEntranceId(Entrance entrance) {
+		this.entrance = entrance;
 	}
 
-	public Long geteKeyId() {
-		return eKeyId;
+	public Ekey geteKeyId() {
+		return eKey;
 	}
 
-	public void seteKeyId(Long eKeyId) {
-		this.eKeyId = eKeyId;
+	public void seteKeyId(Ekey eKey) {
+		this.eKey = eKey;
 	}
 
 	public Date getDate() {
