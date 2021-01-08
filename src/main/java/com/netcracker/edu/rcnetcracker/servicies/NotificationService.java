@@ -29,27 +29,27 @@ public class NotificationService implements Service<Notification> {
     @Override
     public boolean create(Notification object) {
         if (oracleDbAccess.insert(object) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public boolean delete(Long id) {
         if (oracleDbAccess.delete(Notification.class, id) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public boolean update(Notification object) {
         if (oracleDbAccess.update(object) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

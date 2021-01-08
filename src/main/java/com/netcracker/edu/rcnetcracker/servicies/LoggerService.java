@@ -24,27 +24,27 @@ public class LoggerService implements Service<Logger>{
     @Override
     public boolean create(Logger object) {
         if (oracleDbAccess.insert(object) == 1){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         }
     }
 
     @Override
     public boolean delete(Long id) {
         if (oracleDbAccess.delete(Logger.class, id) == 1){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
 
     @Override
     public boolean update(Logger entrance) {
         if (oracleDbAccess.update(entrance) == 1){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         }
     }
 

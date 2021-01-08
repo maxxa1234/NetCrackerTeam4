@@ -13,8 +13,8 @@ public class Address extends BaseEntity {
     @Attribute(id = 16, clazz = Building.class)
     private Building building;
 
-    @Attribute(id = 18, clazz = Utility.class)
-    private Utility utility;
+    @Attribute(id = 48, clazz = User.class)
+    private User user;
 
     public String getFlat() {
         return flat;
@@ -32,11 +32,11 @@ public class Address extends BaseEntity {
         this.building = building;
     }
 
-    public Utility getUtility() {
-        return utility;
+    public User getUser() {
+        return user;
     }
 
-    public void setUtility(Utility utility) {
-        this.utility = utility;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -33,6 +33,9 @@ public class Utility extends BaseEntity{
     @Attribute(id = 43, clazz = Service.class)
     private Service service;
 
+    @Attribute(id = 18, clazz = Address.class)
+    private Address address;
+
     public String getBankBook() {
         return bankBook;
     }
@@ -95,5 +98,13 @@ public class Utility extends BaseEntity{
 
     public void setStartMonthReading(Integer startMonthReading) {
         this.startMonthReading = startMonthReading;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

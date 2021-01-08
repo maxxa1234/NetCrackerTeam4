@@ -107,7 +107,7 @@ INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
 VALUES (17, 8, 'flat');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (18, 8, 14, 'utility_id');
+VALUES (48, 8, 10,'user_id');
 
 --------------------------------Attrtype User_To_Adress-----------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
@@ -195,6 +195,9 @@ VALUES (42, 14, 'photo_url');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
 VALUES (43, 14, 16, 'service_id');
+
+INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
+VALUES (18, 14, 8, 'adress_id');
 --------------------------------Attrtype Category-----------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
 VALUES (44, 15, 'important');
