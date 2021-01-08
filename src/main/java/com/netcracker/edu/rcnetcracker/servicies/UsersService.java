@@ -29,27 +29,27 @@ public class UsersService implements Service<User> {
     @Override
     public boolean create(User object) {
         if (oracleDbAccess.insert(object) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public boolean delete(Long id) {
         if (oracleDbAccess.delete(User.class, id) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public boolean update(User object) {
         if (oracleDbAccess.update(object) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

@@ -34,18 +34,18 @@ public class BuildingService implements Service<Building> {
     @Override
     public boolean delete(Long id) {
         if (oracleDbAccess.delete(Building.class, id) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
     @Override
     public boolean update(Building object) {
         if (oracleDbAccess.update(object) == 1) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

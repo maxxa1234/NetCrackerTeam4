@@ -15,7 +15,6 @@ public class Attr {
         this.valueType = valueType;
         this.field = field;
     }
-
     public Attr(Integer id, ValueType valueType, Field field, Class<? extends BaseEntity> clazz) {
         this.id = id;
         this.valueType = valueType;

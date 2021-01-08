@@ -9,11 +9,11 @@ import java.util.List;
 @ObjectType(id = 2)
 public class Entrance extends BaseEntity {
 
-    @Attribute(id = 5)
-    protected Long typeId;
+    @Attribute(id = 5, clazz = Type.class)
+    protected Type type;
 
-    @Attribute(id = 7)
-    protected Long buildingId;
+    @Attribute(id = 7, clazz = Building.class)
+    protected Building building;
 
     private RoleToEntrance roleToEntrance;
 //    @Attribute(id = 13, valueType = ValueType.LIST_VALUE)
@@ -22,20 +22,20 @@ public class Entrance extends BaseEntity {
     @Attribute(id = 6, valueType = ValueType.VALUE)
     protected Boolean isActive;
 
-    public Long getTypeId() {
-        return typeId;
+    public Type getType() {
+        return type;
     }
 
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public Long getBuildingId() {
-        return buildingId;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuildingId(Long buildingId) {
-        this.buildingId = buildingId;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     public RoleToEntrance getRoleToEntrance() {
