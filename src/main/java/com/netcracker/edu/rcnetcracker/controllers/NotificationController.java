@@ -36,9 +36,7 @@ public class NotificationController {
     public Page<Notification> getAll(@RequestParam(value = "page", required = false) Integer page,
                                      @RequestParam(value = "size", required = false) Integer size,
                                      @RequestParam(value = "text", required = false) String text,
-                                     @RequestParam(value = "dateFrom", required = false) String dateFrom,
-                                     @RequestParam(value = "dateTo", required = false) String dateTo,
-                                     @RequestParam(value = "date", required = false) String date,
+                                     @RequestParam(value = "date", required = false) Long date,
                                      @RequestParam(value = "name", required = false) String name,
                                      @RequestParam(value = "title", required = false) String title,
                                      @RequestParam(value = "categoryId", required = false) String categoryId,
@@ -54,7 +52,8 @@ public class NotificationController {
             pageable = PageRequest.of(page, size);
         }
         if (date != null) {
-            filters.add(new SearchCriteria("month", getDate(new Date(date))));
+            filters.add(new SearchCriteria("date", " = to_date('"+getMonthAndYear(new Date(date))
+                    +"', 'yyyy-mm-dd hh24:mi:ss')"));
         }
         if (name != null) {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
@@ -102,8 +101,8 @@ public class NotificationController {
     }
 
 
-    private String getDate(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
+    private String getMonthAndYear(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
     }
 }
