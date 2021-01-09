@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class BuildingService implements Service<Building> {
 
     private final OracleDbAccess oracleDbAccess;
