@@ -42,7 +42,6 @@ public class UtilitiesController {
                                 @RequestParam(value = "service", required = false) String serviceID,
                                 @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Pageable pageable = null;
         if (page == null && size != null) {
             pageable = PageRequest.of(0, size);
@@ -54,12 +53,12 @@ public class UtilitiesController {
             filters.add(new SearchCriteria("bankBook", "like '%" + bankBook + "%' "));
         }
         if (dateFrom != null) {
-            filters.add(new SearchCriteria("date", " > to_date('"+dateFormat.format(new Date(dateFrom))
-                    +"', 'yyyy-mm-dd hh24:mi:ss')"));
+            filters.add(new SearchCriteria("date", " > to_date('" + changeDateFormat(new Date(dateFrom))
+                    + "', 'yyyy-mm-dd hh24:mi:ss')"));
         }
         if (dateTo != null) {
-            filters.add(new SearchCriteria("date", " < to_date('"+dateFormat.format(new Date(dateFrom))
-                    +"', 'yyyy-mm-dd hh24:mi:ss')"));
+            filters.add(new SearchCriteria("date", " < to_date('" + changeDateFormat(new Date(dateTo))
+                    + "', 'yyyy-mm-dd hh24:mi:ss')"));
         }
         if (date != null) {
             filters.add(new SearchCriteria("month", getMonthAndYear(new Date(date))));
@@ -120,6 +119,11 @@ public class UtilitiesController {
         return service.update(utility);
     }
 
+    private String changeDateFormat(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(date);
+    }
+
     private Date monthIncrement(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -127,7 +131,7 @@ public class UtilitiesController {
         return calendar.getTime();
     }
 
-    private String getMonthAndYear(Date date){
+    private String getMonthAndYear(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy MM");
         return dateFormat.format(date);
     }
