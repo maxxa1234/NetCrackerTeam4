@@ -50,7 +50,7 @@ public class ExportPDFService {
             table.addCell(logger.getId().toString());
             table.addCell(logger.geteKeyId().toString());
             table.addCell(logger.getEntranceId().toString());
-            table.addCell(logger.getDate().toString());
+            table.addCell(String.valueOf(logger.getDate()));
             table.addCell(logger.getTime());
         }
     }

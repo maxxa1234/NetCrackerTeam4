@@ -18,11 +18,11 @@ public class Notification extends BaseEntity {
     @Attribute(id = 34, valueType = ValueType.VALUE)
     private String title;
 
-    @Attribute(id = 35)
-    private Long categoryId;
+    @Attribute(id = 35, clazz = Category.class)
+    private Category category;
 
-    @Attribute(id = 36)
-    private Long createdBy;
+    @Attribute(id = 36, clazz = User.class)
+    private User createdBy;
 
     public String getText() {
         return text;
@@ -48,19 +48,19 @@ public class Notification extends BaseEntity {
         this.title = title;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Long getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 }

@@ -13,8 +13,8 @@ public class Ekey extends BaseEntity {
     @Attribute(id = 9, valueType = ValueType.VALUE)
     protected Boolean isActive;
 
-    @Attribute(id = 10)
-    protected Long userId;
+    @Attribute(id = 10, clazz = User.class)
+    protected User user;
 
     public String getKeyCode() {
         return keyCode;
@@ -32,11 +32,11 @@ public class Ekey extends BaseEntity {
         isActive = active;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User userId) {
+        this.user = user;
     }
 }

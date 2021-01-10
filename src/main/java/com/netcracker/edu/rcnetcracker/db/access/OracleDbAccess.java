@@ -10,6 +10,8 @@ import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.Request;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.RequestGetByID;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,6 +31,7 @@ import java.util.List;
 
 @Component
 public class OracleDbAccess implements DbAccess {
+    private static final Logger logger = Logger.getLogger(OracleDbAccess.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -65,6 +68,7 @@ public class OracleDbAccess implements DbAccess {
             return 1;
         }
         String[] str = new String[0];
+        logger.log(Level.INFO, "Update statements: " + statements);
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
     }
@@ -82,7 +86,7 @@ public class OracleDbAccess implements DbAccess {
         ArrayList<String> statements = new ArrayList<>();
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
-            statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
+            statements.add("\nINSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
                     + id + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
                     + Processor.getObjtypeId(obj.getClass()) + "')");
 
@@ -98,9 +102,13 @@ public class OracleDbAccess implements DbAccess {
                     }
                 } else {
                     statements.add(getInsertStatement(attributes.get(i), id, attributes.get(i).field.get(obj)));
+                    if (attributes.get(i).valueType.getTable() == "OBJREFERENCE") {
+                        statements.add(getOBJREFStatement(attributes.get(i), id, attributes.get(i).field.get(obj)));
+                    }
                 }
             }
         } catch (IllegalAccessException e) {
+            logger.log(Level.WARN, e);
             e.printStackTrace();
             return 1;
         }
@@ -111,6 +119,8 @@ public class OracleDbAccess implements DbAccess {
                 statements.remove(i);
             }
         }
+
+        logger.log(Level.INFO, "Insert statements");
 
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
@@ -132,26 +142,30 @@ public class OracleDbAccess implements DbAccess {
     /**
      * Принимаем все критерии, которые могут быть, в requestBuilder все предусмотрено, что бы запрос создался адекватно
      * но могут быть проблемы со специальными запросами, хотя они вряд ли понадобятся.
-     *
+     * <p>
      * Создается director в его конструктор необходимо передать класс, с корорым мы сейчас работаем.
      * Для получения запроса у директора вызывается метод buildRequest, в сигнатуру которого необходимо передать все параметры,
      * несмотря на нулы, внутри все проверяется.
-     *
+     * <p>
      * Вывозв toString строит запрос из 4 частей select, from, where, filter блоки, они описаны внутри класса Request.
      * После получения строки запроса вызывается метод selectAll, который возвращает список необходимых элементов,
      * после чего этот список необходимо передать в PageImpl, который уже построит страницу
      */
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
+        logger.log(Level.INFO, "Request parameters: \n"
+                + "Pageable - " + pageable
+                + "\n Filter - " + filter
+                + "\n Sort - " + sort);
+
         List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
                 getRequest(pageable, filter, sort).
                 buildRequest());
-
         Long countOfElements = selectCountOfFilterElements(
                 Director.valueOf(clazz).
                         getRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
                         buildRequest());
-        if (pageable == null) {
+        if (pageable == null || resultElements.isEmpty()) {
             return new PageImpl<>(resultElements);
         }
         if (resultElements.size() != pageable.getPageSize()) {
@@ -161,6 +175,7 @@ public class OracleDbAccess implements DbAccess {
     }
 
     private <T extends BaseEntity> List<T> selectAll(Class<T> clazz, String request) {
+        logger.log(Level.INFO, "Request: " + request);
         List<Attr> attributes = Processor.getAttributes(clazz);
         List<T> list = jdbcTemplate.query(request, new RowMapper<T>() {
             public T mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -173,12 +188,17 @@ public class OracleDbAccess implements DbAccess {
                             attributes.get(i).field.set(obj, getListForObjectAttribute(attributes.get(i),
                                     rs.getLong("id")));
                         } else if (attributes.get(i).valueType == ValueType.REF_VALUE) {
-                            List<Long> references = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
-                            Long ref = null;
-                            if (!references.isEmpty()) {
-                                ref = references.get(0);
+                            List<Long> referencesId = getListForObjectAttribute(attributes.get(i), rs.getLong("id"));
+                            List<BaseEntity> references = new ArrayList<>();
+                            for (int j = 0; j < referencesId.size(); j++) {
+                                references.add(getById(attributes.get(i).clazz, referencesId.get(j)));
                             }
-                            attributes.get(i).field.set(obj, ref);
+                            if (references.size() <= 0) {
+                                attributes.get(i).field.set(obj, null);
+                            } else {
+                                attributes.get(i).field.set(obj, references.get(0));
+                            }
+
                         } else {
                             attributes.get(i).field.set(obj, rs.getObject((attributes.get(i).field.getName()),
                                     attributes.get(i).field.getType()));
@@ -209,7 +229,9 @@ public class OracleDbAccess implements DbAccess {
         List<T> result = selectAll(clazz, Director.valueOf(clazz).
                 getRequest(new RequestGetByID(new Request(clazz), id)).
                 buildRequest());
-
+        if (result.size() <= 0) {
+            return null;
+        }
         return result.get(0);
     }
 
@@ -228,7 +250,7 @@ public class OracleDbAccess implements DbAccess {
         return jdbcTemplate.queryForList(sql, Long.class);
     }
 
-    private String getInsertStatement(Attr attr, Long objectId, Object value) throws IllegalAccessException {
+    private String getInsertStatement(Attr attr, Long objectId, Object value) {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
@@ -236,17 +258,28 @@ public class OracleDbAccess implements DbAccess {
                 return null;
             }
         }
-        if (attr.valueType.getValueType().equals("DATE_VALUE")){
+        if (attr.valueType.getTable() == "OBJREFERENCE") {
+            BaseEntity baseEntity = (BaseEntity) value;
+            return "\nINSERT INTO ATTRIBUTES (ATTR_ID, OBJECT_ID, VALUE) VALUES" + " (" + attr.id + ", " + objectId + ", "
+                    + baseEntity.getId().toString() + ")";
+        }
+        if (attr.valueType.getValueType().equals("DATE_VALUE")) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             newValue = dateFormat.format(value);
-            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+            return "\nINSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
                     + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", (TO_DATE('"
                     + newValue + "', 'yyyy-mm-dd hh24:mi:ss')))";
-        }else{
-            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+        } else {
+            return "\nINSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
                     + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
                     + newValue + ")";
         }
+    }
+
+    private String getOBJREFStatement(Attr attr, Long objectId, Object value) {
+        BaseEntity baseEntity = (BaseEntity) value;
+        return "\nINSERT INTO OBJREFERENCE (ATTR_ID, OBJECT_ID, REFERENCE)" +
+                " VALUES (" + attr.id + ", " + objectId + ", " + baseEntity.getId() + ")";
     }
 
     private String getDeleteStatement(Attr attr, Long objectId) {
@@ -259,7 +292,19 @@ public class OracleDbAccess implements DbAccess {
         if (value == null) {
             newValue = null;
         }
-        return "UPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = " + newValue
-                + " WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        if (attr.valueType == ValueType.REF_VALUE) {
+            BaseEntity baseEntity = (BaseEntity) value;
+            return "UPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = " + baseEntity.getId()
+                    + " WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        }
+        if (attr.valueType == ValueType.DATE_VALUE) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            newValue = dateFormat.format(value);
+            return "\nUPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = to_date('" + newValue
+                    + "', 'yyyy-mm-dd hh24:mi:ss') WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        } else {
+            return "\nUPDATE " + attr.valueType.getTable() + " SET " + attr.valueType.getValueType() + " = " + newValue
+                    + " WHERE attr_id = " + attr.id + " AND object_id = " + objectId;
+        }
     }
 }

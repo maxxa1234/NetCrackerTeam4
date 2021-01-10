@@ -30,15 +30,11 @@ public class User extends BaseEntity {
     @Attribute(id = 27, valueType = ValueType.VALUE)
     private Boolean receiveUtilityNotification;
 
-    @Attribute(id = 28)
-    private Long roleID;
+    @Attribute(id = 28, clazz = Role.class)
+    private Role role;
 
     @Attribute(id = 55, valueType = ValueType.VALUE)
     private String activationCode;
-
-    private UserToAdress userToAdress;
-//    @Attribute(id = 20, valueType = ValueType.LIST_VALUE)
-//    private List<Long> adressId;
 
     public String getEmail() {
         return email;
@@ -55,22 +51,6 @@ public class User extends BaseEntity {
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
     }
-
-    public UserToAdress getUserToAdress() {
-        return userToAdress;
-    }
-
-    public void setUserToAdress(UserToAdress userToAdress) {
-        this.userToAdress = userToAdress;
-    }
-
-    //    public List<Long> getAdressId() {
-//        return adressId;
-//    }
-//
-//    public void setAdressId(List<Long> adressId) {
-//        this.adressId = adressId;
-//    }
 
     public String getPassword() {
         return password;
@@ -120,11 +100,11 @@ public class User extends BaseEntity {
         this.receiveUtilityNotification = receiveUtilityNotification;
     }
 
-    public Long getRoleID() {
-        return roleID;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleID(Long roleID) {
-        this.roleID = roleID;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

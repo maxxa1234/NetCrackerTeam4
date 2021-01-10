@@ -26,7 +26,11 @@ public class RequestWithPaging extends RequestBuilder {
     @Override
     public void buildFilterBlock() {
         for (SearchCriteria criteria : filter) {
-            request.filterBlock.append(" AND \"" + criteria.getKey() + "\" " + criteria.getValue() + " ");
+            if (criteria.getKey().equals("month")){
+                request.filterBlock.append(" AND to_date(to_char(\"date\", 'MM yyyy'),'MM yyyy') = to_date('" + criteria.getValue() + "', 'yyyy MM') ");
+            }else {
+                request.filterBlock.append(" AND \"" + criteria.getKey() + "\" " + criteria.getValue() + " ");
+            }
         }
         request.setFilterBlock(new StringBuilder(
                 request.getFilterBlock() +
