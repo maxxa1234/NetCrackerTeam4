@@ -14,13 +14,14 @@ public class Request {
 
     protected List<Attr> attributes;
 
-    StringBuilder selectBlock = new StringBuilder("SELECT * FROM ( SELECT o.object_id \"id\", o.name \"name\", o.description \"description\" ");
-    StringBuilder fromBlock = new StringBuilder("FROM OBJECTS o ");
+    StringBuilder selectBlock = new StringBuilder("\nSELECT * FROM ( SELECT o.object_id \"id\",\n listagg(o.name) \"name\",\n listagg(o.description) \"description\" ");
+    StringBuilder fromBlock = new StringBuilder("\nFROM OBJECTS o \n");
     StringBuilder whereBlock;
     StringBuilder filterBlock = new StringBuilder(") WHERE 1=1");
 
     public Request(Class clazz) {
-        whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + " ");
+        whereBlock = new StringBuilder("WHERE o.object_type_id = " + Processor.getObjtypeId(clazz) + "\n")
+                .append(" group by o.object_id \n");
         attributes = Processor.getAttributes(clazz);
 
         for (int i = 0; i < attributes.size(); i++) {
@@ -28,12 +29,18 @@ public class Request {
                     || attributes.get(i).valueType == ValueType.LIST_VALUE) {
                 continue;
             }
-            selectBlock.append(", a").append(i).append(".").append(attributes.get(i).valueType.getValueType())
-                    .append(" \"").append(attributes.get(i).field.getName()).append("\" ");
-            fromBlock.append(", ").append(attributes.get(i).valueType.getTable()).append(" a").append(i).append(" ");
-            whereBlock.append("AND o.object_id = a").append(i).append(".object_id ").append("AND a")
-                    .append(i).append(".attr_id = ").append(attributes.get(i).id).append(" ");
+            if (attributes.get(i).valueType == ValueType.DATE_VALUE){
+                selectBlock.append(",\n to_date(listagg(a"+i+".")
+                        .append(attributes.get(i).valueType.getValueType()+")) ")
+                        .append("\""+attributes.get(i).field.getName()+"\"");
+            }else {
+                selectBlock.append(",\n listagg(a"+i+".")
+                        .append(attributes.get(i).valueType.getValueType()+") ")
+                        .append("\""+attributes.get(i).field.getName()+"\"");
+            }
 
+            fromBlock.append("left join "+attributes.get(i).valueType.getTable()+" a"+i+" ")
+                    .append("on o.object_id = a"+i+".object_id and a"+i+".attr_id = "+attributes.get(i).id+" \n");
         }
     }
 
@@ -56,8 +63,7 @@ public class Request {
     /**
      * Возвращает готовую строку запроса
      * */
-    @Override
-    public String toString() {
+    public String buildRequest() {
         return selectBlock.toString() + fromBlock.toString() + whereBlock.toString() + filterBlock.toString();
     }
 }

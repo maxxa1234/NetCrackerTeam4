@@ -33,11 +33,12 @@ public class User extends BaseEntity {
     @Attribute(id = 28)
     private Long roleID;
 
-    @Attribute(id = 55)
+    @Attribute(id = 55, valueType = ValueType.VALUE)
     private String activationCode;
 
-    @Attribute(id = 20, valueType = ValueType.LIST_VALUE)
-    private List<Long> adressId;
+    private UserToAdress userToAdress;
+//    @Attribute(id = 20, valueType = ValueType.LIST_VALUE)
+//    private List<Long> adressId;
 
     public String getEmail() {
         return email;
@@ -55,13 +56,21 @@ public class User extends BaseEntity {
         this.activationCode = activationCode;
     }
 
-    public List<Long> getAdressId() {
-        return adressId;
+    public UserToAdress getUserToAdress() {
+        return userToAdress;
     }
 
-    public void setAdressId(List<Long> adressId) {
-        this.adressId = adressId;
+    public void setUserToAdress(UserToAdress userToAdress) {
+        this.userToAdress = userToAdress;
     }
+
+    //    public List<Long> getAdressId() {
+//        return adressId;
+//    }
+//
+//    public void setAdressId(List<Long> adressId) {
+//        this.adressId = adressId;
+//    }
 
     public String getPassword() {
         return password;

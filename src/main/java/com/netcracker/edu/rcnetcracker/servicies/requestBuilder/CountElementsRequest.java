@@ -13,7 +13,7 @@ public class CountElementsRequest extends RequestBuilder {
 
     @Override
     public void buildSelectBlock() {
-        request.selectBlock.replace(0, 13, "SELECT COUNT(*) FROM");
+        request.selectBlock.replace(0, 14, "SELECT COUNT(*) FROM");
     }
 
     @Override

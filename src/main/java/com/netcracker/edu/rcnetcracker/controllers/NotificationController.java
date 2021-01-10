@@ -1,11 +1,13 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.model.Entrance;
 import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -31,6 +33,17 @@ public class NotificationController {
                                      @RequestParam(value = "createdBy", required = false) String createdBy,
                                      @RequestParam(value = "sort", required = false) String sort) {
         return null;
+    }
+
+    @PostMapping("/add")
+    public boolean createNotification(@RequestBody Notification notification) {
+        return service.create(notification);
+    }
+
+
+    @RequestMapping(value = "/get-one/{id}")
+    public Notification getOne(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
     @PostMapping("/utility/{utilityNotificationId}/{apartmentId}/{date}")

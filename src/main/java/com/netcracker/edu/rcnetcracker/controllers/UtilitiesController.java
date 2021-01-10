@@ -34,7 +34,6 @@ public class UtilitiesController {
                                 @RequestParam(value = "status", required = false) String status,
                                 @RequestParam(value = "serviceID", required = false) String serviceID,
                                 @RequestParam(value = "sort", required = false) String sort) {
-        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
         if (page == null && size != null) {
@@ -64,25 +63,24 @@ public class UtilitiesController {
         if (serviceID != null) {
             filters.add(new SearchCriteria("roleID", serviceID));
         }
-        if (sort != null) {
-            sortCriteria = new SortCriteria(sort);
-        }
-        return service.getAll(pageable, filters, sortCriteria);
+        return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
     @GetMapping(params = {"id"})
-    public void getUtility(@RequestParam("id") Long utilityID) {
-        service.getById(utilityID);
+    public Utility getUtility(@RequestParam("id") Long utilityID) {
+        return service.getById(utilityID);
     }
 
     @PostMapping("/add")
-    public void createUtility(@RequestBody Utility utility) {
-        service.create(utility);
+    public boolean createUtility(@RequestBody Utility utility) {
+        return service.create(utility);
     }
 
     @PutMapping(value = "/attachPhoto/{id}")
-    public void attachPhoto(@PathVariable("id") Long id, @RequestParam(value = "photoURL", required = true) String photoURL) {
-
+    public boolean attachPhoto(@PathVariable("id") Long id, @RequestParam(value = "photoURL", required = true) String photoURL) {
+        Utility utility = service.getById(id);
+        utility.setPhotoURL(photoURL);
+        return service.update(utility);
     }
 
 }

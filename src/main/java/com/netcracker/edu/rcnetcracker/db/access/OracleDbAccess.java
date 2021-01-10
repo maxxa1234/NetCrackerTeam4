@@ -22,6 +22,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,15 +71,19 @@ public class OracleDbAccess implements DbAccess {
 
     @Override
     public <T extends BaseEntity> int insert(T obj) {
-        Long objId = obj.getId();
-        if (!isUnique(objId)) {
-            return -1;
-        }
+
+        Long id = jdbcTemplate.queryForList("select OBJECTS_SEQ.NEXTVAL from dual ", Long.class).get(0);
+
+//        Long objId = obj.getId();
+//        if (!isUnique(objId)) {
+//            return -1;
+//        }
+
         ArrayList<String> statements = new ArrayList<>();
         try {
             List<Attr> attributes = Processor.getAttributes(obj.getClass());
             statements.add("INSERT INTO OBJECTS (object_id, name, description, object_type_id) VALUES ('"
-                    + objId + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
+                    + id + "', '" + obj.getName() + "', '" + obj.getDescription() + "', '"
                     + Processor.getObjtypeId(obj.getClass()) + "')");
 
             for (int i = 0; i < attributes.size(); i++) {
@@ -88,10 +94,10 @@ public class OracleDbAccess implements DbAccess {
                 if (attributes.get(i).valueType == ValueType.LIST_VALUE) {
                     List<Long> list = (List<Long>) attributes.get(i).field.get(obj);
                     for (int j = 0; j < list.size(); j++) {
-                        statements.add(getInsertStatement(attributes.get(i), objId, list.get(j)));
+                        statements.add(getInsertStatement(attributes.get(i), id, list.get(j)));
                     }
                 } else {
-                    statements.add(getInsertStatement(attributes.get(i), objId, attributes.get(i).field.get(obj)));
+                    statements.add(getInsertStatement(attributes.get(i), id, attributes.get(i).field.get(obj)));
                 }
             }
         } catch (IllegalAccessException e) {
@@ -99,6 +105,13 @@ public class OracleDbAccess implements DbAccess {
             return 1;
         }
         String[] str = new String[0];
+
+        for (int i = 0; i < statements.size(); i++) {
+            if (statements.get(i) == null) {
+                statements.remove(i);
+            }
+        }
+
         jdbcTemplate.batchUpdate(statements.toArray(str));
         return 0;
     }
@@ -110,9 +123,9 @@ public class OracleDbAccess implements DbAccess {
     }
 
     @Override
-    public <T extends BaseEntity> void delete(Class<T> clazz, Long id) {
+    public <T extends BaseEntity> Integer delete(Class<T> clazz, Long id) {
         int objTypeId = Processor.getObjtypeId(clazz);
-        jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
+        return jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
                 " AND OBJECTS.OBJECT_ID = " + id);
     }
 
@@ -125,20 +138,19 @@ public class OracleDbAccess implements DbAccess {
      * несмотря на нулы, внутри все проверяется.
      *
      * Вывозв toString строит запрос из 4 частей select, from, where, filter блоки, они описаны внутри класса Request.
-     *
      * После получения строки запроса вызывается метод selectAll, который возвращает список необходимых элементов,
      * после чего этот список необходимо передать в PageImpl, который уже построит страницу
-     * */
+     */
     @Override
     public <T extends BaseEntity> Page<T> selectPage(Class<T> clazz, Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         List<T> resultElements = selectAll(clazz, Director.valueOf(clazz).
-                buildRequest(pageable, filter, sort).
-                toString());
+                getRequest(pageable, filter, sort).
+                buildRequest());
 
         Long countOfElements = selectCountOfFilterElements(
                 Director.valueOf(clazz).
-                        buildRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
-                        toString());
+                        getRequest(new CountElementsRequest(new Request(clazz), filter, sort)).
+                        buildRequest());
         if (pageable == null) {
             return new PageImpl<>(resultElements);
         }
@@ -190,13 +202,13 @@ public class OracleDbAccess implements DbAccess {
     /**
      * При использовании специальных запросов, например как getById или countElements, необходимо создать директора,
      * после чего при візове метода buildRequest передать ссілку на необходимій билдер, внутрь которого передать параметры.
-     * */
+     */
 
     @Override
     public <T extends BaseEntity> T getById(Class<T> clazz, Long id) {
         List<T> result = selectAll(clazz, Director.valueOf(clazz).
-                buildRequest(new RequestGetByID(new Request(clazz), id)).
-                toString());
+                getRequest(new RequestGetByID(new Request(clazz), id)).
+                buildRequest());
 
         return result.get(0);
     }
@@ -204,7 +216,7 @@ public class OracleDbAccess implements DbAccess {
     /**
      * Получает цифру - общее количество элементов, которые соответсвуют фильтру.
      * Если фильтра нет, то просто возвращается общее количество элементов БД
-     * */
+     */
     private Long selectCountOfFilterElements(String request) {
         List<Long> list = jdbcTemplate.queryForList(request, Long.class);
         return list.get(0);
@@ -220,10 +232,21 @@ public class OracleDbAccess implements DbAccess {
         String newValue = "'" + value + "'";
         if (value == null) {
             newValue = null;
+            if (attr.valueType.getTable() == "OBJREFERENCE") {
+                return null;
+            }
         }
-        return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
-                + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
-                + newValue + ")";
+        if (attr.valueType.getValueType().equals("DATE_VALUE")){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            newValue = dateFormat.format(value);
+            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", (TO_DATE('"
+                    + newValue + "', 'yyyy-mm-dd hh24:mi:ss')))";
+        }else{
+            return "INSERT INTO " + attr.valueType.getTable() + " (ATTR_ID, OBJECT_ID, "
+                    + attr.valueType.getValueType() + ") VALUES" + " (" + attr.id + ", " + objectId + ", "
+                    + newValue + ")";
+        }
     }
 
     private String getDeleteStatement(Attr attr, Long objectId) {

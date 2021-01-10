@@ -3,8 +3,10 @@ package com.netcracker.edu.rcnetcracker.controllers;
 import com.lowagie.text.DocumentException;
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.Logger;
 import com.netcracker.edu.rcnetcracker.servicies.EntranceService;
 import com.netcracker.edu.rcnetcracker.servicies.ExportPDFService;
+import com.netcracker.edu.rcnetcracker.servicies.LoggerService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,11 @@ import java.util.List;
 public class EntranceController {
 
     private final EntranceService service;
+    private final LoggerService loggerService;
 
-    public EntranceController(EntranceService service) {
+    public EntranceController(EntranceService service,LoggerService loggerService) {
         this.service = service;
+        this.loggerService = loggerService;
     }
 
     @Autowired
@@ -53,18 +57,18 @@ public class EntranceController {
     }
 
     @PostMapping("/add")
-    public void createEntrance(@RequestBody Entrance entrance) {
-        service.create(entrance);
+    public boolean createEntrance(@RequestBody Entrance entrance) {
+        return service.create(entrance);
     }
 
     @DeleteMapping(params = {"id"})
-    public void deleteEntrance(@RequestParam("id") Long entranceId) {
-        service.delete(entranceId);
+    public boolean deleteEntrance(@RequestParam("id") Long entranceId) {
+        return service.delete(entranceId);
     }
 
     @PutMapping
-    public void updateEntrance(@RequestBody Entrance object) {
-        service.update(object);
+    public boolean updateEntrance(@RequestBody Entrance object) {
+        return service.update(object);
     }
 
     @GetMapping
@@ -75,7 +79,6 @@ public class EntranceController {
                                  @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
                                  @RequestParam(value = "sort", required = false) String sort) {
-        SortCriteria sortCriteria = null;
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
         if (page == null && size != null) {
@@ -96,10 +99,7 @@ public class EntranceController {
         if (isActive != null) {
             filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
         }
-        if (sort != null) {
-            sortCriteria = new SortCriteria(sort);
-        }
-        Page<Entrance> page1 = service.getAll(pageable, filters, sortCriteria);
+        Page<Entrance> page1 = service.getAll(pageable, filters, new SortCriteria(sort));
         return page1;
     }
 
@@ -127,11 +127,11 @@ public class EntranceController {
 
         response.setHeader(headerKey,headerValue);
 
-        SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
-        Page<Entrance> pageEntrance = service.getAll(null,null,sortCriteria);
-        List<Entrance> entranceList = pageEntrance.getContent();
+        //SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
+        Page<Logger> pageEntrance = loggerService.getAll(null,null,null);
+        List<Logger> loggerList = pageEntrance.getContent();
 
-        ExportPDFService exporter = new ExportPDFService(entranceList);
+        ExportPDFService exporter = new ExportPDFService(loggerList);
         exporter.export(response);
     }
 }
