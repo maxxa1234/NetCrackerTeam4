@@ -52,8 +52,8 @@ public class NotificationController {
             pageable = PageRequest.of(page, size);
         }
         if (date != null) {
-            filters.add(new SearchCriteria("date", " = to_date('"+getMonthAndYear(new Date(date))
-                    +"', 'yyyy-mm-dd hh24:mi:ss')"));
+            //TODO: добить фильтр по датам
+            filters.add(new SearchCriteria("date", getMonthAndYear(new Date(date))));
         }
         if (name != null) {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
@@ -70,7 +70,12 @@ public class NotificationController {
 
     @PostMapping("/add")
     public boolean createNotification(@RequestBody Notification notification) {
-        return service.create(notification);
+        //TODO: сделать отправку уведомления по email
+
+        service.create(notification);
+        List<String> emails = service.getAllEmails();
+        int i =0;
+        return true;
     }
 
     @RequestMapping(value = "/get-one/{id}")
@@ -99,7 +104,6 @@ public class NotificationController {
     public void getActualUtilityNotificationsByApartment(@PathVariable("apartmentId") Long apartmentId) {
 
     }
-
 
     private String getMonthAndYear(Date date){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

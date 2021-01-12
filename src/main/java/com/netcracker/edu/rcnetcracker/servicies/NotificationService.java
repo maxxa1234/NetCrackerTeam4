@@ -53,6 +53,10 @@ public class NotificationService implements Service<Notification> {
         }
     }
 
+    public List<String> getAllEmails(){
+        return oracleDbAccess.getEmails();
+    }
+
     @Override
     public Page<Notification> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         return oracleDbAccess.selectPage(Notification.class, pageable, filter, sort);
