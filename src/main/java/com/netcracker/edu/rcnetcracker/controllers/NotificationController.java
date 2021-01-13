@@ -74,7 +74,10 @@ public class NotificationController {
 
         service.create(notification);
         List<String> emails = service.getAllEmails();
-        int i =0;
+        emails.add("victormorgish@gmail.com");
+        for (String email: emails) {
+            mailSenderService.sendEmail(email, notification.getTitle(), notification.getText());
+        }
         return true;
     }
 
