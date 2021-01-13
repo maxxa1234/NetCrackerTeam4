@@ -4,6 +4,7 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attribute;
 import com.netcracker.edu.rcnetcracker.db.annotations.ObjectType;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 
+
 import java.util.List;
 
 @ObjectType(id = 2)
@@ -21,6 +22,17 @@ public class Entrance extends BaseEntity {
 
     @Attribute(id = 6, valueType = ValueType.VALUE)
     protected Boolean isActive;
+
+    @Attribute(id = 50, valueType = ValueType.VALUE)
+    protected Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public Type getType() {
         return type;
