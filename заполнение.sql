@@ -109,6 +109,9 @@ VALUES (17, 8, 'flat');
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
 VALUES (48, 8, 10,'user_id');
 
+insert into ATTRTYPE(attr_id, object_type_id, object_type_id_ref, code, name)
+VALUES (49, 8, null, 'apartment_number', null);
+
 --------------------------------Attrtype User_To_Adress-----------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
 VALUES (19, 9, 10, 'user_id');

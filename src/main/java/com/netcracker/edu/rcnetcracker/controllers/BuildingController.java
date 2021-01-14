@@ -2,6 +2,7 @@ package com.netcracker.edu.rcnetcracker.controllers;
 
 
 import com.netcracker.edu.rcnetcracker.model.Building;
+import com.netcracker.edu.rcnetcracker.model.Utility;
 import com.netcracker.edu.rcnetcracker.servicies.BuildingService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -47,6 +48,11 @@ public class BuildingController {
     @PostMapping("/add")
     public boolean createBuilding(@RequestBody Building building) {
         return service.create(building);
+    }
+
+    @GetMapping("{id}")
+    public Building getBuildingById(@PathVariable("id") Long buildingID) {
+        return service.getById(buildingID);
     }
 
     @DeleteMapping("{id}")
