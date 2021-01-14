@@ -37,6 +37,7 @@ public class NotificationController {
                                      @RequestParam(value = "size", required = false) Integer size,
                                      @RequestParam(value = "text", required = false) String text,
                                      @RequestParam(value = "date", required = false) Long date,
+                                     @RequestParam(value = "dateFrom", required = false) Long dateFrom,
                                      @RequestParam(value = "name", required = false) String name,
                                      @RequestParam(value = "title", required = false) String title,
                                      @RequestParam(value = "categoryId", required = false) String categoryId,
@@ -52,8 +53,11 @@ public class NotificationController {
             pageable = PageRequest.of(page, size);
         }
         if (date != null) {
-            //TODO: добить фильтр по датам
-            filters.add(new SearchCriteria("date", getMonthAndYear(new Date(date))));
+            filters.add(new SearchCriteria("date", changeDateFormat(new Date(date))));
+        }
+        if (dateFrom != null) {
+            filters.add(new SearchCriteria("date", " > to_date('" + changeDateFormat(new Date(dateFrom))
+                    + "', 'yyyy-mm-dd hh24:mi:ss')"));
         }
         if (name != null) {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
@@ -70,8 +74,6 @@ public class NotificationController {
 
     @PostMapping("/add")
     public boolean createNotification(@RequestBody Notification notification) {
-        //TODO: сделать отправку уведомления по email
-
         service.create(notification);
         List<String> emails = service.getAllEmails();
         emails.add("victormorgish@gmail.com");
@@ -108,7 +110,7 @@ public class NotificationController {
 
     }
 
-    private String getMonthAndYear(Date date){
+    private String changeDateFormat(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.format(date);
     }
