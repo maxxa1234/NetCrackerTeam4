@@ -10,6 +10,9 @@ public class Address extends BaseEntity {
     @Attribute(id = 17, valueType = ValueType.VALUE)
     private String flat;
 
+    @Attribute(id = 49, valueType = ValueType.VALUE)
+    private Integer apartmentNumber;
+
     @Attribute(id = 16, clazz = Building.class)
     private Building building;
 
@@ -38,5 +41,13 @@ public class Address extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getApartmentNumber() {
+        return apartmentNumber;
+    }
+
+    public void setApartmentNumber(Integer apartmentNumber) {
+        this.apartmentNumber = apartmentNumber;
     }
 }

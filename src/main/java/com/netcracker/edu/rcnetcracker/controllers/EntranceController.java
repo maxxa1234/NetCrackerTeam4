@@ -80,6 +80,7 @@ public class EntranceController {
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "buildingId", required = false) String buildingId,
                                  @RequestParam(value = "isActive", required = false) String isActive,
+                                 @RequestParam(value = "status", required = false) String status,
                                  @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
@@ -100,6 +101,9 @@ public class EntranceController {
         }
         if (isActive != null) {
             filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
+        }
+        if (status != null) {
+            filters.add(new SearchCriteria("status", "like '%" + status + "%' "));
         }
         Page<Entrance> page1 = service.getAll(pageable, filters, new SortCriteria(sort));
         return page1;

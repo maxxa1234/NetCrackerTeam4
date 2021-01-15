@@ -250,6 +250,18 @@ public class OracleDbAccess implements DbAccess {
         return jdbcTemplate.queryForList(sql, Long.class);
     }
 
+    public List<String> getEmails(){
+        String sql = "SELECT * FROM ( SELECT\n" +
+                "                       listagg(a0.VALUE) \"email\"\n" +
+                "                FROM OBJECTS o\n" +
+                "                         left join ATTRIBUTES a0 on o.object_id = a0.object_id and a0.attr_id = 21\n" +
+                "                WHERE o.object_type_id = 10\n" +
+                "                group by o.object_id\n" +
+                "              ) WHERE 1=1";
+
+        return jdbcTemplate.queryForList(sql,String.class);
+    }
+
     private String getInsertStatement(Attr attr, Long objectId, Object value) {
         String newValue = "'" + value + "'";
         if (value == null) {

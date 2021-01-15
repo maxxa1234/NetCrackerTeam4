@@ -1,8 +1,6 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
-import com.netcracker.edu.rcnetcracker.model.Entrance;
-import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +10,22 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @org.springframework.stereotype.Service
-public class NotificationService implements Service<Notification> {
+public class ServicesService implements Service<com.netcracker.edu.rcnetcracker.model.Service> {
 
     private final OracleDbAccess oracleDbAccess;
 
     @Autowired
-    public NotificationService(OracleDbAccess oracleDbAccess) {
+    public ServicesService(OracleDbAccess oracleDbAccess) {
         this.oracleDbAccess = oracleDbAccess;
     }
 
     @Override
-    public Notification getById(Long id) {
-        return oracleDbAccess.getById(Notification.class, id);
+    public com.netcracker.edu.rcnetcracker.model.Service getById(Long id) {
+        return oracleDbAccess.getById(com.netcracker.edu.rcnetcracker.model.Service.class, id);
     }
 
     @Override
-    public boolean create(Notification object) {
+    public boolean create(com.netcracker.edu.rcnetcracker.model.Service object) {
         if (oracleDbAccess.insert(object) == 1) {
             return false;
         } else {
@@ -37,7 +35,7 @@ public class NotificationService implements Service<Notification> {
 
     @Override
     public boolean delete(Long id) {
-        if (oracleDbAccess.delete(Notification.class, id) == 1) {
+        if (oracleDbAccess.delete(com.netcracker.edu.rcnetcracker.model.Service.class, id) == 1) {
             return false;
         } else {
             return true;
@@ -45,7 +43,7 @@ public class NotificationService implements Service<Notification> {
     }
 
     @Override
-    public boolean update(Notification object) {
+    public boolean update(com.netcracker.edu.rcnetcracker.model.Service object) {
         if (oracleDbAccess.update(object) == 1) {
             return false;
         } else {
@@ -53,12 +51,8 @@ public class NotificationService implements Service<Notification> {
         }
     }
 
-    public List<String> getAllEmails(){
-        return oracleDbAccess.getEmails();
-    }
-
     @Override
-    public Page<Notification> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
-        return oracleDbAccess.selectPage(Notification.class, pageable, filter, sort);
+    public Page<com.netcracker.edu.rcnetcracker.model.Service> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
+        return oracleDbAccess.selectPage(com.netcracker.edu.rcnetcracker.model.Service.class, pageable, filter, sort);
     }
 }

@@ -1,6 +1,8 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.model.Service;
 import com.netcracker.edu.rcnetcracker.model.Utility;
+import com.netcracker.edu.rcnetcracker.servicies.ServicesService;
 import com.netcracker.edu.rcnetcracker.servicies.UtilitiesService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -22,10 +24,12 @@ public class UtilitiesController {
 
 
     private final UtilitiesService service;
+    private final ServicesService servicesService;
 
     @Autowired
-    public UtilitiesController(UtilitiesService service) {
+    public UtilitiesController(UtilitiesService service, ServicesService servicesService) {
         this.service = service;
+        this.servicesService = servicesService;
     }
 
     @GetMapping
@@ -40,6 +44,7 @@ public class UtilitiesController {
                                 @RequestParam(value = "lastMonthReading", required = false) String lastMonthReading,
                                 @RequestParam(value = "status", required = false) String status,
                                 @RequestParam(value = "service", required = false) String serviceID,
+                                @RequestParam(value = "address", required = false) String address,
                                 @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
@@ -78,12 +83,20 @@ public class UtilitiesController {
         if (serviceID != null) {
             filters.add(new SearchCriteria("service", serviceID));
         }
+        if (address != null) {
+            filters.add(new SearchCriteria("address", address));
+        }
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
     @GetMapping("{id}")
     public Utility getUtility(@PathVariable("id") Long utilityID) {
         return service.getById(utilityID);
+    }
+
+    @GetMapping("/services")
+    public Page<Service> getServices(){
+        return servicesService.getAll(null, null, null);
     }
 
     @PostMapping("/add")

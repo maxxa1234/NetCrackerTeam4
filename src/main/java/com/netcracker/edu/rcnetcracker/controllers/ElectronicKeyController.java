@@ -41,13 +41,13 @@ public class ElectronicKeyController {
             filters.add(new SearchCriteria("keyCode", "like '%" + keyCode + "%' "));
         }
         if (name != null) {
-            filters.add(new SearchCriteria("keyCode", "like '%" + name + "%' "));
+            filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
         if (isActive != null) {
-            filters.add(new SearchCriteria("keyCode", "like '%" + isActive + "%' "));
+            filters.add(new SearchCriteria("isActive", "like '%" + isActive + "%' "));
         }
         if (userId != null) {
-            filters.add(new SearchCriteria("keyCode", userId));
+            filters.add(new SearchCriteria("user", userId));
         }
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }
