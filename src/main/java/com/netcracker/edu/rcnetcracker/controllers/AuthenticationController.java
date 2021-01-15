@@ -42,8 +42,7 @@ public class AuthenticationController {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         user.setActivationCode(UUID.randomUUID().toString());
-
-        user.setId(223L); //TODO: менять айдишник пока не пофиксят
+        
 
         //usersService.create(user); //TODO: раскоментить для создания
         usersService.update(user);
