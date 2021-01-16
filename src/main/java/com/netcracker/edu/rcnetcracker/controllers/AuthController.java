@@ -7,15 +7,19 @@ import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.TokenService;
 import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
 @RestController
 public class AuthController {
+    private static final String AUTHORIZATION = "Authorization";
 
     private UsersService usersService;
     private TokenService tokenService;
@@ -40,5 +44,13 @@ public class AuthController {
         User user = usersService.findByLoginAndPass(request.getEmail(), request.getPassword());
         String token = tokenService.createToken(user.getEmail());
         return new AuthResponse(token);
+    }
+
+    @GetMapping("/current")
+    public User currentUser(ServletRequest req) {
+        HttpServletRequest request = (HttpServletRequest) req;
+        String token = request.getHeader(AUTHORIZATION);
+        String userEmail = tokenService.getUserEmailFromToken(token);
+        return usersService.findUserByEmail(userEmail);
     }
 }
