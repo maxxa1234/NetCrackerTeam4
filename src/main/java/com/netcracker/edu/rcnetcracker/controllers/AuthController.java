@@ -3,7 +3,9 @@ package com.netcracker.edu.rcnetcracker.controllers;
 import com.netcracker.edu.rcnetcracker.dto.AuthRequest;
 import com.netcracker.edu.rcnetcracker.dto.AuthResponse;
 import com.netcracker.edu.rcnetcracker.dto.RegistrationRequest;
+import com.netcracker.edu.rcnetcracker.model.Role;
 import com.netcracker.edu.rcnetcracker.model.User;
+import com.netcracker.edu.rcnetcracker.servicies.RoleService;
 import com.netcracker.edu.rcnetcracker.servicies.TokenService;
 import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ import javax.validation.Valid;
 public class AuthController {
     private static final String AUTHORIZATION = "Authorization";
 
-    private UsersService usersService;
-    private TokenService tokenService;
+    private final UsersService usersService;
+    private final TokenService tokenService;
 
     @Autowired
     public AuthController(UsersService usersService, TokenService tokenService) {
@@ -31,12 +33,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registration(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        User user = new User();
-        user.setEmail(registrationRequest.getEmail());
-        user.setPassword(registrationRequest.getPassword());
-        usersService.create(user);
-        return "OK";
+    public boolean registration(@RequestBody User user) {
+        return usersService.create(user);
     }
 
     @PostMapping("/auth")
