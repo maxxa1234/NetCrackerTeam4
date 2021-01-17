@@ -81,9 +81,11 @@ public class UsersService implements Service<User> {
         List<SearchCriteria> filter = new ArrayList<>();
         filter.add(new SearchCriteria("activationCode", " = '" + code + "' "));
 
-        return oracleDbAccess.selectPage(User.class, null, filter, null)
-                .getContent()
-                .get(0);
+        if(oracleDbAccess.selectPage(User.class, null, filter, null).getContent().size() != 0){
+            return oracleDbAccess.selectPage(User.class, null, filter, null).getContent().get(0);
+        }else {
+            return null;
+        }
     }
 
     public boolean activateUser(String code) {
