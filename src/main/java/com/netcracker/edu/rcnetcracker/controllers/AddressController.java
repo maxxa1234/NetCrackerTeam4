@@ -26,6 +26,7 @@ public class AddressController {
                                 @RequestParam(value = "size", required = false) Integer size,
                                 @RequestParam(value = "flat", required = false) String flat,
                                 @RequestParam(value = "building", required = false) String building,
+                                @RequestParam(value = "user", required = false) String user,
                                 @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
@@ -40,6 +41,9 @@ public class AddressController {
         }
         if (building != null) {
             filters.add(new SearchCriteria("building",building));
+        }
+        if (user != null) {
+            filters.add(new SearchCriteria("user",user));
         }
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }

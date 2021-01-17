@@ -51,7 +51,6 @@ public class AuthController {
         return usersService.create(user);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/activate/{code}")
     public ActivationMessage activate(@PathVariable String code){
         boolean isActivated = usersService.activateUser(code);
