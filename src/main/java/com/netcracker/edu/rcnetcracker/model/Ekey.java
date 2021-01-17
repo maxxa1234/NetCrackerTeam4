@@ -24,11 +24,11 @@ public class Ekey extends BaseEntity {
         this.keyCode = keyCode;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
@@ -36,7 +36,7 @@ public class Ekey extends BaseEntity {
         return user;
     }
 
-    public void setUser(User userId) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
