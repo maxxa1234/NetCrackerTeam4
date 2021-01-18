@@ -1,12 +1,16 @@
 package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
+import com.netcracker.edu.rcnetcracker.exceptions.ResourceNotFoundException;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +19,14 @@ import java.util.List;
 public class UsersService implements Service<User> {
 
     private final OracleDbAccess oracleDbAccess;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @Autowired
-    public UsersService(OracleDbAccess oracleDbAccess) {
+    public UsersService(OracleDbAccess oracleDbAccess, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.oracleDbAccess = oracleDbAccess;
+        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
@@ -28,6 +36,8 @@ public class UsersService implements Service<User> {
 
     @Override
     public boolean create(User object) {
+        object.setRole(roleService.getById(421L));
+        object.setPassword(passwordEncoder.encode(object.getPassword()));
         if (oracleDbAccess.insert(object) == 1) {
             return false;
         } else {
@@ -71,9 +81,11 @@ public class UsersService implements Service<User> {
         List<SearchCriteria> filter = new ArrayList<>();
         filter.add(new SearchCriteria("activationCode", " = '" + code + "' "));
 
-        return oracleDbAccess.selectPage(User.class, null, filter, null)
-                .getContent()
-                .get(0);
+        if(oracleDbAccess.selectPage(User.class, null, filter, null).getContent().size() != 0){
+            return oracleDbAccess.selectPage(User.class, null, filter, null).getContent().get(0);
+        }else {
+            return null;
+        }
     }
 
     public boolean activateUser(String code) {
@@ -87,5 +99,15 @@ public class UsersService implements Service<User> {
         update(user);
 
         return true;
+    }
+
+    public User findByLoginAndPass(String login, String password)  {
+        User user = findUserByEmail(login);
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }
+        throw new ResourceNotFoundException();
     }
 }

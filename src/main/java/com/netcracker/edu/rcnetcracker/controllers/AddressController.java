@@ -1,6 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
 import com.netcracker.edu.rcnetcracker.model.Address;
+import com.netcracker.edu.rcnetcracker.model.Utility;
 import com.netcracker.edu.rcnetcracker.servicies.AddressService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
@@ -25,6 +26,7 @@ public class AddressController {
                                 @RequestParam(value = "size", required = false) Integer size,
                                 @RequestParam(value = "flat", required = false) String flat,
                                 @RequestParam(value = "building", required = false) String building,
+                                @RequestParam(value = "user", required = false) String user,
                                 @RequestParam(value = "sort", required = false) String sort) {
         List<SearchCriteria> filters = new ArrayList<>();
         Pageable pageable = null;
@@ -40,7 +42,15 @@ public class AddressController {
         if (building != null) {
             filters.add(new SearchCriteria("building",building));
         }
+        if (user != null) {
+            filters.add(new SearchCriteria("user",user));
+        }
         return service.getAll(pageable, filters, new SortCriteria(sort));
+    }
+
+    @GetMapping("{id}")
+    public Address getUtility(@PathVariable("id") Long addressID) {
+        return service.getById(addressID);
     }
 
     @PostMapping("/add")

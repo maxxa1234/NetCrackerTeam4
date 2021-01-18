@@ -1,5 +1,7 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
+import com.netcracker.edu.rcnetcracker.model.Entrance;
+import com.netcracker.edu.rcnetcracker.model.Ekey;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
@@ -79,5 +81,8 @@ public class UsersController {
         return service.delete(userId);
     }
 
-
+    @RequestMapping(value = "/get-one/{id}")
+    public User getOne(@PathVariable("id") Long id) {
+        return service.getById(id);
+    }
 }
