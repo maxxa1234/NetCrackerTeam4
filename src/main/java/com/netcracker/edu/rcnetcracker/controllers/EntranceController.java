@@ -124,10 +124,6 @@ public class EntranceController {
     @GetMapping("/export")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
-//        logger.debug("This is a debug message"); //TODO: почистить
-//        logger.info("This is an info message");
-//        logger.warn("This is a warn message");
-//        logger.error("This is an error message");
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());

@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.awt.*;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ExportPDFService {
 
@@ -32,6 +36,9 @@ public class ExportPDFService {
         cell.setPhrase(new Phrase("ID",font));
         table.addCell(cell);
 
+        cell.setPhrase(new Phrase("User",font));
+        table.addCell(cell);
+
         cell.setPhrase(new Phrase("E-key ID",font));
         table.addCell(cell);
 
@@ -43,15 +50,22 @@ public class ExportPDFService {
 
         cell.setPhrase(new Phrase("Time",font));
         table.addCell(cell);
+
     }
 
     private void writeTableData(PdfPTable table){
         for(Logger logger : loggerList){
             table.addCell(logger.getId().toString());
-            table.addCell(logger.geteKeyId().toString());
-            table.addCell(logger.getEntranceId().toString());
-            table.addCell(String.valueOf(logger.getDate()));
-            table.addCell(logger.getTime());
+            table.addCell(logger.geteKeyId().getUser().getLastName());
+            table.addCell(logger.geteKeyId().getName());
+            table.addCell(logger.getEntranceId().getName() );
+
+            Date date = logger.getDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMMM d, yyyy", Locale.ENGLISH);
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            table.addCell(dateFormat.format(date));
+            table.addCell(timeFormat.format(date));
+
         }
     }
 
@@ -69,7 +83,7 @@ public class ExportPDFService {
         Paragraph title = new Paragraph("Logger",font);
         document.add(title);
 
-        PdfPTable table = new PdfPTable(5);
+        PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100);
         table.setSpacingBefore(15);
 

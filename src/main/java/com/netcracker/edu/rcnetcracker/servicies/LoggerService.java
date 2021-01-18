@@ -50,6 +50,7 @@ public class LoggerService implements Service<Logger>{
 
     @Override
     public Page<Logger> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
+
         return oracleDbAccess.selectPage(Logger.class, pageable, filter, sort);
     }
 }

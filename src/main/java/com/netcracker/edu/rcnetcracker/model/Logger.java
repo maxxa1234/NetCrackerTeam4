@@ -10,10 +10,10 @@ import java.util.Date;
 public class Logger extends BaseEntity {
 /*	protected Long logger_id;*/
 
-	@Attribute(id = 1)
+	@Attribute(id = 1,clazz = Entrance.class)
 	protected Entrance entrance;
 
-	@Attribute(id = 2)
+	@Attribute(id = 2,clazz = Ekey.class)
 	protected Ekey eKey;
 
 	@Attribute(id = 3, valueType = ValueType.DATE_VALUE)
