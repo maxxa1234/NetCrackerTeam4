@@ -56,9 +56,9 @@ public class AuthController {
         boolean isActivated = usersService.activateUser(code);
         ActivationMessage activationMessage;
         if (isActivated) {
-            activationMessage = new ActivationMessage("Success", "User successfully activated!");
+            activationMessage = new ActivationMessage("Success", "Аккаунт активирован!");
         } else {
-            activationMessage = new ActivationMessage("Danger", "Activation code is not found!");
+            activationMessage = new ActivationMessage("Danger", "Аккаунт уже был активирован, выполните вход!");
         }
         return activationMessage;
     }
