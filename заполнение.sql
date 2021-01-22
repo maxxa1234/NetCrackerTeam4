@@ -1,375 +1,243 @@
 --------------------------objtype----------------------------------------------------------
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (1, 'Logger'); 		  --1
+VALUES (OBJTYPE_SEQ.nextval, 'Logger'); 		  --1
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (2, 'Entrance');  		  --2
+VALUES (OBJTYPE_SEQ.nextval, 'Entrance');  		  --2
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (3, 'E-key');     		  --3
+VALUES (OBJTYPE_SEQ.nextval, 'E-key');     		  --3
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)  
-VALUES (4, 'Type');	   		  --4
+VALUES (OBJTYPE_SEQ.nextval, 'Type');	   		  --4
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (5, 'Role_To_Entance');  --5
+VALUES (OBJTYPE_SEQ.nextval, 'Role'); 	   		  --6
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (6, 'Role'); 	   		  --6
+VALUES (OBJTYPE_SEQ.nextval, 'Building'); 		  --7
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (7, 'Building'); 		  --7
+VALUES (OBJTYPE_SEQ.nextval, 'Address');    		  --8
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (8, 'Adress');    		  --8
+VALUES (OBJTYPE_SEQ.nextval, 'User');  			  --10
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (9, 'User_To_Adress');   --9
+VALUES (OBJTYPE_SEQ.nextval, 'Contact');  		  --11
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (10, 'User');  			  --10
+VALUES (BJTYPE_SEQ.nextval, 'Contact_Type');  	  --12
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (11, 'Contact');  		  --11
+VALUES (OBJTYPE_SEQ.nextval, 'AD');  			  --13
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (12, 'Contact_Type');  	  --12
+VALUES (OBJTYPE_SEQ.nextval, 'Utility');  		  --14
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (13, 'AD');  			  --13
+VALUES (OBJTYPE_SEQ.nextval, 'Category');  		  --15
 
 INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (14, 'Utility');  		  --14
-
-INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (15, 'Category');  		  --15
-
-INSERT INTO objtype(OBJECT_TYPE_ID,CODE)
-VALUES (16, 'Services');  		  --16
+VALUES (OBJTYPE_SEQ.nextval, 'Services');  		  --16
 
 ---------------------------------Attrtype Logger-------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (1, 1, 2, 'entrance_id');
+VALUES (1, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Logger'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Entrance'), 'entrance_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (2, 1, 3, 'ekey_id');
+VALUES (2, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Logger'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'E-key'), 'ekey_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (3, 1, 'date');
+VALUES (3, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Logger'), 'date');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (4, 1, 'time');
+VALUES (4, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Logger'), 'time');
 
 --------------------------------Attrtype Entrance------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (5, 2, 4, 'type_id');
+VALUES (5, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Entrance'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Entrance'), 'type_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (6, 2, 'is_active');
+VALUES (6, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Entrance'), 'is_active');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (7, 2, 7, 'building_id');
+VALUES (7, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Entrance'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Building'), 'building_id');
 
 --------------------------------Attrtype E_key---------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (8, 3, 'key');
+VALUES (8, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'E-key'), 'key');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (9, 3, 'is_active');
+VALUES (9, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'E-key'), 'is_active');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (10, 3, 10, 'user_id');
+VALUES (10, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'E-key'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'user_id');
 
 --------------------------------Attrtype Type---------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (11, 4, 'value');
-
---------------------------------Attrtype Role_To_Entance----------------------------------
-INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (12, 5, 2, 'entrance_id');
-
-INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (13, 5, 6, 'role_id');
+VALUES (11, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Type'), 'value');
 
 --------------------------------Attrtype Role---------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (14, 6, 'role');
+VALUES (14, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Role'), 'role');
 
 --------------------------------Attrtype Building-----------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (15, 7, 'number');
+VALUES (15, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Building'), 'number');
 
 --------------------------------Attrtype Adress-------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (16, 8, 7, 'building_id');
+VALUES (16, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Address'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Building'), 'building_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (17, 8, 'flat');
+VALUES (17, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Address'), 'flat');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (48, 8, 10,'user_id');
+VALUES (48, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Address'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'),'user_id');
 
-insert into ATTRTYPE(attr_id, object_type_id, object_type_id_ref, code, name)
-VALUES (49, 8, null, 'apartment_number', null);
+insert into ATTRTYPE(attr_id, object_type_id, code)
+VALUES (49, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Address'), 'apartment_number');
 
---------------------------------Attrtype User_To_Adress-----------------------------------
-INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (19, 9, 10, 'user_id');
-
-INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (20, 9, 8, 'adress_id');
 --------------------------------Attrtype User---------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (21, 10, 'email');
+VALUES (21, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'email');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (22, 10, 'password');
+VALUES (22, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'password');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (23, 10, 'first_name');
+VALUES (23, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'first_name');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (24, 10, 'last_name');
+VALUES (24, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'last_name');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (25, 10, 'patronymic');
+VALUES (25, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'patronymic');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (26, 10, 'is_active');
+VALUES (26, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'is_active');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (27, 10, 'recive_utility_notif');
+VALUES (27, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'recive_utility_notif');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (28, 10, 6, 'role_id');
+VALUES (28, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Role'), 'role_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (55, 10, 'activationCode');
+VALUES (55, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'activationCode');
 
 --------------------------------Attrtype Contact------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (29, 11, 'value');
+VALUES (29, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Contact'), 'value');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (30, 11, 12, 'contact_type_id');
+VALUES (30, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Contact'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Contact_Type'), 'contact_type_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (31, 11, 10, 'user_id');
+VALUES (31, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Contact'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'user_id');
 
 --------------------------------Attrtype Contact_Type-------------------------------------
+INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
+VALUES (51, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Contact_Type'), 'contact_type');
 
 --------------------------------Attrtype AD-----------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (32, 13, 'text');
+VALUES (32, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), 'text');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (33, 13, 'date');
+VALUES (33, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), 'date');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (34, 13, 'title');
+VALUES (34, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), 'title');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (35, 13, 15, 'category_id');
+VALUES (35, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Category'), 'category_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (36, 13, 'createdBy');
+VALUES (36, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), 'createdBy');
 
 --------------------------------Attrtype Utility------------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (37, 14, 'bank_book');
+VALUES (37, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'bank_book');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (38, 14, 'month_and_year');
+VALUES (38, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'month_and_year');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (39, 14, 'current_month_read');
+VALUES (39, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'current_month_read');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (47, 14, 'last_month_read');
+VALUES (47, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'last_month_read');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (40, 14, 'ammount_to_pay');
+VALUES (40, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'ammount_to_pay');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (41, 14, 'status');
+VALUES (41, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'status');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (42, 14, 'photo_url');
+VALUES (42, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), 'photo_url');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (43, 14, 16, 'service_id');
+VALUES (43, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Services'), 'service_id');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, OBJECT_TYPE_ID_REF, CODE)
-VALUES (18, 14, 8, 'adress_id');
+VALUES (18, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Utility'), (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Address'), 'adress_id');
+
 --------------------------------Attrtype Category-----------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (44, 15, 'important');
+VALUES (44, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Category'), 'important');
 
 --------------------------------Attrtype Services-----------------------------------------
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (45, 16, 'title');
+VALUES (45, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Services'), 'title');
 
 INSERT INTO attrtype(ATTR_ID, OBJECT_TYPE_ID, CODE)
-VALUES (46, 16, 'tariff');
+VALUES (46, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Services'), 'tariff');
 
 --------------------------------Objects---------------------------------------------------
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 1);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (OBJECTS_SEQ.NEXTVAL, 2, 'name');            --Entrance
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 3);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 4);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 5);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 6);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, description)
-VALUES (OBJECTS_SEQ.NEXTVAL, 7, 'description');		--Building
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 8);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 9);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 10);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 11);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (OBJECTS_SEQ.NEXTVAL, 12, 'name'); 			--Contact_Type
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 13);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 14);
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID, name)
-VALUES (OBJECTS_SEQ.NEXTVAL, 15, 'name'); 			--Category
-INSERT INTO objects(OBJECT_ID, OBJECT_TYPE_ID)
-VALUES (OBJECTS_SEQ.NEXTVAL, 16);
-
---------------------------------Attributes---------------------------------------------------
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (3, 1, '30.11.2020');						--Logger date
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (4, 1, '04:06');								--Logger time
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (6, 2, 'true');								--Entrance is_active
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (8, 3, 'quet#1534');							--E_key key
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (9, 3, 'true');								--E_key is_active
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (11, 4, 'value');							--Type value
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (14, 6, 'user');								--Role role
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (15, 7, '#7');								--Building number
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (17, 8, '44');								--Adress flat
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (21, 10, 'sobaka@sobaka.ua');			    --User email
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (22, 10, 'parol_ti_korol99');			    --User password
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (23, 10, 'Max');			    				--User first_name
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (24, 10, 'Romashenko');			    		--User last_name
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (25, 10, 'Aleksandrovich');			    	--User patronymic
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (26, 10, 'true');			    			--User is_active
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (27, 10, 'utility_notifications');			--User recive_utility_notif
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (29, 11, '99');			    				--Contact value
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (32, 13, 'text');			    			--AD text
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (33, 13, '20.12.2020');			    	    --AD date
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (34, 13, 'title');			    			--AD title
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (36, 13, 'Maxim');			    			--AD createdBy
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (37, 14, 'bank_book');			    		 --Utility bank_book
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (38, 14, '12.2020');			    		 	 --Utility month_and_year
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (39, 14, 'current_month_read');			     --Utility current_month_read
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (40, 14, 'ammount_to_pay');			         --Utility ammount_to_pay
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (41, 14, 'good?');			    		 	 --Utility status
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (42, 14, 'somePhote.url');			         --Utility photo_url
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (44, 15, 'false');			    		 	 --Category important
-
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (45, 16, 'title');			    			 --Services title
-INSERT INTO attributes(attr_id, object_id, value)
-VALUES (46, 16, 'tariff');			    			 --Services tariff
-
---------------------------------Objreference---------------------------------------------------
-			------------Logger---------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (1, 1, 2);			--entrance_id 
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (2, 1, 3);			--ekey_id 
-
-			------------Entrance-------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (5, 2, 4);			--type_id 
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (7, 2, 7);			--building_id 
-
-			------------E_key----------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (10, 3, 10);			--user_id 
-
-			------------Role_To_Entance------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (12, 5, 2);			--entrance_id 			
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (13, 5, 6);			--role_id 
-
-			------------Adress---------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (16, 8, 7);			--building_id
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (18, 8, 14);			--role_id  
-
-			------------User_To_Adress-------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (19, 9, 10);	 		--user_id
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (20, 9, 8);			--adress_id
-
-			------------User---------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (28, 10, 6);	 		--role_id
-
-			------------Contact------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (30, 11, 12);	 	--contact_type_id
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (31, 11, 10);	 	--user_id
-
-			------------AD-----------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (35, 13, 15);	 	--category_id
-
-			------------Utility------------
-INSERT INTO objreference(attr_id, object_id, reference)
-VALUES (43, 14, 16);	 	--service_id			
+-- Buildings
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 7, 'Building#1', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(15, OBJECTS_SEQ.currval, 1, null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 7, 'Building#1', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(15, OBJECTS_SEQ.currval, 2, null, null);
+-- EntranceType
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 4, 'Дверь', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(11, OBJECTS_SEQ.currval, 'Вход в парадную', null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 4, 'Шлагбаум', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(11, OBJECTS_SEQ.currval, 'Входна парковку', null, null);
+-- Role
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 6, 'ADMIN', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(14, OBJECTS_SEQ.currval, 'admin', null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 6, 'USER', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(14, OBJECTS_SEQ.currval, 'user', null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 6, 'GUARD', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(14, OBJECTS_SEQ.currval, 'guard', null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 6, 'GUEST', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(14, OBJECTS_SEQ.currval, 'guest', null, null);
+-- contact_type
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 12, 'EMAIL', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(51, OBJECTS_SEQ.currval, 'email', null, null);
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, 12, 'PHONE_NUMBER', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(51, OBJECTS_SEQ.currval, 'phone number', null, null);

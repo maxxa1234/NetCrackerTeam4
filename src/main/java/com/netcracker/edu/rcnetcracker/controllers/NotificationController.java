@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @RequestMapping("notification")
@@ -51,6 +52,9 @@ public class NotificationController {
         }
         if (page != null && size != null) {
             pageable = PageRequest.of(page, size);
+        }
+        if (createdBy != null) {
+            filters.add(new SearchCriteria("createdBy", createdBy));
         }
         if (date != null) {
             filters.add(new SearchCriteria("date", changeDateFormat(new Date(date))));
@@ -93,21 +97,9 @@ public class NotificationController {
 
     }
 
-
-
-    @PostMapping("/routine/{entranceId}")
-    public void postRoutineNotification(@PathVariable("entranceId") Long entersId) {
-
-    }
-
-    @GetMapping("/routine/actual/{apartmentId}")
-    public void getActualRoutineNotificationsByApartment(@PathVariable("apartmentId") Long apartmentId) {
-
-    }
-
-    @GetMapping("/utility/actual/{apartmentId}")
-    public void getActualUtilityNotificationsByApartment(@PathVariable("apartmentId") Long apartmentId) {
-
+    @RequestMapping(value="/get-users-notes/{id}")
+    public Notification getUsersNotes(@PathVariable("id") Long id){
+        return null;
     }
 
     private String changeDateFormat(Date date) {
