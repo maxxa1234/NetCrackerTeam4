@@ -66,6 +66,12 @@ public class NotificationController {
         if (name != null) {
             filters.add(new SearchCriteria("name", "like '%" + name + "%' "));
         }
+        if (title != null) {
+            filters.add(new SearchCriteria("title", "like '%" + title + "%' "));
+        }
+        if (categoryId != null) {
+            filters.add(new SearchCriteria("category", categoryId));
+        }
         Page<Notification> page1 = service.getAll(pageable, filters, new SortCriteria(sort));
 
         return page1;
