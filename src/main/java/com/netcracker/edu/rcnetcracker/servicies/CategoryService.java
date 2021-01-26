@@ -2,6 +2,7 @@ package com.netcracker.edu.rcnetcracker.servicies;
 
 import com.netcracker.edu.rcnetcracker.db.access.OracleDbAccess;
 import com.netcracker.edu.rcnetcracker.model.Category;
+import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.data.domain.Page;
@@ -47,5 +48,11 @@ public class CategoryService implements Service<Category> {
     @Override
     public Page<Category> getAll(Pageable pageable, List<SearchCriteria> filter, SortCriteria sort) {
         return oracleDbAccess.selectPage(Category.class, pageable, filter, sort);
+    }
+
+    public boolean getAllNotesById(int id){
+        if(oracleDbAccess.getAllNotesById(id).size()>0)
+            return true;
+        else return false;
     }
 }

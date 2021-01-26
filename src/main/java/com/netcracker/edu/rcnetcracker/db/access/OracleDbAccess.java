@@ -4,6 +4,8 @@ import com.netcracker.edu.rcnetcracker.db.annotations.Attr;
 import com.netcracker.edu.rcnetcracker.db.annotations.Processor;
 import com.netcracker.edu.rcnetcracker.db.annotations.ValueType;
 import com.netcracker.edu.rcnetcracker.model.BaseEntity;
+import com.netcracker.edu.rcnetcracker.model.Category;
+import com.netcracker.edu.rcnetcracker.model.Notification;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.CountElementsRequest;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.Director;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.Request;
@@ -260,6 +262,27 @@ public class OracleDbAccess implements DbAccess {
                 "              ) WHERE 1=1";
 
         return jdbcTemplate.queryForList(sql,String.class);
+    }
+
+    public List<Notification> getAllNotesById(int categoryId){
+        String sql ="SELECT * FROM ( SELECT o.object_id \"id\",\n" +
+                "                       listagg(o.name) \"name\",\n" +
+                "                       listagg(o.description) \"description\" ,\n" +
+                "                       listagg(a0.VALUE) \"text\",\n" +
+                "                       to_date(listagg(to_char(a1.DATE_VALUE, 'yyyy-mm-dd hh24:mi:ss')), 'yyyy-mm-dd hh24:mi:ss') \"date\",\n" +
+                "                       listagg(a2.VALUE) \"title\",\n" +
+                "                       listagg(a3.REFERENCE) \"category\",\n" +
+                "                       listagg(a4.REFERENCE) \"createdBy\"\n" +
+                "                FROM OBJECTS o\n" +
+                "                         left join ATTRIBUTES a0 on o.object_id = a0.object_id and a0.attr_id = 32\n" +
+                "                         left join ATTRIBUTES a1 on o.object_id = a1.object_id and a1.attr_id = 33\n" +
+                "                         left join ATTRIBUTES a2 on o.object_id = a2.object_id and a2.attr_id = 34\n" +
+                "                         left join OBJREFERENCE a3 on o.object_id = a3.object_id and a3.attr_id = 35\n" +
+                "                         left join OBJREFERENCE a4 on o.object_id = a4.object_id and a4.attr_id = 36\n" +
+                "                WHERE o.object_type_id = 13\n" +
+                "                group by o.object_id\n" +
+                "              ) where \"category\" = " + categoryId + "";
+        return jdbcTemplate.queryForList(sql,Notification.class);
     }
 
     private String getInsertStatement(Attr attr, Long objectId, Object value) {

@@ -59,6 +59,8 @@ public class CategoryController {
 
     @DeleteMapping("/delete/{id}")
     public boolean deleteCategory(@PathVariable("id") Long categoryId){
-        return service.delete(categoryId);
+        if(service.getAllNotesById(Math.toIntExact(categoryId)))
+            return false;
+        else return service.delete(categoryId);
     }
 }
