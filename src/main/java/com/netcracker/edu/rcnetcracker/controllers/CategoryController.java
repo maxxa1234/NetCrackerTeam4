@@ -42,6 +42,11 @@ public class CategoryController {
         return service.getAll(pageable, filters, new SortCriteria(sort));
     }
 
+    @GetMapping("/get-one/{id}")
+    public Category getOne(@PathVariable("id") Long id){
+        return service.getById(id);
+    }
+
     @PostMapping("/add")
     public boolean createCategory(@RequestBody Category category){
         return service.create(category);
@@ -52,8 +57,10 @@ public class CategoryController {
         return service.update(category);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public boolean deleteCategory(@PathVariable("id") Long categoryId){
-        return service.delete(categoryId);
+        if(service.getAllNotesById(Math.toIntExact(categoryId)))
+            return false;
+        else return service.delete(categoryId);
     }
 }
