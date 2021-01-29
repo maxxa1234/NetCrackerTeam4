@@ -33,9 +33,6 @@ public class ExportPDFService {
         Font font = FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.BLACK);
 
-        cell.setPhrase(new Phrase("ID",font));
-        table.addCell(cell);
-
         cell.setPhrase(new Phrase("User",font));
         table.addCell(cell);
 
@@ -55,7 +52,6 @@ public class ExportPDFService {
 
     private void writeTableData(PdfPTable table){
         for(Logger logger : loggerList){
-            table.addCell(logger.getId().toString());
             table.addCell(logger.geteKeyId().getUser().getLastName());
             table.addCell(logger.geteKeyId().getName());
             table.addCell(logger.getEntranceId().getName() );
@@ -83,7 +79,7 @@ public class ExportPDFService {
         Paragraph title = new Paragraph("Logger",font);
         document.add(title);
 
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
         table.setSpacingBefore(15);
 

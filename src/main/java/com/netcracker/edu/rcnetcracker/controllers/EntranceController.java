@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -34,11 +34,14 @@ public class EntranceController {
 
     private final EntranceService service;
     private final LoggerService loggerService;
+    private final LoggerController loggerController;
+
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntranceController.class.getName());
 
-    public EntranceController(EntranceService service,LoggerService loggerService) {
+    public EntranceController(EntranceService service, LoggerService loggerService, LoggerController loggerController) {
         this.service = service;
         this.loggerService = loggerService;
+        this.loggerController = loggerController;
     }
 
     @Autowired
@@ -122,22 +125,38 @@ public class EntranceController {
     }
 
     @GetMapping("/export")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
+    public void exportToPDF(HttpServletResponse response,
+                            @RequestParam(value = "dateFrom", required = false) Long dateFrom,
+                            @RequestParam(value = "dateTo", required = false) Long dateTo) throws DocumentException, IOException {
+
+        List<SearchCriteria> filters = new ArrayList<>();
+        if (dateFrom != null) {
+            filters.add(new SearchCriteria("date", " > to_date('" + changeDateFormat(new Date(dateFrom))
+                    + "', 'yyyy-mm-dd hh24:mi:ss')"));
+        }
+        if (dateTo != null) {
+            filters.add(new SearchCriteria("date", " < to_date('" + changeDateFormat(new Date(dateTo))
+                    + "', 'yyyy-mm-dd hh24:mi:ss')"));
+        }
         response.setContentType("application/pdf");
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename = entrance_" + currentDateTime + ".pdf";
 
         response.setHeader(headerKey,headerValue);
 
-        //SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
-        Page<Logger> pageEntrance = loggerService.getAll(null,null,null);
+        SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
+        Page<Logger> pageEntrance = loggerService.getAll(null,filters,null); //TODO:Передать правильный фильтр
         List<Logger> loggerList = pageEntrance.getContent();
 
         ExportPDFService exporter = new ExportPDFService(loggerList);
         exporter.export(response);
+    }
+
+    private String changeDateFormat(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(date);
     }
 }
