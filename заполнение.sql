@@ -241,3 +241,21 @@ insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VAL
 (OBJECTS_SEQ.nextval, null, 12, 'PHONE_NUMBER', null);
 insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
 (51, OBJECTS_SEQ.currval, 'phone number', null, null);
+/*категория для гостевого сообщения*/
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Category'), 'Гостям', 'Уведомление только для гостей');
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(44, OBJECTS_SEQ.currval, false, null, null);
+/*стартовое сообщение для гостей*/
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, (select OBJTYPE.OBJECT_TYPE_ID from OBJTYPE where CODE = 'AD'), 'Start message', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(32, OBJECTS_SEQ.currval, 'Ожидайте подтверждения администратором! С ув. Администрация.', null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(33, OBJECTS_SEQ.currval, null, sysdate, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(34, OBJECTS_SEQ.currval, 'Привет, новый пользователь!', null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(35, OBJECTS_SEQ.currval, (select OBJECT_ID from OBJECTS where NAME = 'Гостям'), null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(36, OBJECTS_SEQ.currval, null, null, null);
