@@ -241,6 +241,32 @@ insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VAL
 (OBJECTS_SEQ.nextval, null, 12, 'PHONE_NUMBER', null);
 insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
 (51, OBJECTS_SEQ.currval, 'phone number', null, null);
+
+
+/*Аккаунт администратора*/
+insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
+(OBJECTS_SEQ.nextval, null, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'User'), 'Admin', null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(21, OBJECTS_SEQ.currval, 'adm@amd.adm', null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(22, OBJECTS_SEQ.currval, '$2a$10$nJrRPzOH7vmXcRKsfH9EnOSKUqzzsjc32F/higuV.EgIKij9S1koK', null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(23, OBJECTS_SEQ.currval, 'Admin', null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(24, OBJECTS_SEQ.currval, null, null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(25, OBJECTS_SEQ.currval, null, null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(26, OBJECTS_SEQ.currval, true, null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(27, OBJECTS_SEQ.currval, true, null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(28, OBJECTS_SEQ.currval, (select OBJECT_ID from OBJECTS where NAME = 'Администратор'), null, null);
+insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
+(55, OBJECTS_SEQ.currval, null, null, null);
+insert into OBJREFERENCE(attr_id, reference, object_id) VALUES
+(28, OBJECTS_SEQ.currval, (select OBJECT_ID from OBJECTS where NAME = 'Администратор'));
+
 /*категория для гостевого сообщения*/
 insert into OBJECTS(object_id, parent_id, object_type_id, name, description) VALUES
 (OBJECTS_SEQ.nextval, null, (select OBJECT_TYPE_ID from OBJTYPE where CODE = 'Category'), 'Гостям', 'Уведомление только для гостей');
@@ -258,4 +284,8 @@ insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VAL
 insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
 (35, OBJECTS_SEQ.currval, (select OBJECT_ID from OBJECTS where NAME = 'Гостям'), null, null);
 insert into ATTRIBUTES(attr_id, object_id, value, date_value, list_value_id) VALUES
-(36, OBJECTS_SEQ.currval, null, null, null);
+(36, OBJECTS_SEQ.currval, (select OBJECT_ID from OBJECTS where NAME = 'Admin'), null, null);
+insert into OBJREFERENCE(attr_id, reference, object_id) VALUES
+(35, (select OBJECT_ID from OBJECTS where NAME = 'Гостям'), OBJECTS_SEQ.currval);
+insert into OBJREFERENCE(attr_id, reference, object_id) VALUES
+(36, (select OBJECT_ID from OBJECTS where NAME = 'Admin'), OBJECTS_SEQ.currval);
