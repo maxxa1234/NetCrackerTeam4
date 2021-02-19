@@ -127,7 +127,8 @@ public class EntranceController {
     @GetMapping("/export")
     public void exportToPDF(HttpServletResponse response,
                             @RequestParam(value = "dateFrom", required = false) Long dateFrom,
-                            @RequestParam(value = "dateTo", required = false) Long dateTo) throws DocumentException, IOException {
+                            @RequestParam(value = "dateTo", required = false) Long dateTo,
+                            @RequestParam(value = "filter", required = false) String filter) throws DocumentException, IOException {
 
         List<SearchCriteria> filters = new ArrayList<>();
         if (dateFrom != null) {
@@ -148,7 +149,7 @@ public class EntranceController {
         response.setHeader(headerKey,headerValue);
 
         SortCriteria sortCriteria = new SortCriteria("isActive:DESC");
-        Page<Logger> pageEntrance = loggerService.getAll(null,filters,null); //TODO:Передать правильный фильтр
+        Page<Logger> pageEntrance = loggerService.getAll(null,filters,null);
         List<Logger> loggerList = pageEntrance.getContent();
 
         ExportPDFService exporter = new ExportPDFService(loggerList);
