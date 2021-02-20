@@ -1,12 +1,11 @@
 package com.netcracker.edu.rcnetcracker.controllers;
 
-import com.netcracker.edu.rcnetcracker.model.Entrance;
-import com.netcracker.edu.rcnetcracker.model.Ekey;
 import com.netcracker.edu.rcnetcracker.model.User;
 import com.netcracker.edu.rcnetcracker.servicies.UsersService;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SearchCriteria;
 import com.netcracker.edu.rcnetcracker.servicies.requestBuilder.criteria.SortCriteria;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,9 +17,11 @@ public class UsersController {
 
 
     private final UsersService service;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsersController(UsersService service) {
+    public UsersController(UsersService service, PasswordEncoder passwordEncoder) {
         this.service = service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -73,6 +74,7 @@ public class UsersController {
 
     @PutMapping
     public boolean updateUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return service.update(user);
     }
 
