@@ -16,10 +16,6 @@ public class Entrance extends BaseEntity {
     @Attribute(id = 7, clazz = Building.class)
     protected Building building;
 
-    private RoleToEntrance roleToEntrance;
-//    @Attribute(id = 13, valueType = ValueType.LIST_VALUE)
-//    protected List<Long> roleId;
-
     @Attribute(id = 6, valueType = ValueType.VALUE)
     protected Boolean isActive;
 
@@ -49,22 +45,6 @@ public class Entrance extends BaseEntity {
     public void setBuilding(Building building) {
         this.building = building;
     }
-
-    public RoleToEntrance getRoleToEntrance() {
-        return roleToEntrance;
-    }
-
-    public void setRoleToEntrance(RoleToEntrance roleToEntrance) {
-        this.roleToEntrance = roleToEntrance;
-    }
-
-    //    public List<Long> getRoleId() {
-//        return roleId;
-//    }
-//
-//    public void setRoleId(List<Long> roleId) {
-//        this.roleId = roleId;
-//    }
 
     public Boolean getActive() {
         return isActive;

@@ -78,8 +78,8 @@ public class UsersController {
         return service.update(user);
     }
 
-    @DeleteMapping(params = {"id"})
-    public boolean deleteUser(@RequestParam("id") Long userId) {
+    @DeleteMapping("{id}")
+    public boolean deleteUser(@PathVariable("id") Long userId) {
         return service.delete(userId);
     }
 

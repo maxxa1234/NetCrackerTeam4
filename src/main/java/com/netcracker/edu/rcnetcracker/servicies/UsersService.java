@@ -68,7 +68,7 @@ public class UsersService implements Service<User> {
         return oracleDbAccess.selectPage(User.class, pageable, filter, sort);
     }
 
-    public User findUserByEmail(String email) {
+    public User findUserByEmail(String email) throws IndexOutOfBoundsException{
         List<SearchCriteria> filter = new ArrayList<>();
         filter.add(new SearchCriteria("email", " = '" + email + "' "));
 

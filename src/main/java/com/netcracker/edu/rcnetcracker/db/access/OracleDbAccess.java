@@ -137,8 +137,7 @@ public class OracleDbAccess implements DbAccess {
     @Override
     public <T extends BaseEntity> Integer delete(Class<T> clazz, Long id) {
         int objTypeId = Processor.getObjtypeId(clazz);
-        return jdbcTemplate.update("DELETE OBJECTS WHERE OBJECTS.OBJECT_TYPE_ID = " + objTypeId +
-                " AND OBJECTS.OBJECT_ID = " + id);
+        return jdbcTemplate.update("DELETE FROM OBJECTS WHERE OBJECT_ID = " + id);
     }
 
     /**

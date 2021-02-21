@@ -39,16 +39,22 @@ public class AuthController {
 
     @PostMapping("/register")
     public boolean registration(@RequestBody User user) {
-        user.setActivationCode(UUID.randomUUID().toString());
-        String message = String.format(
-                "Hello, %s! \n" +
-                        "You are welcome! Please, visit next link: http://localhost:%s/activate/%s",
-                user.getLastName(),
-                4200,
-                user.getActivationCode()
-        );
-        mailSenderService.sendEmail(user.getEmail(), "Activation code", message);
-        return usersService.create(user);
+        try{
+            User checkUser = usersService.findUserByEmail(user.getEmail());
+            return false;
+        }catch (IndexOutOfBoundsException e){
+            user.setActivationCode(UUID.randomUUID().toString());
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "You are welcome! Please, visit next link: http://localhost:%s/activate/%s",
+                    user.getLastName(),
+                    4200,
+                    user.getActivationCode()
+            );
+            mailSenderService.sendEmail(user.getEmail(), "Activation code", message);
+            return usersService.create(user);
+        }
+
     }
 
     @GetMapping("/activate/{code}")
